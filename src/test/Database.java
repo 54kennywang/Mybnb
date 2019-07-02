@@ -9,6 +9,7 @@ public class Database {
 	Statement stmt = null;
 	public Boolean connect() {
 		try {
+			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
 			String[] cred = new String[3];
 			System.out.print("Username: ");
