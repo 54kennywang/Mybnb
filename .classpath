@@ -5,5 +5,14 @@
 	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/gson-2.6.2-javadoc.jar"/>
 	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/mysql-connector-java-8.0.16.jar"/>
 	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/sqlite-jdbc-3.27.2.1.jar"/>
+	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/json-simple-1.1.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/geoGoogle-1.5.0.jar"/>
+	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/geolocation-0.2.2.jar"/>
+	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/google-maps-services-0.1.5.jar"/>
+	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/gson-2.3.1.jar"/>
+	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/joda-time-2.4.jar"/>
+	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/okhttp-2.0.0.jar"/>
+	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/okio-1.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
