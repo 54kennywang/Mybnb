@@ -43,7 +43,8 @@ public class Database {
 		return true;
 	}
 
-	public ResultSet excuteQuery(String query) {
+	// read info from database
+	public ResultSet queryRead(String query) {
 		ResultSet rs = null;
 		try {
 			rs = stmt.executeQuery(query);
@@ -52,5 +53,48 @@ public class Database {
 			System.exit(0);
 		}
 		return rs;
+	}
+	
+	// write to database
+	public Integer queryWrite(String query) {
+		Integer rs = null;
+		try {
+			rs = stmt.executeUpdate(query);
+		} catch(Exception e) {
+			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+			System.exit(0);
+		}
+		return rs;
+	}
+	
+	// insert new record
+	// sample input: "sailers", "name, num, age", "'KENNY', 123, 23"
+	public Boolean insert(String table, String cols, String vals) {
+		StringBuilder query = new StringBuilder("insert into ");
+		query.append(table).append(" (").append(cols).append(") Value (").append(vals).append(");");
+		if(this.queryWrite(query.toString()).equals(1)) {
+			return true;
+		}
+		else return false;
+	}
+	
+	// update existing record
+	// sample input: "sailers", "name = 'KENNY', num = -111", "id=35"
+	public Boolean update(String table, String newInfo, String conditions) {
+		StringBuilder query = new StringBuilder("update ");
+		query.append(table).append(" set ").append(newInfo).append(" where ").append(conditions).append(";");
+		if(this.queryWrite(query.toString()).equals(1)) {
+			return true;
+		}
+		else return false;
+	}
+	
+	public static void main( String args[] ) {
+		Database db = new Database();
+		if(db.connect()) {
+//			System.out.println(db.insert("sailers", "name, num, age", "'KENNY', 123, 23"));
+//			System.out.println(db.update("sailers", "name = 'KENNY', num = -111", "id=35"));
+		}
+		db.disconnect();
 	}
 }
