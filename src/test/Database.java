@@ -56,15 +56,16 @@ public class Database {
 	}
 	
 	// write to database
+	// success return 1, no affected return 0
 	public Integer queryWrite(String query) {
-		Integer rs = null;
+		Integer result = null;
 		try {
-			rs = stmt.executeUpdate(query);
+			result = stmt.executeUpdate(query);
 		} catch(Exception e) {
 			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 			System.exit(0);
 		}
-		return rs;
+		return result;
 	}
 	
 	// insert new record
@@ -89,11 +90,23 @@ public class Database {
 		else return false;
 	}
 	
+	// delete existing record
+	// sample input: "sailers", "id=34"
+	public Boolean delete(String table, String conditions) {
+		StringBuilder query = new StringBuilder("delete from ");
+		query.append(table).append(" where ").append(conditions).append(";");
+		if(this.queryWrite(query.toString()).equals(1)) {
+			return true;
+		}
+		else return false;
+	}
+	
 	public static void main( String args[] ) {
 		Database db = new Database();
 		if(db.connect()) {
 //			System.out.println(db.insert("sailers", "name, num, age", "'KENNY', 123, 23"));
 //			System.out.println(db.update("sailers", "name = 'KENNY', num = -111", "id=35"));
+//			System.out.println(db.delete("sailers", "id=34"));
 		}
 		db.disconnect();
 	}
