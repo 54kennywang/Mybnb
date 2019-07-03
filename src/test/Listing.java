@@ -2,6 +2,7 @@ package test;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +45,18 @@ public class Listing {
 		    	result.add(amenities.get(i));
 		    }
 		}
+		return result;
+	}
+	
+	public static List<LocalDate> allDates(String fromDate, String toDate){
+		final LocalDate start = LocalDate.parse(fromDate);
+		final LocalDate end = LocalDate.parse(toDate);
+		LocalDate date = start;
+		List<LocalDate> result = new ArrayList<LocalDate>();
+		for (date = start; date.isBefore(end); date = date.plusDays(1)){
+			result.add(date);
+		}
+		result.add(date);
 		return result;
 	}
 	

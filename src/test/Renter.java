@@ -1,7 +1,7 @@
 package test;
 
-import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 public class Renter extends User{
@@ -18,37 +18,41 @@ public class Renter extends User{
 		return false;
 	}
 
-	// [id, fromDate, toDate]
-	// change availability to (id, days)
-	/*
-	 	1 2019-05-03
-	 	1 2019-05-03
-	 	1 2019-05-05
-	 	1 2019-05-06
-	 */
+	// given list of [l_id, fromDate, toDate]
+	// return true if bookListing successfully
 	public Boolean bookListing(List<String> info) {
 		Boolean success = false;
-		String query = "select * from rented where l_id" + id;
-		ResultSet result = Database.queryRead(query);
+		if(this.active) {
+			// add to "rented" table
+			String table1 = "rented";
+			String cols1 = "u_id, l_id, fromDate, toDate, status, date";
+			String vals1 = this.id + ", " + info.get(0) + ", '" + info.get(1) + "', '" + 
+							info.get(2) + "', " + "0, " + "NOW()";
+			if(Database.insert(table1, cols1, vals1)) {
+				// delete from "availability" table
+				String table2 = "availability";
+				List<LocalDate> dates = Listing.allDates(info.get(1), info.get(2));
+				for (int i = 0; i < dates.size(); i ++){
+					String conditions = "id=" + info.get(0) + " and avilDate='" + dates.get(i) + "'";
+					if(!Database.delete(table2, conditions)) {
+						return false;
+					}
+				}
+				success = true;
+			}
+		}
 		return success;
 	}
 	
 	public static void main( String args[] ) throws Exception {
 		if(Database.connect()) {
 			Renter me = new Renter();
-			List<String> info = new ArrayList<String>();
-//			info.add("qibowang7@outlook.com");
-//			info.add("1111222233334444");
-//			info.add("Kenny Wang");
-//			info.add("Student");
-//			info.add("1996-06-22");
-//			info.add("123456789");
-//			info.add("password");
-//			System.out.println(me.register(info));
-			info.add("qibowang7@outlook.com");
-			info.add("password");
-			System.out.println(me.signIn(info));
-			System.out.println(me.becomeHost());
+			
+			List<String> cred = Arrays.asList("qibowang7@gmail.com", "password");
+			System.out.println(me.signIn(cred));
+			
+			List<String> info = Arrays.asList("5", "2019-06-28", "2019-06-29");
+			System.out.println(me.bookListing(info));
 		}
 		Database.disconnect();
     }
