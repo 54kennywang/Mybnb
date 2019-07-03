@@ -1,10 +1,9 @@
 package test;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public abstract class User {
 	protected Integer id = null;
 	protected Integer type = null;
 	protected Boolean active = false;
@@ -53,24 +52,6 @@ public class User {
 		}
 		return false;
 	}
-
 	
-	public static void main( String args[] ) throws Exception {
-		if(Database.connect()) {
-			User me = new User();
-			List<String> info = new ArrayList<String>();
-//			info.add("qibowang7@outlook.com");
-//			info.add("1111222233334444");
-//			info.add("Kenny Wang");
-//			info.add("Student");
-//			info.add("1996-06-22");
-//			info.add("123456789");
-//			info.add("password");
-//			System.out.println(me.register(info));
-			info.add("qibowang7@outlook.com");
-			info.add("password");
-			System.out.println(me.signIn(info));
-		}
-		Database.disconnect();
-    }
+	public abstract Boolean cancelBooking(List<String> info);
 }

@@ -44,6 +44,37 @@ public class Renter extends User{
 		return success;
 	}
 	
+	@Override
+	// given list of [l_id, fromDate, toDate]
+	// return true if cancelBooking successfully
+	public Boolean cancelBooking(List<String> info) {
+		Boolean success = false;
+		if(this.active) {
+			// update "rented (status)" table
+			String table1 = "rented";
+			String newInfo = "status = -1";
+			String conditions = "u_id=" + this.id + " and l_id=" + info.get(0) + " and fromDate = '" + info.get(1) 
+								+ "' and toDate='" + info.get(2) + "'";
+			// sample input: "sailers", "name = 'KENNY', num = -111", "id=35"
+			if(Database.update(table1, newInfo, conditions)) {
+				// recover "availability" table
+				String table2 = "availability";
+				String cols2 = "id, avilDate";
+				List<LocalDate> dates = Listing.allDates(info.get(1), info.get(2));
+				for (int i = 0; i < dates.size(); i ++){
+					// sample input: "sailers", "name, num, age", "'KENNY', 123, 23"
+					String vals2 = info.get(0) + ", '" + dates.get(i) + "'";
+					if(!Database.insert(table2, cols2, vals2)) {
+						return false;
+					}
+				}
+				success = true;
+			}
+		}
+		return success;
+	}
+
+	
 	public static void main( String args[] ) throws Exception {
 		if(Database.connect()) {
 			Renter me = new Renter();
@@ -52,8 +83,9 @@ public class Renter extends User{
 			System.out.println(me.signIn(cred));
 			
 			List<String> info = Arrays.asList("5", "2019-06-28", "2019-06-29");
-			System.out.println(me.bookListing(info));
+			System.out.println(me.cancelBooking(info));
 		}
 		Database.disconnect();
     }
+
 }
