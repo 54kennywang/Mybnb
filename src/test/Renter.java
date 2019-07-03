@@ -1,5 +1,6 @@
 package test;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,13 @@ public class Renter extends User{
 		return false;
 	}
 
+	// [id, fromDate, toDate]
+	public Boolean bookListing(List<String> info) {
+		Boolean success = false;
+		String query = "select * from rented where l_id" + id;
+		ResultSet result = Database.queryRead(query);
+		return success;
+	}
 	
 	public static void main( String args[] ) throws Exception {
 		if(Database.connect()) {
