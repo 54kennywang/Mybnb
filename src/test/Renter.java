@@ -19,6 +19,13 @@ public class Renter extends User{
 	}
 
 	// [id, fromDate, toDate]
+	// change availability to (id, days)
+	/*
+	 	1 2019-05-03
+	 	1 2019-05-03
+	 	1 2019-05-05
+	 	1 2019-05-06
+	 */
 	public Boolean bookListing(List<String> info) {
 		Boolean success = false;
 		String query = "select * from rented where l_id" + id;
