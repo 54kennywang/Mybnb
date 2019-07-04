@@ -1,5 +1,7 @@
 package test;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -20,14 +22,20 @@ public class Renter extends User{
 
 	// given list of [l_id, fromDate, toDate]
 	// return true if bookListing successfully
-	public Boolean bookListing(List<String> info) {
+	public Boolean bookListing(List<String> info) throws SQLException {
 		Boolean success = false;
 		if(this.active) {
 			// add to "rented" table
+			String query = "select * from listing where id = " + info.get(0);
+			ResultSet rs = Database.queryRead(query);
+			Double dayPrice = null;
+			if(rs.next()) {
+				dayPrice = rs.getDouble("dayPrice");
+			}
 			String table1 = "rented";
-			String cols1 = "u_id, l_id, fromDate, toDate, status, date";
+			String cols1 = "u_id, l_id, fromDate, toDate, status, date, dayPrice";
 			String vals1 = this.id + ", " + info.get(0) + ", '" + info.get(1) + "', '" + 
-							info.get(2) + "', " + "0, " + "NOW()";
+							info.get(2) + "', " + "0, " + "NOW()" + ", " + dayPrice;
 			if(Database.insert(table1, cols1, vals1)) {
 				// delete from "availability" table
 				String table2 = "availability";
@@ -78,10 +86,10 @@ public class Renter extends User{
 		if(Database.connect()) {
 			Renter me = new Renter();
 			
-			List<String> cred = Arrays.asList("qibowang7@gmail.com", "password");
+			List<String> cred = Arrays.asList("michael@outlook.com", "password");
 			System.out.println(me.signIn(cred));
 			
-			List<String> info = Arrays.asList("4", "2019-07-02", "2019-07-02");
+			List<String> info = Arrays.asList("10", "2020-07-01", "2020-07-02");
 			System.out.println(me.bookListing(info));
 
 //			List<String> info = Arrays.asList("5", "2019-07-01", "2019-07-02");
