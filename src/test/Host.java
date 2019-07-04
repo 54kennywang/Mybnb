@@ -74,15 +74,41 @@ public class Host extends Renter{
 		return success;
 	}
 	
-	// given (l_id, newPrice)
+	// given list of [l_id, newPrice]
 	// return true if successfully
-	public Boolean updatePrice(int l_id, double newPrice) {
+	public Boolean updatePrice(List<String> info) {
 		Boolean success = false;
 		if(this.active && this.type.equals(2)) {
 			String table = "listing";
-			String newInfo = "dayPrice = " + newPrice;
-			String conditions = "id = " + l_id;
+			String newInfo = "dayPrice = " + info.get(1);
+			String conditions = "id = " + info.get(0);
 			if(Database.update(table, newInfo, conditions)) success = true;
+		}
+		return success;
+	}
+	
+	// given list of [l_id, from1, to1, from2, to2, ...]
+	// return true if successfully
+	public Boolean updateAvailability(List<String> info) {
+		Boolean success = false;
+		if(this.active && this.type.equals(2)) {
+			// delete existing availabilities
+			String table = "availability";
+			String conditions = "id = " + info.get(0);
+			Database.delete(table, conditions);
+			// add new availabilities
+			for(int i = 1; i < info.size(); i ++) {
+				String table2 = "availability";
+				String cols2 = "id, avilDate";
+				List<LocalDate> dates = Listing.allDates(info.get(i), info.get(++i));
+				for (int j = 0; j < dates.size(); j ++){
+					String vals2 = info.get(0) + ", '" + dates.get(j) + "'";
+					if(!Database.insert(table2, cols2, vals2)) {
+						return false;
+					}
+				}
+			}
+			success = true;
 		}
 		return success;
 	}
@@ -100,7 +126,12 @@ public class Host extends Renter{
 //			List<String> houseInfo = Arrays.asList("19", "2020-06-29", "2020-07-02", "50", me.getId().toString(), "Apt", "01010111010100");
 //			List<String> addrInfo = Arrays.asList("30 Saint Mary Axe - Swiss Re", "30 Mary Axe", "London EC3A 8EP", "UK");
 //			System.out.println(me.postListing(houseInfo, addrInfo));
-			System.out.println(me.updatePrice(10, 99.99));
+			
+//			List<String> info = Arrays.asList("10", "19.99");
+//			System.out.println(me.updatePrice(info));
+
+			List<String> info = Arrays.asList("10", "2020-06-02", "2020-06-05", "2020-07-29", "2020-08-02");
+			System.out.println(me.updateAvailability(info));
 		
 		}
 		Database.disconnect();
