@@ -1,6 +1,8 @@
 package test;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
    
 
 public class Database {
@@ -104,6 +106,24 @@ public class Database {
 		}
 		else return false;
 	}
+	
+	// insert address
+	// given addrInfo: [street, city, pcode, country], id and type in address schema
+	// return true if successfully
+	public static Boolean insertAddr(List<String> addrInfo, int id, int type) throws Exception {
+		Boolean success = false;
+		List<Object> sanitizedAddr = new ArrayList<Object>();
+		sanitizedAddr = Map.getAllByAddr(Map.infoToAddr(addrInfo)); // [street, city, pcode, country, lng, lat]
+		String table = "address";
+		String cols = "id, street, city, pcode, country, lng, lat, type";
+		String vals = id + ", '" + sanitizedAddr.get(0) + "', '" + sanitizedAddr.get(1)
+		+ "', '" + sanitizedAddr.get(2) + "', '" + sanitizedAddr.get(3) + "', " + sanitizedAddr.get(4)
+		+ ", " + sanitizedAddr.get(5) + ", " + type;
+		// sample input: "sailers", "name, num, age", "'KENNY', 123, 23"
+		if(Database.insert(table, cols, vals)) success = true;
+		return success;
+	}
+	
 	
 	public static void main( String args[] ) {
 		if(Database.connect()) {

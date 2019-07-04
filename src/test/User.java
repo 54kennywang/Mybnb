@@ -1,23 +1,36 @@
 package test;
 
 import java.sql.ResultSet;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class User {
 	protected Integer id = null;
 	protected Integer type = null;
 	protected Boolean active = false;
-	// given list of [email, cardNum, name, occ, DOB, SIN, password]
+	// userInfo: [email, cardNum, name, occ, DOB, SIN, password]
+	// given addrInfo: [street, city, pcode, country]
 	// return true if register successfully
-	public Boolean register(List<String> info) throws Exception {
+	public Boolean register(List<String> userInfo, List<String> addrInfo) throws Exception {
 		Boolean success = false;
 		if(!this.active) {
+			// insert user
 			String table = "user";
 			String cols = "email, type, cardNum, name, occ, date, DOB, SIN, password";
-			String vals = "'" + info.get(0) + "', 1, '" + info.get(1) + "', '" + info.get(2) + "', '" + 
-					info.get(3) + "', NOW(), '" + info.get(4) + "', '" + info.get(5) + "', '" + 
-					Password.getSaltedHash(info.get(6)) + "'";
-			if(Database.insert(table, cols, vals)) success = true;
+			String vals = "'" + userInfo.get(0) + "', 1, '" + userInfo.get(1) + "', '" + userInfo.get(2) + "', '" + 
+					userInfo.get(3) + "', NOW(), '" + userInfo.get(4) + "', '" + userInfo.get(5) + "', '" + 
+					Password.getSaltedHash(userInfo.get(6)) + "'";
+			if(Database.insert(table, cols, vals)) {
+				String query = "SELECT LAST_INSERT_ID()";
+				ResultSet result = Database.queryRead(query);
+				Integer newID = null;
+				if(result.next()) {
+					newID = result.getInt("LAST_INSERT_ID()");
+
+					// insert address
+					if(Database.insertAddr(addrInfo, newID, 1)) success = true;
+				}
+			}
 		}
 		return success;
 	}
@@ -53,5 +66,21 @@ public abstract class User {
 		return false;
 	}
 	
+	public Integer getId() {return this.id;}
+	
 	public abstract Boolean cancelBooking(List<String> info);
+
+	public static void main( String args[] ) throws Exception {
+		if(Database.connect()) {
+			Renter me = new Renter();
+			
+			List<String> userInfo = Arrays.asList("michael@outlook.com", "2222222222222222", "Michael", "graduate", 
+					"1996-03-05", "12csa442", "password");
+			List<String> addrInfo = Arrays.asList("Tobacco Quay", "Wapping Ln", "London", "UK");
+			System.out.println(me.register(userInfo, addrInfo));
+			
+		}
+		Database.disconnect();
+    }
+
 }

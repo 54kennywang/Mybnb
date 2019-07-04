@@ -1,29 +1,31 @@
 package test;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
 public class Host extends Renter{
 			
-	// given list of [area, fromDate, toDate, dayPrice, owner, type, amenity]
+	// given houseInfo: [area, fromDate, toDate, dayPrice, owner, type, amenity]
+	// given addrInfo: [street, city, pcode, country]
 	// return true if register successfully
-	public Boolean postListing(List<String> houseInfo, List<String> addrInfo) throws SQLException {
+	public Boolean postListing(List<String> houseInfo, List<String> addrInfo) throws Exception {
 		Boolean success = false;
 		if(this.active && this.type.equals(2)) {
+			// insert listing
 			String table1 = "listing";
 			String cols1 = "date, area, dayPrice, owner, type, amenity";
 			String vals1 = "NOW(), " + houseInfo.get(0) + ", " + houseInfo.get(3) + ", " + 
 			houseInfo.get(4) + ", '" + houseInfo.get(5) + "', '" + houseInfo.get(6) + "'";
 			
-			
 			if(Database.insert(table1, cols1, vals1)) {
+				// insert availability
 				String query = "SELECT LAST_INSERT_ID()";
 				ResultSet result = Database.queryRead(query);
+				Integer newID = null;
 				if(result.next()) {
-					int newID = result.getInt("LAST_INSERT_ID()");
+					newID = result.getInt("LAST_INSERT_ID()");
 					String table2 = "availability";
 					String cols2 = "id, avilDate";
 
@@ -34,7 +36,9 @@ public class Host extends Renter{
 							return false;
 						}
 					}
-					success = true;
+					
+					// insert address
+					if(Database.insertAddr(addrInfo, newID, 0)) success = true;
 				}
 			}
 		}
@@ -77,8 +81,12 @@ public class Host extends Renter{
 			List<String> cred = Arrays.asList("qibowang7@outlook.com", "password");
 			System.out.println(me.signIn(cred));
 			
-			List<String> info = Arrays.asList("4", "2019-07-02", "2019-07-02");
-			System.out.println(me.cancelBooking(info));
+//			List<String> info = Arrays.asList("4", "2019-07-02", "2019-07-02");
+//			System.out.println(me.cancelBooking(info));
+			
+			List<String> houseInfo = Arrays.asList("19", "2020-06-29", "2020-07-02", "50", me.getId().toString(), "Apt", "01010111010100");
+			List<String> addrInfo = Arrays.asList("30 Saint Mary Axe - Swiss Re", "30 Mary Axe", "London EC3A 8EP", "UK");
+			System.out.println(me.postListing(houseInfo, addrInfo));
 		}
 		Database.disconnect();
     }
