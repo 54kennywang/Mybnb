@@ -46,9 +46,9 @@ public class Host extends Renter{
 	}
 	
 	
-	@Override
 	// given list of [l_id, fromDate, toDate]
 	// return true if cancelBooking successfully
+	@Override
 	public Boolean cancelBooking(List<String> info) {
 		Boolean success = false;
 		if(this.active) {

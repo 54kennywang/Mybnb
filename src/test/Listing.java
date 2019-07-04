@@ -48,6 +48,8 @@ public class Listing {
 		return result;
 	}
 	
+	// given two dates, return all dates in between (inclusive)
+	// sample: ("2019-05-03", "2019-05-05") return ["2019-05-03", "2019-05-04", "2019-05-05"]
 	public static List<LocalDate> allDates(String fromDate, String toDate){
 		final LocalDate start = LocalDate.parse(fromDate);
 		final LocalDate end = LocalDate.parse(toDate);

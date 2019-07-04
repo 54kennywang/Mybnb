@@ -85,7 +85,7 @@ public class Map {
 		return result;
 	}
 	
-	// given (lng, lat), return (String)formatted_addr 
+	// given (lng, lat), return (String) formatted_addr 
 	@SuppressWarnings("finally")
 	public static String getAllByAddr(Double lng, Double lat) throws MalformedURLException, IOException, org.json.simple.parser.ParseException {
 		URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBU9xbtYaDk0buYIs4Vti4-J2NqsZV0hmo&latlng="
