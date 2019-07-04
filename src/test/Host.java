@@ -10,13 +10,13 @@ public class Host extends Renter{
 			
 	// given list of [area, fromDate, toDate, dayPrice, owner, type, amenity]
 	// return true if register successfully
-	public Boolean postListing(List<String> info) throws SQLException {
+	public Boolean postListing(List<String> houseInfo, List<String> addrInfo) throws SQLException {
 		Boolean success = false;
 		if(this.active && this.type.equals(2)) {
 			String table1 = "listing";
 			String cols1 = "date, area, dayPrice, owner, type, amenity";
-			String vals1 = "NOW(), " + info.get(0) + ", " + info.get(3) + ", " + 
-			info.get(4) + ", '" + info.get(5) + "', '" + info.get(6) + "'";
+			String vals1 = "NOW(), " + houseInfo.get(0) + ", " + houseInfo.get(3) + ", " + 
+			houseInfo.get(4) + ", '" + houseInfo.get(5) + "', '" + houseInfo.get(6) + "'";
 			
 			
 			if(Database.insert(table1, cols1, vals1)) {
@@ -27,7 +27,7 @@ public class Host extends Renter{
 					String table2 = "availability";
 					String cols2 = "id, avilDate";
 
-					List<LocalDate> dates = Listing.allDates(info.get(1), info.get(2));
+					List<LocalDate> dates = Listing.allDates(houseInfo.get(1), houseInfo.get(2));
 					for (int i = 0; i < dates.size(); i ++){
 						String vals2 = newID + ", '" + dates.get(i) + "'";
 						if(!Database.insert(table2, cols2, vals2)) {

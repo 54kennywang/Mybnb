@@ -8,28 +8,82 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.json.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
+import com.google.maps.model.AddressComponent;
+import com.google.maps.model.AddressComponentType;
 import com.google.maps.model.GeocodingResult;
 
 public class Map {
-	// given address (may not formatted), return [formatted_addr, lng, lat]
+	// given address (may not formatted), return [street, city, pcode, country, lng, lat]
 	public List<Object> getAddressByGpsCoordinates(String addr) throws Exception {
 		GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyBU9xbtYaDk0buYIs4Vti4-J2NqsZV0hmo");
 		GeocodingResult[] results =  GeocodingApi.geocode(context, addr).await();
-		List<Object> info = new ArrayList<Object>();
-//		System.out.println(results[0].formattedAddress);
-//		System.out.println(results[0].geometry.location.lat);
-//		System.out.println(results[0].geometry.location.lng);
-		info.add(results[0].formattedAddress);		
-		info.add(results[0].geometry.location.lng);
-		info.add(results[0].geometry.location.lat);
-		return info;
+		
+		List<Object> info = addrStringtoAddrList(results[0].formattedAddress);
+		if(info == null) {
+			if (results.length > 0) {
+				info = new ArrayList<Object>();
+				GeocodingResult result = results[0];
+				String street = null;
+				String city = null;
+				String country = null;
+				String pcode = null;
+				for (AddressComponent component : result.addressComponents) {
+					List<AddressComponentType> types = Arrays.asList(component.types);
+					if (types.contains(AddressComponentType.COUNTRY)) {
+//						System.out.println("country: " + component.longName);
+						country = component.longName;
+					}
+					if (types.contains(AddressComponentType.LOCALITY)) {
+//						System.out.println("city: " + component.longName);
+						city = component.longName;
+					}
+					if (types.contains(AddressComponentType.POSTAL_CODE)) {
+//						System.out.println("pcode: " + component.longName);
+						pcode = component.longName;
+					}
+					if (types.contains(AddressComponentType.ROUTE)) {
+//						System.out.println("route: " + component.longName);
+						street += component.longName;
+					}
+					if (types.contains(AddressComponentType.STREET_NUMBER)) {
+//						System.out.println("st num: " + component.longName);
+						street = component.longName + " ";
+					}
+				}
+				info.add(street);
+				info.add(city);
+				info.add(pcode);
+				info.add(country);
+				info.add(results[0].geometry.location.lng);
+				info.add(results[0].geometry.location.lat);
+//				System.out.println("=== test: " + results[0].addressComponents[0].types[0]);
+			}
+//			System.out.println(results[0].formattedAddress);
+		}
+		else {
+			info.add(results[0].geometry.location.lng);
+			info.add(results[0].geometry.location.lat);
+		}
+		if(info.size() == 6) return info;
+		else return null;
+	}
+	
+	
+	public List<Object> addrStringtoAddrList(String addr){
+		String[] resultArray = addr.trim().split("\\s*,\\s*");
+		List<Object> result = new ArrayList<Object>(Arrays.asList(resultArray));
+		if(result.size() == 5) result.remove(0);
+		else if (result.size() != 4) return null;
+		return result;
 	}
 	
 	// given (lng, lat), return (String)formatted_addr 
@@ -86,18 +140,24 @@ public class Map {
 	public double rad2deg(double rad) {
 		return (rad * 180.0 / Math.PI);
 	}
-
+	
 	// test
 	public static void main( String args[] ) throws Exception {
 		Map ong = new Map();
 		
-		List<Object> info = ong.getAddressByGpsCoordinates("38 Gladys Rd Scarboroug ON M1C 1C6 Canada");
-		System.out.println(info.get(0));
-		System.out.println(info.get(1));
-		System.out.println(info.get(2));
+		List<Object> info0 = ong.getAddressByGpsCoordinates("1265 millitary trail Scarboroug ON M1C 1C6 Canada");
+		System.out.println(info0 + "\n");
+
+		List<Object> info1 = ong.getAddressByGpsCoordinates("Hamburger Allee 22-24, 60486 Frankfurt am Main, Germany");
+		System.out.println(info1 + "\n");
 		
-		System.out.println(ong.getAddressByGpsCoordinates(-79.180840, 43.785702));
-		
-		System.out.println(ong.distance(43.783270, -79.203200, 43.785702, -79.180840, 'K'));
+		List<Object> info2 = ong.getAddressByGpsCoordinates("777 Bay Street Market Level, Toronto, ON M7A 2J3");
+		System.out.println(info2 + "\n");
+
+//		System.out.println();
+//		System.out.println(ong.getAddressByGpsCoordinates(-79.180840, 43.785702));
+//
+//		System.out.println();
+//		System.out.println(ong.distance(43.783270, -79.203200, 43.785702, -79.180840, 'K'));
 	}
 }
