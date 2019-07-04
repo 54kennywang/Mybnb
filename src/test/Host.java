@@ -74,6 +74,19 @@ public class Host extends Renter{
 		return success;
 	}
 	
+	// given (l_id, newPrice)
+	// return true if successfully
+	public Boolean updatePrice(int l_id, double newPrice) {
+		Boolean success = false;
+		if(this.active && this.type.equals(2)) {
+			String table = "listing";
+			String newInfo = "dayPrice = " + newPrice;
+			String conditions = "id = " + l_id;
+			if(Database.update(table, newInfo, conditions)) success = true;
+		}
+		return success;
+	}
+	
 	public static void main( String args[] ) throws Exception {
 		if(Database.connect()) {
 			Host me = new Host();
@@ -84,9 +97,11 @@ public class Host extends Renter{
 //			List<String> info = Arrays.asList("4", "2019-07-02", "2019-07-02");
 //			System.out.println(me.cancelBooking(info));
 			
-			List<String> houseInfo = Arrays.asList("19", "2020-06-29", "2020-07-02", "50", me.getId().toString(), "Apt", "01010111010100");
-			List<String> addrInfo = Arrays.asList("30 Saint Mary Axe - Swiss Re", "30 Mary Axe", "London EC3A 8EP", "UK");
-			System.out.println(me.postListing(houseInfo, addrInfo));
+//			List<String> houseInfo = Arrays.asList("19", "2020-06-29", "2020-07-02", "50", me.getId().toString(), "Apt", "01010111010100");
+//			List<String> addrInfo = Arrays.asList("30 Saint Mary Axe - Swiss Re", "30 Mary Axe", "London EC3A 8EP", "UK");
+//			System.out.println(me.postListing(houseInfo, addrInfo));
+			System.out.println(me.updatePrice(10, 99.99));
+		
 		}
 		Database.disconnect();
     }
