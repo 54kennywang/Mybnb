@@ -45,7 +45,21 @@ public class Host extends Renter{
 		return success;
 	}
 	
+	@Override
+	public Boolean becomeHost() {
+		throw new UnsupportedOperationException();
+	}
 	
+	@Override
+	public Boolean bookListing(List<String> info) {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public Boolean commentOnListing(List<String> info) {
+		throw new UnsupportedOperationException();
+	}
+
 	// given list of [l_id, fromDate, toDate]
 	// return true if cancelBooking successfully
 	@Override
@@ -113,6 +127,22 @@ public class Host extends Renter{
 		return success;
 	}
 	
+	// reply to a initial comment on a user
+	// given a list of commentInfo: [receiver, parent_comment, content, l_id]
+	// return true if successfully
+	public Boolean replyListingComment(List<String> info){
+		Boolean success = false;
+		if(this.active) {
+			// add to "listing_comment" table
+			String table = "listing_comment";
+			String cols = "l_id, sender, receiver, parent_comment, rating, content, date";
+			String vals = info.get(3) + ", " + this.id + ", " + info.get(0) + ", " + info.get(1) + ", null, '"
+					+ info.get(2) + "', " + "NOW()" ;
+			if(Database.insert(table, cols, vals)) success =true;
+		}
+		return success;
+	}
+	
 	public static void main( String args[] ) throws Exception {
 		if(Database.connect()) {
 			Host me = new Host();
@@ -130,8 +160,11 @@ public class Host extends Renter{
 //			List<String> info = Arrays.asList("10", "19.99");
 //			System.out.println(me.updatePrice(info));
 
-			List<String> info = Arrays.asList("10", "2020-06-02", "2020-06-05", "2020-07-29", "2020-08-02");
-			System.out.println(me.updateAvailability(info));
+//			List<String> info = Arrays.asList("10", "2020-06-02", "2020-06-05", "2020-07-29", "2020-08-02");
+//			System.out.println(me.updateAvailability(info));
+			
+			List<String> info = Arrays.asList("6", "1", "thx for the comment: this Apt is good.", "10");
+			System.out.println(me.replyListingComment(info));
 		
 		}
 		Database.disconnect();

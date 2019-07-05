@@ -52,6 +52,21 @@ public class Renter extends User{
 		return success;
 	}
 	
+	// initial comment on a listing
+	// given a list of commentInfo: [receiver, rating, content, l_id]
+	// return true if successfully
+	public Boolean commentOnListing(List<String> info) {
+		Boolean success = false;
+		if(this.active) {
+			// add to "listing_comment" table
+			String table = "listing_comment";
+			String cols = "l_id, sender, receiver, parent_comment, rating, content, date";
+			String vals = info.get(3) + "," + this.id + ", " + info.get(0) + ", null, " + info.get(1) + ", '" + 
+					info.get(2) + "', " + "NOW()" ;
+			if(Database.insert(table, cols, vals)) success =true;
+		}
+		return success;
+	}
 	
 	// given list of [l_id, fromDate, toDate, cancel_status]
 	// return true if cancelBooking successfully
@@ -89,13 +104,24 @@ public class Renter extends User{
 			List<String> cred = Arrays.asList("michael@outlook.com", "password");
 			System.out.println(me.signIn(cred));
 			
-			List<String> info = Arrays.asList("10", "2020-07-01", "2020-07-02");
-			System.out.println(me.bookListing(info));
+//			List<String> info = Arrays.asList("10", "2020-07-01", "2020-07-02");
+//			System.out.println(me.bookListing(info));
 
 //			List<String> info = Arrays.asList("5", "2019-07-01", "2019-07-02");
 //			System.out.println(me.cancelBooking(info));
+			
+			List<String> info = Arrays.asList("3", "5", "this Apt is good.", "10");
+			System.out.println(me.commentOnListing(info));
 		}
 		Database.disconnect();
     }
 
 }
+
+
+
+
+
+
+
+

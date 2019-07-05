@@ -70,17 +70,66 @@ public abstract class User {
 	
 	public abstract Boolean cancelBooking(List<String> info);
 
+	// initial comment on a user
+	// given a list of commentInfo: [receiver, rating, content]
+	// return true if successfully
+	public Boolean commentOnUser(List<String> info){
+		Boolean success = false;
+		if(this.active) {
+			// add to "user_comment" table
+			String table = "user_comment";
+			String cols = "sender, receiver, parent_comment, rating, content, date";
+			String vals = this.id + ", " + info.get(0) + ", null, " + info.get(1) + ", '" + 
+							info.get(2) + "', " + "NOW()" ;
+			if(Database.insert(table, cols, vals)) success =true;
+		}
+		return success;
+	}
+	
+	// reply to a initial comment on a user
+	// given a list of commentInfo: [receiver, parent_comment, content]
+	// return true if successfully
+	public Boolean replyUserComment(List<String> info){
+		Boolean success = false;
+		if(this.active) {
+			// add to "user_comment" table
+			String table = "user_comment";
+			String cols = "sender, receiver, parent_comment, rating, content, date";
+			String vals = this.id + ", " + info.get(0) + ", " + info.get(1) + ", null, '"
+			+ info.get(2) + "', " + "NOW()" ;
+			if(Database.insert(table, cols, vals)) success =true;
+		}
+		return success;
+	}
+	
 	public static void main( String args[] ) throws Exception {
 		if(Database.connect()) {
 			Renter me = new Renter();
 			
-			List<String> userInfo = Arrays.asList("michael@outlook.com", "2222222222222222", "Michael", "graduate", 
-					"1996-03-05", "12csa442", "password");
-			List<String> addrInfo = Arrays.asList("Tobacco Quay", "Wapping Ln", "London", "UK");
-			System.out.println(me.register(userInfo, addrInfo));
+//			List<String> userInfo = Arrays.asList("michael@outlook.com", "2222222222222222", "Michael", "graduate", 
+//					"1996-03-05", "12csa442", "password");
+//			List<String> addrInfo = Arrays.asList("Tobacco Quay", "Wapping Ln", "London", "UK");
+//			System.out.println(me.register(userInfo, addrInfo));
+			
+			List<String> cred = Arrays.asList("qibowang7@outlook.com", "password");
+			System.out.println(me.signIn(cred));
+			
+//			List<String> info = Arrays.asList("3", "5", "this user is good");
+//			System.out.println(me.commentOnUser(info));
+			
+			List<String> info = Arrays.asList("6", "1", "thanks for the comment: this user is good");
+			System.out.println(me.replyUserComment(info));
 			
 		}
 		Database.disconnect();
     }
 
 }
+
+
+
+
+
+
+
+
