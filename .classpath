@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/jar/sqlite-jdbc-3.27.2.1.jar"/>
 	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/jar/commons-codec-1.12.jar"/>
 	<classpathentry kind="lib" path="F:/OneDrive - University of Toronto/2019summer/cscc43/Mybnb/jar/json-20180813.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFx"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
