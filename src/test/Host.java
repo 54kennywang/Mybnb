@@ -94,7 +94,8 @@ public class Host extends Renter {
 
     // given list of [l_id, newPrice]
     // return true if successfully
-    public Boolean updatePrice(List<String> info) {
+    public Boolean updatePrice(List<String> info) throws SQLException {
+        if(!this.getAllMyListing().contains(info.get(0))) return  false;
         Boolean success = false;
         if (this.active && this.type.equals(2)) {
             String table = "listing";
@@ -107,7 +108,8 @@ public class Host extends Renter {
 
     // given list of [l_id, from1, to1, from2, to2, ...]
     // return true if successfully
-    public Boolean updateAvailability(List<String> info) {
+    public Boolean updateAvailability(List<String> info) throws SQLException {
+        if(!this.getAllMyListing().contains(info.get(0))) return  false;
         Boolean success = false;
         if (this.active && this.type.equals(2)) {
             // delete existing availabilities
@@ -144,6 +146,7 @@ public class Host extends Renter {
         }
         return allIDs;
     }
+
 
     // print all my listings
     public void viewAllMyListing() throws SQLException {

@@ -58,6 +58,16 @@ public class Listing {
 		}
 	}
 
+	// given listing id
+	// return listing's owner ID or -1 if this listing not exist
+	public static Integer getOwnerId(int l_id) throws SQLException {
+		String query = "SELECT * FROM listing where id = " + l_id + ";";
+		ResultSet rs = Database.queryRead(query);
+		if(rs.next()){
+			return rs.getInt("owner");
+		}
+		return -1;
+	}
 
 
 	// print a list of amenities

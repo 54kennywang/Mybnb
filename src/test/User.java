@@ -1,6 +1,7 @@
 package test;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -79,19 +80,8 @@ public abstract class User {
 	// initial comment on a user
 	// given a list of commentInfo: [receiver, rating, content]
 	// return true if successfully
-	public Boolean commentOnUser(List<String> info){
-		Boolean success = false;
-		if(this.active) {
-			// add to "user_comment" table
-			String table = "user_comment";
-			String cols = "sender, receiver, parent_comment, rating, content, date";
-			String vals = this.id + ", " + info.get(0) + ", null, " + info.get(1) + ", '" + 
-							info.get(2) + "', " + "NOW()" ;
-			if(Database.insert(table, cols, vals)) success =true;
-		}
-		return success;
-	}
-	
+	public abstract Boolean commentOnUser(List<String> info) throws SQLException;
+
 	// reply to a initial comment on a user
 	// given a list of commentInfo: [receiver, parent_comment, content]
 	// return true if successfully

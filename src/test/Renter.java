@@ -1,8 +1,12 @@
 package test;
 
+import com.sun.rowset.CachedRowSetImpl;
+
+import javax.sql.rowset.CachedRowSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,7 +71,62 @@ public class Renter extends User{
 		}
 		return success;
 	}
-	
+
+	// get all my bookings (history + future bookings)
+	public CachedRowSet getAllBookings() throws SQLException{
+		String query = "SELECT * FROM rented where u_id = " + this.id + ";";
+		ResultSet rs = Database.queryRead(query);
+		CachedRowSet rowset = new CachedRowSetImpl();
+		rowset.populate(rs);
+		return rowset;
+	}
+
+	// get all history bookings
+	public CachedRowSet getAllHistoryBookings() throws SQLException{
+		String query = "SELECT * FROM rented where u_id = " + this.id + " and status = 1;";
+		ResultSet rs = Database.queryRead(query);
+		CachedRowSet rowset = new CachedRowSetImpl();
+		rowset.populate(rs);
+		return rowset;
+	}
+
+	// get all future bookings
+	public CachedRowSet getAllFutureBookings() throws SQLException{
+		String query = "SELECT * FROM rented where u_id = " + this.id + " and status = 0;";
+		ResultSet rs = Database.queryRead(query);
+		CachedRowSet rowset = new CachedRowSetImpl();
+		rowset.populate(rs);
+		return rowset;
+	}
+
+	// initial comment on a host
+	// given a list of commentInfo: [receiver, rating, content]
+	// return true if successfully
+	@Override
+	public Boolean commentOnUser(List<String> info) throws SQLException {
+		Boolean legal = false; // legal to comment on that user?
+		CachedRowSet rowset = this.getAllHistoryBookings();
+		while (rowset.next()) {
+			Integer l_id = rowset.getInt("l_id");
+			if(Listing.getOwnerId(l_id) == Integer.parseInt(info.get(0))){
+				legal = true;
+				break;
+			}
+		}
+		if(!legal) return false;
+
+		Boolean success = false;
+		if(this.active) {
+			// add to "user_comment" table
+			String table = "user_comment";
+			String cols = "sender, receiver, parent_comment, rating, content, date";
+			String vals = this.id + ", " + info.get(0) + ", null, " + info.get(1) + ", '" +
+					info.get(2) + "', " + "NOW()" ;
+			if(Database.insert(table, cols, vals)) success =true;
+		}
+		return success;
+	}
+
 	// given list of [l_id, fromDate, toDate, cancel_status]
 	// return true if cancelBooking successfully
 	@Override
@@ -96,7 +155,6 @@ public class Renter extends User{
 		return success;
 	}
 
-	
 	public static void main( String args[] ) throws Exception {
 		if(Database.connect()) {
 			Renter me = new Renter();
