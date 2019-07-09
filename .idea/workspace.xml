@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2aa730d9-8fae-4aea-a5c4-096272572948" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mybnb.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Mybnb.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../project/Mybnb/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../project/Mybnb/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../project/Mybnb/src/test/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/Mybnb/src/test/Database.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../project/Mybnb/src/test/Host.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/Mybnb/src/test/Host.java" afterDir="false" />
@@ -23,7 +25,7 @@
     <option name="delegatedBuild" value="true" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.14503205">
+    <splitter split-orientation="horizontal" split-proportion="0.8293269">
       <split-first>
         <leaf>
           <file pinned="false" current-in-tab="false">
@@ -42,11 +44,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Database.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="66">
-                  <caret line="57" column="30" lean-forward="true" selection-start-line="57" selection-start-column="30" selection-end-line="57" selection-end-column="30" />
+                <state relative-caret-position="185">
+                  <caret line="61" column="18" selection-start-line="61" selection-start-column="18" selection-end-line="61" selection-end-column="18" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -80,7 +82,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Host.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="497">
+                <state relative-caret-position="803">
                   <caret line="232" column="8" selection-start-line="232" selection-start-column="8" selection-end-line="232" selection-end-column="30" />
                   <folding>
                     <element signature="method#postListing#0;class#Host#0" />
@@ -98,11 +100,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="283">
-                  <caret line="143" column="8" lean-forward="true" selection-start-line="143" selection-start-column="8" selection-end-line="143" selection-end-column="17" />
+                <state relative-caret-position="360">
+                  <caret line="179" column="65" selection-start-line="179" selection-start-column="65" selection-end-line="179" selection-end-column="65" />
                   <folding>
                     <element signature="method#viewListing#0;class#Listing#0" />
                     <element signature="method#allAvailabilities#0;class#Listing#0" />
@@ -114,6 +116,9 @@
                     <element signature="method#printAmenity#0;class#Listing#0" />
                     <element signature="method#parseAmenity#0;class#Listing#0" />
                     <element signature="method#allDates#0;class#Listing#0" />
+                    <element signature="method#searchByCoordinates#0;class#Listing#0" />
+                    <element signature="method#increas#0;class#Listing#0" />
+                    <element signature="method#main#0;class#Listing#0" />
                   </folding>
                 </state>
               </provider>
@@ -135,8 +140,11 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Practice.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="255">
-                  <caret line="23" column="32" lean-forward="true" selection-start-line="23" selection-start-column="32" selection-end-line="23" selection-end-column="32" />
+                <state relative-caret-position="131">
+                  <caret line="42" column="31" lean-forward="true" selection-start-line="42" selection-start-column="31" selection-end-line="42" selection-end-column="31" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -160,9 +168,9 @@
         <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Host.java" />
         <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Renter.java" />
         <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Map.java" />
-        <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java" />
         <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Database.java" />
         <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Practice.java" />
+        <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java" />
       </list>
     </option>
   </component>
@@ -204,9 +212,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/jar/guava-21.0.jar!/" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RunDashboard">
@@ -328,10 +337,10 @@
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Terminal" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Messages" visible="true" weight="0.20785597" />
+      <window_info anchor="bottom" id="Messages" weight="0.0883797" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.400982" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.049099836" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -351,25 +360,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="146">
           <caret line="46" column="19" selection-start-line="46" selection-start-column="19" selection-end-line="46" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Host.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="497">
-          <caret line="232" column="8" selection-start-line="232" selection-start-column="8" selection-end-line="232" selection-end-column="30" />
-          <folding>
-            <element signature="method#postListing#0;class#Host#0" />
-            <element signature="e#2423#2481#1" />
-            <element signature="e#2384#2385#0" expanded="true" />
-            <element signature="method#cancelBooking#0;class#Host#0" />
-            <element signature="method#updatePrice#0;class#Host#0" />
-            <element signature="method#updateAvailability#0;class#Host#0" />
-            <element signature="method#getAllMyListing#0;class#Host#0" />
-            <element signature="method#viewAllMyListing#0;class#Host#0" />
-            <element signature="method#commentOnUser#0;class#Host#0" />
-            <element signature="method#replyListingComment#0;class#Host#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -397,25 +387,6 @@
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_211/jre/lib/rt.jar!/com/sun/rowset/CachedRowSetImpl.class">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="143" column="8" lean-forward="true" selection-start-line="143" selection-start-column="8" selection-end-line="143" selection-end-column="17" />
-          <folding>
-            <element signature="method#viewListing#0;class#Listing#0" />
-            <element signature="method#allAvailabilities#0;class#Listing#0" />
-            <element signature="method#printAllAvailabilities#0;class#Listing#0" />
-            <element signature="method#allAvailabilities#1;class#Listing#0" />
-            <element signature="e#2630#2641#0" expanded="true" />
-            <element signature="method#printAllAvailabilities#1;class#Listing#0" />
-            <element signature="method#getOwnerId#0;class#Listing#0" />
-            <element signature="method#printAmenity#0;class#Listing#0" />
-            <element signature="method#parseAmenity#0;class#Listing#0" />
-            <element signature="method#allDates#0;class#Listing#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Renter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="156">
@@ -424,16 +395,6 @@
             <element signature="imports" expanded="true" />
             <element signature="method#commentOnUser#0;class#Renter#0" />
             <element signature="method#cancelBooking#0;class#Renter#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Database.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="57" column="30" lean-forward="true" selection-start-line="57" selection-start-column="30" selection-end-line="57" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -452,10 +413,71 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Database.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="61" column="18" selection-start-line="61" selection-start-column="18" selection-end-line="61" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/jar/guava-21.0.jar!/com/google/common/collect/TreeMultimap.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Host.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="803">
+          <caret line="232" column="8" selection-start-line="232" selection-start-column="8" selection-end-line="232" selection-end-column="30" />
+          <folding>
+            <element signature="method#postListing#0;class#Host#0" />
+            <element signature="e#2423#2481#1" />
+            <element signature="e#2384#2385#0" expanded="true" />
+            <element signature="method#cancelBooking#0;class#Host#0" />
+            <element signature="method#updatePrice#0;class#Host#0" />
+            <element signature="method#updateAvailability#0;class#Host#0" />
+            <element signature="method#getAllMyListing#0;class#Host#0" />
+            <element signature="method#viewAllMyListing#0;class#Host#0" />
+            <element signature="method#commentOnUser#0;class#Host#0" />
+            <element signature="method#replyListingComment#0;class#Host#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Practice.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="23" column="32" lean-forward="true" selection-start-line="23" selection-start-column="32" selection-end-line="23" selection-end-column="32" />
+        <state relative-caret-position="131">
+          <caret line="42" column="31" lean-forward="true" selection-start-line="42" selection-start-column="31" selection-end-line="42" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="179" column="65" selection-start-line="179" selection-start-column="65" selection-end-line="179" selection-end-column="65" />
+          <folding>
+            <element signature="method#viewListing#0;class#Listing#0" />
+            <element signature="method#allAvailabilities#0;class#Listing#0" />
+            <element signature="method#printAllAvailabilities#0;class#Listing#0" />
+            <element signature="method#allAvailabilities#1;class#Listing#0" />
+            <element signature="e#2630#2641#0" expanded="true" />
+            <element signature="method#printAllAvailabilities#1;class#Listing#0" />
+            <element signature="method#getOwnerId#0;class#Listing#0" />
+            <element signature="method#printAmenity#0;class#Listing#0" />
+            <element signature="method#parseAmenity#0;class#Listing#0" />
+            <element signature="method#allDates#0;class#Listing#0" />
+            <element signature="method#searchByCoordinates#0;class#Listing#0" />
+            <element signature="method#increas#0;class#Listing#0" />
+            <element signature="method#main#0;class#Listing#0" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -509,6 +531,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
+          <last-edited>Mybnb</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
