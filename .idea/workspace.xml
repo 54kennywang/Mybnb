@@ -22,7 +22,7 @@
     <option name="delegatedBuild" value="true" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.85974026">
+    <splitter split-orientation="horizontal" split-proportion="0.9">
       <split-first>
         <leaf>
           <file pinned="false" current-in-tab="false">
@@ -97,8 +97,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="124">
-                  <caret line="137" column="112" selection-start-line="137" selection-start-column="112" selection-end-line="137" selection-end-column="112" />
+                <state relative-caret-position="181">
+                  <caret line="139" column="99" selection-start-line="139" selection-start-column="99" selection-end-line="139" selection-end-column="99" />
                   <folding>
                     <element signature="method#viewListing#0;class#Listing#0" />
                     <element signature="method#allAvailabilities#0;class#Listing#0" />
@@ -110,7 +110,6 @@
                     <element signature="method#printAmenity#0;class#Listing#0" />
                     <element signature="method#parseAmenity#0;class#Listing#0" />
                     <element signature="method#allDates#0;class#Listing#0" />
-                    <element signature="method#searchByCoordinates#0;class#Listing#0" />
                   </folding>
                 </state>
               </provider>
@@ -132,8 +131,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Practice.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="211">
-                  <caret line="21" column="44" lean-forward="true" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="44" />
+                <state relative-caret-position="245">
+                  <caret line="26" selection-start-line="26" selection-end-line="26" />
                 </state>
               </provider>
             </entry>
@@ -319,7 +318,7 @@
       <window_info id="UI Designer" />
       <window_info id="Capture Tool" />
       <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12632374" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.055975795" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Terminal" />
@@ -327,7 +326,7 @@
       <window_info anchor="bottom" id="Messages" weight="0.3289689" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.20130932" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.26350245" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -411,15 +410,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Practice.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="21" column="44" lean-forward="true" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="44" />
+        <state relative-caret-position="245">
+          <caret line="26" selection-start-line="26" selection-end-line="26" />
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_211/jre/lib/rt.jar!/com/sun/rowset/CachedRowSetImpl.class">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="124">
-          <caret line="137" column="112" selection-start-line="137" selection-start-column="112" selection-end-line="137" selection-end-column="112" />
+        <state relative-caret-position="181">
+          <caret line="139" column="99" selection-start-line="139" selection-start-column="99" selection-end-line="139" selection-end-column="99" />
           <folding>
             <element signature="method#viewListing#0;class#Listing#0" />
             <element signature="method#allAvailabilities#0;class#Listing#0" />
@@ -431,7 +433,6 @@
             <element signature="method#printAmenity#0;class#Listing#0" />
             <element signature="method#parseAmenity#0;class#Listing#0" />
             <element signature="method#allDates#0;class#Listing#0" />
-            <element signature="method#searchByCoordinates#0;class#Listing#0" />
           </folding>
         </state>
       </provider>
