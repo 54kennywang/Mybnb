@@ -158,6 +158,34 @@ public class Host extends Renter {
     }
 
 
+    // initial comment on a Renter
+    // given a list of commentInfo: [receiver, rating, content]
+    // return true if successfully
+    @Override
+    public Boolean commentOnUser(List<String> info) throws SQLException {
+        Boolean legal = false; // legal to comment on that user?
+        CachedRowSet rowset = this.getAllHistoryBookings();
+        while (rowset.next()) {
+            Integer u_id = rowset.getInt("u_id");
+            if(u_id == Integer.parseInt(info.get(0))){
+                legal = true;
+                break;
+            }
+        }
+        if(!legal) return false;
+
+        Boolean success = false;
+        if(this.active) {
+            // add to "user_comment" table
+            String table = "user_comment";
+            String cols = "sender, receiver, parent_comment, rating, content, date";
+            String vals = this.id + ", " + info.get(0) + ", null, " + info.get(1) + ", '" +
+                    info.get(2) + "', " + "NOW()" ;
+            if(Database.insert(table, cols, vals)) success =true;
+        }
+        return success;
+    }
+
     // reply to a initial comment on a user
     // given a list of commentInfo: [receiver, parent_comment, content, l_id]
     // return true if successfully
@@ -196,7 +224,11 @@ public class Host extends Renter {
 
 //			List<String> info = Arrays.asList("6", "1", "thx for the comment: this Apt is good.", "10");
 //			System.out.println(me.replyListingComment(info));
-            me.viewAllMyListing();
+
+//            me.viewAllMyListing();
+
+//			List<String> info = Arrays.asList("6", "0", "This user never come!!!");
+//			System.out.println(me.commentOnUser(info));
         }
         Database.disconnect();
     }

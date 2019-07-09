@@ -168,8 +168,11 @@ public class Renter extends User{
 //			List<String> info = Arrays.asList("5", "2019-07-01", "2019-07-02");
 //			System.out.println(me.cancelBooking(info));
 			
-			List<String> info = Arrays.asList("3", "5", "this Apt is good.", "10");
-			System.out.println(me.commentOnListing(info));
+//			List<String> info = Arrays.asList("3", "5", "this Apt is good.", "10");
+//			System.out.println(me.commentOnListing(info));
+
+			List<String> info = Arrays.asList("3", "0", "This host is soooo bad!!!");
+			System.out.println(me.commentOnUser(info));
 		}
 		Database.disconnect();
     }
