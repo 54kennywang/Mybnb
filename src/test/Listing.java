@@ -1,5 +1,8 @@
 package test;
 
+import com.sun.rowset.CachedRowSetImpl;
+
+import javax.sql.rowset.CachedRowSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -19,15 +22,44 @@ public class Listing {
 		ResultSet rs = Database.queryRead(query);
 		if(rs.next()) {
 			System.out.println("Area: " + rs.getString("area"));
-			System.out.println("Available: " + rs.getString("fromDate") + " - " + rs.getString("toDate"));
 			System.out.println("Price: $" + rs.getString("dayPrice"));
 			System.out.println("Type: " + rs.getString("type"));
-			System.out.println("Area: " + rs.getString("area") + "m^2");
+			System.out.println("Area: " + rs.getString("area") + " m^2");
 			System.out.print("Amenities: ");
-			printAmenity(parseAmenity(rs.getString("amenity")));
+			Listing.printAmenity(parseAmenity(rs.getString("amenity")));
+
+			System.out.print("Available: " );
+			Listing.printAllAvailabilities(id);
+			System.out.println();
 		}
 	}
-	
+
+	// given listing id
+	// return a list of available dates for that listing
+	public static List<LocalDate> allAvailabilities(int id) throws SQLException {
+		String query = "select * from availability where id = " + id;
+		ResultSet rs = Database.queryRead(query);
+		List<LocalDate> avilDates = new ArrayList<LocalDate>();
+		CachedRowSet rowset = new CachedRowSetImpl();
+		rowset.populate(rs);
+		while (rowset.next()) {
+			LocalDate date = LocalDate.parse(rowset.getString("avilDate"));
+			avilDates.add(date);
+		}
+		return avilDates;
+	}
+
+	// given listing id
+	// print all available dates for that listing
+	public static void printAllAvailabilities(int id) throws SQLException{
+		List<LocalDate> allDates = Listing.allAvailabilities(id);
+		for(int i = 0; i < allDates.size(); i ++){
+			System.out.print(allDates.get(i) + " ");
+		}
+	}
+
+
+
 	// print a list of amenities
 	public static void printAmenity(List<String> amen) {
 		StringBuilder result = new StringBuilder("");

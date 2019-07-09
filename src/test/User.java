@@ -1,6 +1,8 @@
 package test;
 
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,11 +16,15 @@ public abstract class User {
 	public Boolean register(List<String> userInfo, List<String> addrInfo) throws Exception {
 		Boolean success = false;
 		if(!this.active) {
+			if(ChronoUnit.YEARS.between(LocalDate.parse(userInfo.get(4)), LocalDate.now()) < 18){
+				System.out.println("From register() in User.java: you are under 18, too young.");
+				return false;
+			}
 			// insert user
 			String table = "user";
 			String cols = "email, type, cardNum, name, occ, date, DOB, SIN, password";
-			String vals = "'" + userInfo.get(0) + "', 1, '" + userInfo.get(1) + "', '" + userInfo.get(2) + "', '" + 
-					userInfo.get(3) + "', NOW(), '" + userInfo.get(4) + "', '" + userInfo.get(5) + "', '" + 
+			String vals = "'" + userInfo.get(0) + "', 1, '" + userInfo.get(1) + "', '" + userInfo.get(2) + "', '" +
+					userInfo.get(3) + "', NOW(), '" + userInfo.get(4) + "', '" + userInfo.get(5) + "', '" +
 					Password.getSaltedHash(userInfo.get(6)) + "'";
 			if(Database.insert(table, cols, vals)) {
 				String query = "SELECT LAST_INSERT_ID()";
