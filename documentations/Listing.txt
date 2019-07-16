@@ -1,0 +1,77 @@
+/**
+ * Displays a listing's info in console.
+ * @param id the id of a listing
+ */
+public static void viewListing(int id);
+
+
+/**
+ * Gets all availabilities of a listing
+ * @param id the id of a listing
+ * @return a list of available LocalDate of that listing
+ */
+public static List<LocalDate> allAvailabilities(int id)
+
+/**
+ * Prints all available dates for a listing on console
+ * @param id the id of a listing
+ */
+public static void printAllAvailabilities(int id)
+
+
+/**
+ * Gets a list of rented LocalDate for a listing
+ * @param id the id of a listing
+ * @return a list of rented LocalDate of that listing
+ */
+public static List<LocalDate> allUnavailabilities(int id)
+
+
+/**
+ * Prints all unavailable dates for a listing on console.
+ * @param id the id of a listing
+ */
+public static void printAllUnAvailabilities(int id)
+
+/**
+ * Gets a listing's owner ID, return -1 if listing does not exist.
+ * @param l_id the id of a listing
+ * @return the owner id of the listing, or -1 if listing does not exist
+ */
+public static Integer getOwnerId(int l_id)
+
+/**
+ * Prints amenities to the console.
+ * @param amen the string list of amenities, like [AC, Shower, ...]
+ */
+public static void printAmenity(List<String> amen)
+
+/**
+ * Gets a listing's owner ID, return -1 if listing does not exist.
+ * @param amen the binary string of amenities stored in the database
+ * @return a string list of amenities based on amenities array above
+ */
+public static List<String> parseAmenity(String amen)
+
+
+/**
+ * Gets all LocalDate between two dates (inclusive).
+ * sample: ("2019-05-03", "2019-05-05") return ["2019-05-03", "2019-05-04", "2019-05-05"]
+ * @param fromDate the beginning date
+ * @param toDate the ending date
+ * @return a LocalDate list of dates between two input dates.
+ */
+public static List<LocalDate> allDates(String fromDate, String toDate)
+
+
+
+
+
+
+
+
+
+
+
+
+
