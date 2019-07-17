@@ -44,6 +44,37 @@ public class Report {
         return hashMap;
     }
 
+    public static HashMap<String, Integer> numOfListingsPerCountryPerCity() throws SQLException{
+        String query = "select city, country, count(listing.id) from address, listing" +
+                " where address.id = listing.id group by city, country;";
+        ResultSet resultSet = Database.queryRead(query);
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        while(resultSet.next()){
+            String country = resultSet.getString("country");
+            String city = resultSet.getString("city");
+            String place = "(" + city + "," + country + ")";
+            int num = resultSet.getInt("count(listing.id)");
+            hashMap.put(place, num);
+        }
+        return hashMap;
+    }
+
+    public static HashMap<String, Integer> numOfListingsPerCountryPerCityPerPCode() throws SQLException{
+        String query = "select city, pcode, country, count(listing.id) from address, listing" +
+                " where address.id = listing.id group by city, pcode, country;";
+        ResultSet resultSet = Database.queryRead(query);
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        while(resultSet.next()){
+            String country = resultSet.getString("country");
+            String city = resultSet.getString("city");
+            String pcode = resultSet.getString("pcode");
+            String place = "(" + city + "," + "," + pcode + "," + country + ")";
+            int num = resultSet.getInt("count(listing.id)");
+            hashMap.put(place, num);
+        }
+        return hashMap;
+    }
+
     private static String dateRefactor(LocalDate date){
         return date.toString().replaceAll("-", "");
     }
@@ -54,7 +85,7 @@ public class Report {
             LocalDate toDate = LocalDate.parse("2021-01-01");
 //            System.out.println(numOfBookingsByCity(fromDate, toDate, "London"));
 //            System.out.println(numOfBookingsByZipCode(fromDate, toDate, "C3A8BF"));
-            HashMap<String, Integer> hashMap = numOfListingsPerCountry();
+            HashMap<String, Integer> hashMap = numOfListingsPerCountryPerCityPerPCode();
             System.out.println(hashMap.entrySet());
         }
         Database.disconnect();
