@@ -11,9 +11,12 @@ import com.sun.rowset.CachedRowSetImpl;
 
 public class Host extends Renter {
 
-    // given houseInfo: [area, fromDate, toDate, dayPrice, owner, type, amenity]
-    // given addrInfo: [street, city, pcode, country]
-    // return true if register successfully
+    /**
+     * Post a listing as a host
+     * @param houseInfo [area, fromDate, toDate, dayPrice, owner, type, amenity]
+     * @param addrInfo [street, city, pcode, country]
+     * @return true if post successfully
+     */
     public Boolean postListing(List<String> houseInfo, List<String> addrInfo) throws Exception {
         Boolean success = false;
         if (this.active && this.type.equals(2)) {
@@ -64,8 +67,11 @@ public class Host extends Renter {
         throw new UnsupportedOperationException();
     }
 
-    // given list of [l_id, fromDate, toDate]
-    // return true if cancelBooking successfully
+    /**
+     * Cancel a booking as a host
+     * @param info [l_id, fromDate, toDate]
+     * @return true if cancelBooking successfully; false otherwise
+     */
     @Override
     public Boolean cancelBooking(List<String> info) {
         Boolean success = false;
@@ -92,8 +98,11 @@ public class Host extends Renter {
         return success;
     }
 
-    // given list of [l_id, newPrice]
-    // return true if successfully
+    /**
+     * Update price of a listing
+     * @param info [l_id, newPrice]
+     * @return true if successfully; false otherwise
+     */
     public Boolean updatePrice(List<String> info) throws SQLException {
         if(!this.getAllMyListing().contains(info.get(0))) return  false;
         Boolean success = false;
@@ -106,8 +115,12 @@ public class Host extends Renter {
         return success;
     }
 
-    // given list of [l_id, from1, to1, from2, to2, ...]
-    // return true if successfully
+    /**
+     * Update availabilities of a listing
+     * @param info [l_id, from1, to1, from2, to2, ...]
+     * @return true if successfully; false otherwise
+     * sample: ("10", "2020-06-02", "2020-06-05", "2020-07-29", "2020-08-02") add two slots availabilities to listing 10
+     */
     public Boolean updateAvailability(List<String> info) throws SQLException {
         if(!this.getAllMyListing().contains(info.get(0))) return  false;
         Boolean success = false;
@@ -133,7 +146,10 @@ public class Host extends Renter {
         return success;
     }
 
-    // return a list of ID's of my listing
+    /**
+     * Get a list of ID's of my listing
+     * @return a list of ID's of my listing
+     */
     public List<Integer> getAllMyListing() throws SQLException {
         String query = "SELECT * FROM listing where owner = " + this.id + ";";
         ResultSet rs = Database.queryRead(query);
@@ -148,7 +164,9 @@ public class Host extends Renter {
     }
 
 
-    // print all my listings
+    /**
+     * print all my listings
+     */
     public void viewAllMyListing() throws SQLException {
         List<Integer> allMyListings = this.getAllMyListing();
         for(int i = 0; i < allMyListings.size(); i ++){
@@ -158,9 +176,11 @@ public class Host extends Renter {
     }
 
 
-    // initial comment on a Renter
-    // given a list of commentInfo: [receiver, rating, content]
-    // return true if successfully
+    /**
+     * Host's initial comment on a Renter
+     * @param info [receiver, rating, content]
+     * @return true if successfully; false otherwise
+     */
     @Override
     public Boolean commentOnUser(List<String> info) throws SQLException {
         Boolean legal = false; // legal to comment on that user?
@@ -186,9 +206,11 @@ public class Host extends Renter {
         return success;
     }
 
-    // reply to a initial comment on a user
-    // given a list of commentInfo: [receiver, parent_comment, content, l_id]
-    // return true if successfully
+    /**
+     * Host's reply to a comment on a listing
+     * @param info [receiver, parent_comment, content, l_id]
+     * @return true if successfully; false otherwise
+     */
     public Boolean replyListingComment(List<String> info) {
         Boolean success = false;
         if (this.active) {
