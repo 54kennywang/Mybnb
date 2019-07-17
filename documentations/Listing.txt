@@ -211,7 +211,15 @@
      */
     public static List<Row> priceFilter(List<Row> input, Double lowest, Double highest)
 
-
+/**
+     * Filter table rows by amenities, input table is of following schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     * @param input a 'table' to be filtered
+     * @param amenRequest the must-have amenities
+     * @return an after-filtered table where all rows satisfy the specified amenities
+     * sample: (input, "1.............") -> filter all rows with WIFI
+     */
+    public static List<Row> amenityFilter(List<Row> input, String amenRequest)
 
 
 
