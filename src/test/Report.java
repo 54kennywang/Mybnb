@@ -9,8 +9,8 @@ public class Report {
 
     public static int numOfBookingsByCity(LocalDate fromDate, LocalDate toDate, String city) throws SQLException {
         //remove "-" from date
-        String fDate = fromDate.toString().replaceAll("-","");
-        String tDate = toDate.toString().replaceAll("-","");
+        String fDate = dateRefactor(fromDate);
+        String tDate = dateRefactor(toDate);
         // natural join address, and rented
         String query = "select count(status) from address join rented on address.id = rented.l_id " +
                 "where city = '" + city + "' and status = " + 0 + " and fromDate >= " + fDate + " and toDate <= " + tDate + ";";
@@ -19,8 +19,20 @@ public class Report {
         return resultSet.getInt("count(status)");
     }
 
-    public static void numOfBookingByZipCode(List<LocalDate> dateRange, String zipCode){
+    public static int numOfBookingByZipCode(LocalDate fromDate, LocalDate toDate, String zipCode) throws SQLException{
+        //remove "-" from date
+        String fDate = dateRefactor(fromDate);
+        String tDate = dateRefactor(toDate);
+        // natural join address, and rented
+        String query = "select count(status) from address join rented on address.id = rented.l_id " +
+                "where pcode = '" + zipCode + "' and status = " + 0 + " and fromDate >= " + fDate + " and toDate <= " + tDate + ";";
+        ResultSet resultSet = Database.queryRead(query);
+        resultSet.next();
+        return resultSet.getInt("count(status)");
+    }
 
+    private static String dateRefactor(LocalDate date){
+        return date.toString().replaceAll("-", "");
     }
 
     public static void main(String args[]) throws SQLException {
@@ -28,6 +40,7 @@ public class Report {
             LocalDate fromDate = LocalDate.parse("2020-01-01");
             LocalDate toDate = LocalDate.parse("2021-01-01");
             System.out.println(numOfBookingsByCity(fromDate, toDate, "London"));
+            System.out.println(numOfBookingByZipCode(fromDate, toDate, "C3A8BF"));
         }
         Database.disconnect();
     }
