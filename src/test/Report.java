@@ -19,7 +19,7 @@ public class Report {
         return resultSet.getInt("count(status)");
     }
 
-    public static int numOfBookingByZipCode(LocalDate fromDate, LocalDate toDate, String zipCode) throws SQLException{
+    public static int numOfBookingsByZipCode(LocalDate fromDate, LocalDate toDate, String zipCode) throws SQLException{
         //remove "-" from date
         String fDate = dateRefactor(fromDate);
         String tDate = dateRefactor(toDate);
@@ -40,7 +40,7 @@ public class Report {
             LocalDate fromDate = LocalDate.parse("2020-01-01");
             LocalDate toDate = LocalDate.parse("2021-01-01");
             System.out.println(numOfBookingsByCity(fromDate, toDate, "London"));
-            System.out.println(numOfBookingByZipCode(fromDate, toDate, "C3A8BF"));
+            System.out.println(numOfBookingsByZipCode(fromDate, toDate, "C3A8BF"));
         }
         Database.disconnect();
     }
