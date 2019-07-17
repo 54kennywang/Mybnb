@@ -2,7 +2,7 @@ package test;
 
 import java.sql.ResultSet;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.*;
 import java.sql.SQLException;
 
 public class Report {
@@ -31,6 +31,19 @@ public class Report {
         return resultSet.getInt("count(status)");
     }
 
+    public static HashMap<String, Integer> numOfListingsPerCountry() throws SQLException{
+        String query = "select country, count(listing.id) from address, listing" +
+                " where address.id = listing.id group by country;";
+        ResultSet resultSet = Database.queryRead(query);
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        while(resultSet.next()){
+            String country = resultSet.getString("country");
+            int num = resultSet.getInt("count(listing.id)");
+            hashMap.put(country, num);
+        }
+        return hashMap;
+    }
+
     private static String dateRefactor(LocalDate date){
         return date.toString().replaceAll("-", "");
     }
@@ -39,8 +52,10 @@ public class Report {
         if (Database.connect()){
             LocalDate fromDate = LocalDate.parse("2020-01-01");
             LocalDate toDate = LocalDate.parse("2021-01-01");
-            System.out.println(numOfBookingsByCity(fromDate, toDate, "London"));
-            System.out.println(numOfBookingsByZipCode(fromDate, toDate, "C3A8BF"));
+//            System.out.println(numOfBookingsByCity(fromDate, toDate, "London"));
+//            System.out.println(numOfBookingsByZipCode(fromDate, toDate, "C3A8BF"));
+            HashMap<String, Integer> hashMap = numOfListingsPerCountry();
+            System.out.println(hashMap.entrySet());
         }
         Database.disconnect();
     }
