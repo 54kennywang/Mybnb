@@ -99,8 +99,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="190">
-                  <caret line="147" column="7" lean-forward="true" selection-start-line="147" selection-start-column="7" selection-end-line="147" selection-end-column="7" />
+                <state relative-caret-position="209">
+                  <caret line="394" column="7" lean-forward="true" selection-start-line="394" selection-start-column="7" selection-end-line="394" selection-end-column="7" />
                   <folding>
                     <element signature="method#viewListing#0;class#Listing#0" />
                     <element signature="method#allAvailabilities#0;class#Listing#0" />
@@ -114,13 +114,17 @@
                     <element signature="method#searchByCoordinates_rankByDistance#0;class#Listing#0" />
                     <element signature="method#searchByCoordinates_rankByPrice#0;class#Listing#0" />
                     <element signature="method#searchByCoordinates#0;class#Listing#0" />
+                    <element signature="method#searchByAddress_rankByDistance#0;class#Listing#0" />
+                    <element signature="method#searchByAddress_rankByPrice#0;class#Listing#0" />
+                    <element signature="method#searchByAddress#0;class#Listing#0" />
                     <element signature="method#searchByPcode_rankByPrice_exact#0;class#Listing#0" />
                     <element signature="method#searchByPcode_exact#0;class#Listing#0" />
                     <element signature="method#searchByPcode_rankByPrice_wildcard#0;class#Listing#0" />
                     <element signature="method#searchByPcode_wildcard#0;class#Listing#0" />
                     <element signature="method#CachedRowSet_to_ListRow#0;class#Listing#0" />
+                    <element signature="method#increaseSort#0;class#Listing#0" />
                     <element signature="e#15359#15403#1" />
-                    <element signature="e#17613#17614#0" expanded="true" />
+                    <element signature="e#18868#18869#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -380,45 +384,15 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java</url>
-          <line>289</line>
-          <properties class="test.Listing" method="searchByPcode_exact">
-            <option name="EMULATED" value="true" />
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java</url>
-          <line>315</line>
+          <line>344</line>
           <properties class="test.Listing" method="searchByPcode_wildcard">
             <option name="EMULATED" value="true" />
           </properties>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java</url>
-          <line>191</line>
-          <properties class="test.Listing" method="searchByCoordinates">
-            <option name="EMULATED" value="true" />
-          </properties>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java</url>
-          <line>263</line>
-          <properties class="test.Listing" method="searchByAddress">
-            <option name="EMULATED" value="true" />
-          </properties>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java</url>
-          <line>265</line>
-          <properties />
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java</url>
-          <line>203</line>
+          <line>219</line>
           <properties />
           <option name="timeStamp" value="8" />
         </line-breakpoint>
@@ -522,17 +496,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Database.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
-          <folding>
-            <element signature="method#disconnect#0;class#Database#0" />
-            <element signature="method#insertAddr#0;class#Database#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Renter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
@@ -573,10 +536,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Database.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+          <folding>
+            <element signature="method#disconnect#0;class#Database#0" />
+            <element signature="method#insertAddr#0;class#Database#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="147" column="7" lean-forward="true" selection-start-line="147" selection-start-column="7" selection-end-line="147" selection-end-column="7" />
+        <state relative-caret-position="209">
+          <caret line="394" column="7" lean-forward="true" selection-start-line="394" selection-start-column="7" selection-end-line="394" selection-end-column="7" />
           <folding>
             <element signature="method#viewListing#0;class#Listing#0" />
             <element signature="method#allAvailabilities#0;class#Listing#0" />
@@ -590,13 +564,17 @@
             <element signature="method#searchByCoordinates_rankByDistance#0;class#Listing#0" />
             <element signature="method#searchByCoordinates_rankByPrice#0;class#Listing#0" />
             <element signature="method#searchByCoordinates#0;class#Listing#0" />
+            <element signature="method#searchByAddress_rankByDistance#0;class#Listing#0" />
+            <element signature="method#searchByAddress_rankByPrice#0;class#Listing#0" />
+            <element signature="method#searchByAddress#0;class#Listing#0" />
             <element signature="method#searchByPcode_rankByPrice_exact#0;class#Listing#0" />
             <element signature="method#searchByPcode_exact#0;class#Listing#0" />
             <element signature="method#searchByPcode_rankByPrice_wildcard#0;class#Listing#0" />
             <element signature="method#searchByPcode_wildcard#0;class#Listing#0" />
             <element signature="method#CachedRowSet_to_ListRow#0;class#Listing#0" />
+            <element signature="method#increaseSort#0;class#Listing#0" />
             <element signature="e#15359#15403#1" />
-            <element signature="e#17613#17614#0" expanded="true" />
+            <element signature="e#18868#18869#0" expanded="true" />
           </folding>
         </state>
       </provider>

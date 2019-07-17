@@ -1,68 +1,186 @@
 /**
- * Displays a listing's info in console.
- * @param id the id of a listing
- */
-public static void viewListing(int id);
+     * Displays a listing's info in console.
+     * @param id the id of a listing
+     */
+    public static void viewListing(int id);
 
 
 /**
- * Gets all availabilities of a listing
- * @param id the id of a listing
- * @return a list of available LocalDate of that listing
- */
-public static List<LocalDate> allAvailabilities(int id)
+     * Gets all availabilities of a listing
+     * @param id the id of a listing
+     * @return a list of available LocalDate of that listing
+     */
+    public static List<LocalDate> allAvailabilities(int id)
 
 /**
- * Prints all available dates for a listing on console
- * @param id the id of a listing
- */
-public static void printAllAvailabilities(int id)
-
-
-/**
- * Gets a list of rented LocalDate for a listing
- * @param id the id of a listing
- * @return a list of rented LocalDate of that listing
- */
-public static List<LocalDate> allUnavailabilities(int id)
+     * Prints all available dates for a listing on console
+     * @param id the id of a listing
+     */
+    public static void printAllAvailabilities(int id)
 
 
 /**
- * Prints all unavailable dates for a listing on console.
- * @param id the id of a listing
- */
-public static void printAllUnAvailabilities(int id)
-
-/**
- * Gets a listing's owner ID, return -1 if listing does not exist.
- * @param l_id the id of a listing
- * @return the owner id of the listing, or -1 if listing does not exist
- */
-public static Integer getOwnerId(int l_id)
-
-/**
- * Prints amenities to the console.
- * @param amen the string list of amenities, like [AC, Shower, ...]
- */
-public static void printAmenity(List<String> amen)
-
-/**
- * Gets a listing's owner ID, return -1 if listing does not exist.
- * @param amen the binary string of amenities stored in the database
- * @return a string list of amenities based on amenities array above
- */
-public static List<String> parseAmenity(String amen)
+     * Gets a list of rented LocalDate for a listing
+     * @param id the id of a listing
+     * @return a list of rented LocalDate of that listing
+     */
+    public static List<LocalDate> allUnavailabilities(int id)
 
 
 /**
- * Gets all LocalDate between two dates (inclusive).
- * sample: ("2019-05-03", "2019-05-05") return ["2019-05-03", "2019-05-04", "2019-05-05"]
- * @param fromDate the beginning date
- * @param toDate the ending date
- * @return a LocalDate list of dates between two input dates.
- */
-public static List<LocalDate> allDates(String fromDate, String toDate)
+     * Prints all unavailable dates for a listing on console.
+     * @param id the id of a listing
+     */
+    public static void printAllUnAvailabilities(int id)
 
+/**
+     * Gets a listing's owner ID, return -1 if listing does not exist.
+     * @param l_id the id of a listing
+     * @return the owner id of the listing, or -1 if listing does not exist
+     */
+    public static Integer getOwnerId(int l_id)
+
+/**
+     * Prints amenities to the console.
+     * @param amen the string list of amenities, like [AC, Shower, ...]
+     */
+    public static void printAmenity(List<String> amen)
+
+/**
+     * Gets a listing's owner ID, return -1 if listing does not exist.
+     * @param amen the binary string of amenities stored in the database
+     * @return a string list of amenities based on amenities array above
+     */
+    public static List<String> parseAmenity(String amen)
+
+
+/**
+     * Gets all LocalDate between two dates (inclusive).
+     * sample: ("2019-05-03", "2019-05-05") return ["2019-05-03", "2019-05-04", "2019-05-05"]
+     * @param fromDate the beginning date
+     * @param toDate the ending date
+     * @return a LocalDate list of dates between two input dates.
+     */
+    public static List<LocalDate> allDates(String fromDate, String toDate)
+
+/**
+     * Searches by geo-point and gets an ordered list of table rows ranked by distance with the schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     * @param lng the beginning date
+     * @param lat the ending date
+     * @param radius search radius from geo-point (Lng, Lat)
+     * @param unit 'K'/'M'
+     * @param order 1 - from nearest to farthest; 0 - from farthest to nearest
+     * @return a list of table rows within the given radius from the geo-point in KM/MILE in specified distance order ranked by distance
+     */
+    public static List<Row> searchByCoordinates_rankByDistance(Double lng, Double lat, Double radius, char unit, int order)
+
+
+/**
+     * Searches by geo-point and gets an ordered list of table rows ranked by price with the schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     * @param lng longitude
+     * @param lat latitude
+     * @param radius search radius from geo-point (Lng, Lat)
+     * @param unit 'K'/'M'
+     * @param order 1 - from nearest to farthest; 0 - from farthest to nearest
+     * @return a list of table rows within the given radius from the geo-point in KM/MILE in specified price order ranked by price
+     */
+    public static List<Row> searchByCoordinates_rankByPrice(Double lng, Double lat, Double radius, char unit, int order)
+
+/**
+     * Searches by geo-point and gets an unordered list of table rows with the schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     * @param lng longitude
+     * @param lat latitude
+     * @param radius search radius from geo-point (Lng, Lat)
+     * @param unit 'K'/'M'
+     * @return a list of table rows within the given radius from the geo-point in KM/MILE
+     */
+    public static List<Row> searchByCoordinates(Double lng, Double lat, Double radius, char unit)
+
+/**
+     * Searches by address and gets an ordered list of table rows in 30km of the specified addr, ranked by distance with the schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     * @param addrInfo [street, city, pcode, country]
+     * @param order 1 - from nearest to farthest; 0 - from farthest to nearest
+     * @return a list of table rows within the 30km of the given addr ranked by distance
+     */
+    public static List<Row> searchByAddress_rankByDistance(List<String> addrInfo, int order)
+
+/**
+     * Searches by address and gets an ordered list of table rows in 30km of the specified addr, ranked by price with the schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     * @param addrInfo [street, city, pcode, country]
+     * @param order 1 - from cheapest to most expensive; 0 - from most expensive to cheapest
+     * @return a list of table rows within the 30km of the given addr ranked by price
+     */
+    public static List<Row> searchByAddress_rankByPrice(List<String> addrInfo, int order)
+
+/**
+     * Searches by address and gets an unordered list of table rows in 30km of the specified addr with the schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     * @param addrInfo [street, city, pcode, country]
+     * @return a list of table rows within the 30km of the given addr
+     */
+    public static List<Row> searchByAddress(List<String> addrInfo)
+
+/**
+     * Searches by postal code and gets an ordered list of table rows with the exact same input pcode, ranked by price with the schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     * @param pcode 6-digit postal code with no space
+     * @param order 1 - from cheapest to most expensive; 0 - from most expensive to cheapest
+     * @return a list of table rows with the exact same input pcode
+     */
+    public static List<Row> searchByPcode_rankByPrice_exact(String pcode, int order)
+
+/**
+     * Searches by postal code and gets an unordered list of table rows with the exact same input pcode with the schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     * @param pcode 6-digit postal code with no space
+     * @return a list of table rows with the exact same input pcode
+     */
+    public static List<Row> searchByPcode_exact(String pcode)
+
+/**
+     * Searches by postal code and gets an ordered list of table rows with the similar but not same input pcode, ranked by price with the schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     * @param pcode 6-digit postal code with no space
+     * @param order 1 - from cheapest to most expensive; 0 - from most expensive to cheapest
+     * @return a list of table rows with the similar but not same input pcode
+     */
+    public static List<Row> searchByPcode_rankByPrice_wildcard(String pcode, int order)
+
+/**
+     * Searches by postal code and gets an unordered list of table rows with the similar but not same input pcode, ranked by price with the schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     * @param pcode 6-digit postal code with no space
+     * @return a list of table rows with the similar but not same input pcode
+     */
+    public static List<Row> searchByPcode_wildcard(String pcode)
+
+
+/**
+     * Converts CachedRowSet to List<Row>
+     * @param input CachedRowSet input
+     * @return a converted List<Row> from the CachedRowSet input
+     */
+    public static List<Row> CachedRowSet_to_ListRow(CachedRowSet input)
+
+/**
+     * Sort a 'table' by the column colIndex (not index, it's index + 1)
+     * @param input a 'table' to be sorted
+     * @param colIndex the column that is sorted on (index 1, 2, 3... (not from 0), first column index is 1 not 0)
+     * @return a sorted (from smallest to biggest) List<Row> based on the colIndex column
+     */
+    public static List<Row> increaseSort(List<Row> input, int colIndex)
+
+/**
+     * Convert an non-decreasing ordered 'table' to an non-increasing ordered table
+     * @param input an non-decreasing ordered 'table'
+     * @return a sorted (from biggest to smallest) List<Row>
+     */
+    public static List<Row> orderReverse(List<Row> input)
 
 
 
