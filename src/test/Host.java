@@ -205,16 +205,17 @@ public class Host extends Renter {
     public static void main(String args[]) throws Exception {
         if (Database.connect()) {
             Host me = new Host();
-
             List<String> cred = Arrays.asList("qibowang7@outlook.com", "password");
             System.out.println(me.signIn(cred));
 
 //			List<String> info = Arrays.asList("4", "2019-07-02", "2019-07-02");
 //			System.out.println(me.cancelBooking(info));
 
-//			List<String> houseInfo = Arrays.asList("19", "2020-06-29", "2020-07-02", "50", me.getId().toString(), "Apt", "01010111010100");
-//			List<String> addrInfo = Arrays.asList("30 Saint Mary Axe - Swiss Re", "30 Mary Axe", "London EC3A 8EP", "UK");
-//			System.out.println(me.postListing(houseInfo, addrInfo));
+            // given houseInfo: [area, fromDate, toDate, dayPrice, owner, type, amenity]
+            // given addrInfo: [street, city, pcode, country]
+			List<String> houseInfo = Arrays.asList("177", "2019-07-29", "2019-08-02", "99", me.getId().toString(), "Room", "01010111010100");
+			List<String> addrInfo = Arrays.asList("701 Military", "Toronto", "ON M1E 4P6", "Canada");
+			System.out.println(me.postListing(houseInfo, addrInfo));
 
 //			List<String> info = Arrays.asList("10", "19.99");
 //			System.out.println(me.updatePrice(info));

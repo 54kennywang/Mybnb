@@ -1,9 +1,11 @@
 package test;
 
+import javax.sql.RowSet;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-   
+import javax.sql.rowset.JdbcRowSet;
+import com.sun.rowset.JdbcRowSetImpl;
 
 public class Database {
 	static Connection c = null;
@@ -48,7 +50,6 @@ public class Database {
 		}
 		return true;
 	}
-
 	// read info from database
 	public static ResultSet queryRead(String query) {
 		ResultSet rs = null;
