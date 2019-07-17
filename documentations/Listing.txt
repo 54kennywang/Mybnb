@@ -183,8 +183,23 @@
     public static List<Row> orderReverse(List<Row> input)
 
 
+/**
+     * Filter table rows by time window, input table is of following schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     * @param input a 'table' to be filtered
+     * @param fromDate starting date
+     * @param toDate ending date
+     * @return an after-filtered table where all rows satisfy the time window
+     */
+    public static List<Row> dateFilter(List<Row> input, String fromDate, String toDate)
 
-
+/**
+     * Check if a set is a subset of another
+     * @param list parent set
+     * @param sublist child set
+     * @return true if sublist is a subset of list, false otherwise
+     */
+    public static boolean is_sublist(List<?> list, List<?> sublist)
 
 
 
