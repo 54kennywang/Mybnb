@@ -201,7 +201,15 @@
      */
     public static boolean is_sublist(List<?> list, List<?> sublist)
 
-
+/**
+     * Filter table rows by price range, input table is of following schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     * @param input a 'table' to be filtered
+     * @param lowest lowest price
+     * @param highest highest price
+     * @return an after-filtered table where all rows satisfy lowest <= dayPrice <= highest
+     */
+    public static List<Row> priceFilter(List<Row> input, Double lowest, Double highest)
 
 
 
