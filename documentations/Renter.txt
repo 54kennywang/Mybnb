@@ -1,0 +1,51 @@
+/**
+	 * Renter becomes to a host
+	 * @return true if successfully; false otherwise
+	 */
+	public Boolean becomeHost()
+
+
+/**
+	 * Renter books a listing
+	 * @param info [l_id, fromDate, toDate]
+	 * @return true if successfully; false otherwise
+	 */
+	public Boolean bookListing(List<String> info)
+
+
+/**
+	 * Renter's initial comment on a listing
+	 * @param info [receiver, rating, content, l_id]
+	 * @return true if successfully; false otherwise
+	 */
+	public Boolean commentOnListing(List<String> info)
+
+
+/**
+     * Get renter's bookings based on type
+     * @param type 1 for history booking; 0 for future booking; 2 for all (history + future bookings)
+     * @return renter's bookings (history + future bookings)
+     */
+    public CachedRowSet getBookings(int type)
+
+/**
+     * Renter's initial comment on a host user
+     * @param info [receiver, rating, content]
+     * @return true if successfully; false otherwise
+     */
+    @Override
+    public Boolean commentOnUser(List<String> info)
+
+
+/**
+     * Renter cancels a booking
+     * @param info [l_id, fromDate, toDate, cancel_status]
+     * @return true if successfully; false otherwise
+     */
+    @Override
+    public Boolean cancelBooking(List<String> info)
+
+
+
+
+
