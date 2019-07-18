@@ -1,0 +1,77 @@
+/**
+     * Get formatted address information using Google API from unformatted address string input 
+     * @param addr address string, may bot be formatted
+     * @return [street, city, pcode, country, lng, lat]
+     */
+    public static List<Object> getAllByAddr(String addr)
+
+/**
+     * Get formatted address information using Google API from formatted address string input
+     * @param addr address string, may bot be formatted
+     * @return [street, city, pcode, country] or null if given formatted_addr is wiredly formatted
+     */
+    public static List<Object> addrStringtoAddrList(String addr)
+
+
+/**
+     * Get formatted address string using (lng, lat)
+     * @param lng longitude
+     * @param lat latitude
+     * @return formatted address string
+     */
+    @SuppressWarnings("finally")
+    public static String getAllByCoodinate(Double lng, Double lat)
+
+/**
+     * Get distance between two geo points: (lng1, lat1) & (lng2, lat2)
+     * @param lat1 latitude1
+     * @param lon1 longitude1
+     * @param lat2 latitude2
+     * @param lon2 longitude2
+     * @param unit 'K'/'M'
+     * @return distance between these two points in 'K'/'M'
+     */
+    public static double distance(double lat1, double lon1, double lat2, double lon2, char unit)
+
+
+/**
+     * Get formatted address string from address information
+     * @param addrInfo [street, city, pcode, country]
+     * @return formatte address string
+     */
+    public static String infoToAddr(List<String> addrInfo)
+
+
+/**
+     * Get 6-char long standard pcode from unsanitized Pcode returned from Google API
+     * @param unsanitizedPcode
+     * @return 6-char long standard pcode without space (for the sake of search by pcode wildcard)
+     * sample "ON M1H 1B2" -> "M1H1B2"
+     */
+    public static String pcodeSanitizer(String unsanitizedPcode)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

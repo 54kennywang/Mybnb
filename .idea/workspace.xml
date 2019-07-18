@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2aa730d9-8fae-4aea-a5c4-096272572948" name="Default Changelist" comment="changed Renter.java">
-      <change beforePath="$PROJECT_DIR$/../project/Mybnb/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../project/Mybnb/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project/Mybnb/src/test/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/Mybnb/src/test/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../project/Mybnb/src/test/Host.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/Mybnb/src/test/Host.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project/Mybnb/src/test/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/Mybnb/src/test/Map.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../project/Mybnb/src/test/Practice.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/Mybnb/src/test/Practice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project/Mybnb/src/test/Renter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/Mybnb/src/test/Renter.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/bin/" />
@@ -21,40 +20,37 @@
     <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.8938849">
+    <splitter split-orientation="horizontal" split-proportion="0.83905965">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Database.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="102">
-                  <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+                <state relative-caret-position="309">
+                  <caret line="141" column="4" lean-forward="true" selection-start-line="141" selection-start-column="4" selection-end-line="147" selection-end-column="7" />
                   <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="method#connect#0;class#Database#0" />
                     <element signature="method#disconnect#0;class#Database#0" />
+                    <element signature="method#queryRead#0;class#Database#0" />
+                    <element signature="method#queryWrite#0;class#Database#0" />
+                    <element signature="method#insert#0;class#Database#0" />
+                    <element signature="method#update#0;class#Database#0" />
                     <element signature="method#insertAddr#0;class#Database#0" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Password.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="680">
-                  <caret line="44" column="35" selection-start-line="44" selection-start-column="35" selection-end-line="44" selection-end-column="35" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/User.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="561">
-                  <caret line="87" column="19" selection-start-line="87" selection-start-column="19" selection-end-line="87" selection-end-column="19" />
+                <state relative-caret-position="210">
+                  <caret line="96" column="7" lean-forward="true" selection-start-line="96" selection-start-column="7" selection-end-line="96" selection-end-column="7" />
                   <folding>
                     <element signature="method#register#0;class#User#0" />
-                    <element signature="method#signIn#0;class#User#0" />
                     <element signature="method#signOut#0;class#User#0" />
+                    <element signature="method#replyUserComment#0;class#User#0" />
                   </folding>
                 </state>
               </provider>
@@ -63,10 +59,11 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Renter.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1209">
-                  <caret line="170" column="49" lean-forward="true" selection-start-line="170" selection-start-column="49" selection-end-line="170" selection-end-column="49" />
+                <state relative-caret-position="135">
+                  <caret line="130" column="4" lean-forward="true" selection-start-line="130" selection-start-column="4" selection-end-line="134" selection-end-column="7" />
                   <folding>
                     <element signature="imports" expanded="true" />
+                    <element signature="method#bookListing#0;class#Renter#0" />
                   </folding>
                 </state>
               </provider>
@@ -75,29 +72,26 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Host.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="901">
-                  <caret line="203" selection-start-line="203" selection-end-line="203" />
+                <state relative-caret-position="1156">
+                  <caret line="187" column="31" selection-start-line="187" selection-start-column="31" selection-end-line="187" selection-end-column="31" />
                   <folding>
                     <element signature="method#postListing#0;class#Host#0" />
-                    <element signature="e#2327#2328#0" expanded="true" />
-                    <element signature="e#2384#2385#0" expanded="true" />
                     <element signature="method#cancelBooking#0;class#Host#0" />
                     <element signature="method#updatePrice#0;class#Host#0" />
                     <element signature="method#updateAvailability#0;class#Host#0" />
                     <element signature="method#getAllMyListing#0;class#Host#0" />
                     <element signature="method#viewAllMyListing#0;class#Host#0" />
-                    <element signature="method#commentOnUser#0;class#Host#0" />
                     <element signature="method#replyListingComment#0;class#Host#0" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="166">
-                  <caret line="451" column="45" selection-start-line="451" selection-start-column="45" selection-end-line="451" selection-end-column="45" />
+                <state relative-caret-position="4488">
+                  <caret line="471" column="4" selection-start-line="471" selection-start-column="4" selection-end-line="476" selection-end-column="7" />
                   <folding>
                     <element signature="method#viewListing#0;class#Listing#0" />
                     <element signature="method#allAvailabilities#0;class#Listing#0" />
@@ -114,8 +108,6 @@
                     <element signature="method#searchByPcode_wildcard#0;class#Listing#0" />
                     <element signature="method#CachedRowSet_to_ListRow#0;class#Listing#0" />
                     <element signature="method#increaseSort#0;class#Listing#0" />
-                    <element signature="e#18824#18825#0" expanded="true" />
-                    <element signature="e#18867#18868#0" expanded="true" />
                     <element signature="method#dateFilter#0;class#Listing#0" />
                     <element signature="method#priceFilter#0;class#Listing#0" />
                     <element signature="method#amenityFilter#0;class#Listing#0" />
@@ -138,11 +130,25 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Password.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="356">
+                  <caret line="53" column="4" lean-forward="true" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="4" />
+                  <folding>
+                    <element signature="method#getSaltedHash#0;class#Password#0" />
+                    <element signature="method#check#0;class#Password#0" />
+                    <element signature="method#hash#0;class#Password#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Map.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="612">
-                  <caret line="162" column="9" selection-start-line="162" selection-start-column="9" selection-end-line="162" selection-end-column="9" />
+                <state relative-caret-position="85">
+                  <caret line="23" column="4" lean-forward="true" selection-start-line="23" selection-start-column="4" selection-end-line="27" selection-end-column="7" />
                   <folding>
                     <element signature="method#getAllByAddr#0;class#Map#0" />
                     <element signature="method#addrStringtoAddrList#0;class#Map#0" />
@@ -155,11 +161,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Practice.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="342">
-                  <caret line="78" column="8" lean-forward="true" selection-start-line="78" selection-start-column="8" selection-end-line="83" selection-end-column="9" />
+                <state relative-caret-position="155">
+                  <caret line="67" column="38" selection-start-line="67" selection-start-column="38" selection-end-line="67" selection-end-column="38" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -187,13 +193,15 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Database.java" />
-        <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Map.java" />
-        <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Host.java" />
         <option value="$PROJECT_DIR$/documentations/New Text Document.txt" />
-        <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Renter.java" />
         <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Practice.java" />
         <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java" />
+        <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Host.java" />
+        <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Renter.java" />
+        <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Map.java" />
+        <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Database.java" />
+        <option value="$PROJECT_DIR$/../project/Mybnb/src/test/Password.java" />
+        <option value="$PROJECT_DIR$/../project/Mybnb/src/test/User.java" />
       </list>
     </option>
   </component>
@@ -208,7 +216,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -231,6 +238,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -344,13 +352,21 @@
       <option name="presentableId" value="Default" />
       <updated>1562678982600</updated>
     </task>
+    <task id="LOCAL-00001" summary="changed Host.java">
+      <created>1563406886210</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1563406886210</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15885022" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1633888" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -359,7 +375,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.28805238" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.28805238" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -380,7 +396,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="changed Renter.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed Renter.java" />
+    <MESSAGE value="changed Host.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed Host.java" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -402,6 +419,24 @@
           <line>94</line>
           <properties />
           <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../project/Mybnb/src/test/Host.java</url>
+          <line>54</line>
+          <properties />
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../project/Mybnb/src/test/Host.java</url>
+          <line>59</line>
+          <properties />
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../project/Mybnb/src/test/Host.java</url>
+          <line>64</line>
+          <properties />
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -461,108 +496,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Database.java">
+    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Report.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+        <state relative-caret-position="-799">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
           <folding>
-            <element signature="method#disconnect#0;class#Database#0" />
-            <element signature="method#insertAddr#0;class#Database#0" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Password.java">
+    <entry file="file://$PROJECT_DIR$/../project/Mybnb/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="44" column="35" selection-start-line="44" selection-start-column="35" selection-end-line="44" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="87" column="19" selection-start-line="87" selection-start-column="19" selection-end-line="87" selection-end-column="19" />
-          <folding>
-            <element signature="method#register#0;class#User#0" />
-            <element signature="method#signIn#0;class#User#0" />
-            <element signature="method#signOut#0;class#User#0" />
-          </folding>
-        </state>
+        <state relative-caret-position="-11190" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Host.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="901">
-          <caret line="203" selection-start-line="203" selection-end-line="203" />
+        <state relative-caret-position="1156">
+          <caret line="187" column="31" selection-start-line="187" selection-start-column="31" selection-end-line="187" selection-end-column="31" />
           <folding>
             <element signature="method#postListing#0;class#Host#0" />
-            <element signature="e#2327#2328#0" expanded="true" />
-            <element signature="e#2384#2385#0" expanded="true" />
             <element signature="method#cancelBooking#0;class#Host#0" />
             <element signature="method#updatePrice#0;class#Host#0" />
             <element signature="method#updateAvailability#0;class#Host#0" />
             <element signature="method#getAllMyListing#0;class#Host#0" />
             <element signature="method#viewAllMyListing#0;class#Host#0" />
-            <element signature="method#commentOnUser#0;class#Host#0" />
             <element signature="method#replyListingComment#0;class#Host#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Map.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="162" column="9" selection-start-line="162" selection-start-column="9" selection-end-line="162" selection-end-column="9" />
-          <folding>
-            <element signature="method#getAllByAddr#0;class#Map#0" />
-            <element signature="method#addrStringtoAddrList#0;class#Map#0" />
-            <element signature="method#getAllByCoodinate#0;class#Map#0" />
-            <element signature="method#distance#0;class#Map#0" />
-            <element signature="method#pcodeSanitizer#0;class#Map#0" />
-            <element signature="method#main#0;class#Map#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Renter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1209">
-          <caret line="170" column="49" lean-forward="true" selection-start-line="170" selection-start-column="49" selection-end-line="170" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Practice.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="78" column="8" lean-forward="true" selection-start-line="78" selection-start-column="8" selection-end-line="83" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Report.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Listing.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="451" column="45" selection-start-line="451" selection-start-column="45" selection-end-line="451" selection-end-column="45" />
+        <state relative-caret-position="4488">
+          <caret line="471" column="4" selection-start-line="471" selection-start-column="4" selection-end-line="476" selection-end-column="7" />
           <folding>
             <element signature="method#viewListing#0;class#Listing#0" />
             <element signature="method#allAvailabilities#0;class#Listing#0" />
@@ -579,12 +547,94 @@
             <element signature="method#searchByPcode_wildcard#0;class#Listing#0" />
             <element signature="method#CachedRowSet_to_ListRow#0;class#Listing#0" />
             <element signature="method#increaseSort#0;class#Listing#0" />
-            <element signature="e#18824#18825#0" expanded="true" />
-            <element signature="e#18867#18868#0" expanded="true" />
             <element signature="method#dateFilter#0;class#Listing#0" />
             <element signature="method#priceFilter#0;class#Listing#0" />
             <element signature="method#amenityFilter#0;class#Listing#0" />
             <element signature="method#is_sublist#0;class#Listing#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Practice.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="67" column="38" selection-start-line="67" selection-start-column="38" selection-end-line="67" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Renter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="130" column="4" lean-forward="true" selection-start-line="130" selection-start-column="4" selection-end-line="134" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#bookListing#0;class#Renter#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Map.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="23" column="4" lean-forward="true" selection-start-line="23" selection-start-column="4" selection-end-line="27" selection-end-column="7" />
+          <folding>
+            <element signature="method#getAllByAddr#0;class#Map#0" />
+            <element signature="method#addrStringtoAddrList#0;class#Map#0" />
+            <element signature="method#getAllByCoodinate#0;class#Map#0" />
+            <element signature="method#distance#0;class#Map#0" />
+            <element signature="method#pcodeSanitizer#0;class#Map#0" />
+            <element signature="method#main#0;class#Map#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Database.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="141" column="4" lean-forward="true" selection-start-line="141" selection-start-column="4" selection-end-line="147" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#connect#0;class#Database#0" />
+            <element signature="method#disconnect#0;class#Database#0" />
+            <element signature="method#queryRead#0;class#Database#0" />
+            <element signature="method#queryWrite#0;class#Database#0" />
+            <element signature="method#insert#0;class#Database#0" />
+            <element signature="method#update#0;class#Database#0" />
+            <element signature="method#insertAddr#0;class#Database#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/Password.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="356">
+          <caret line="53" column="4" lean-forward="true" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="4" />
+          <folding>
+            <element signature="method#getSaltedHash#0;class#Password#0" />
+            <element signature="method#check#0;class#Password#0" />
+            <element signature="method#hash#0;class#Password#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../project/Mybnb/src/test/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="96" column="7" lean-forward="true" selection-start-line="96" selection-start-column="7" selection-end-line="96" selection-end-column="7" />
+          <folding>
+            <element signature="method#register#0;class#User#0" />
+            <element signature="method#signOut#0;class#User#0" />
+            <element signature="method#replyUserComment#0;class#User#0" />
           </folding>
         </state>
       </provider>

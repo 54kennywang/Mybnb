@@ -1,0 +1,73 @@
+/**
+	 * Register a new user
+	 * @param userInfo [email, cardNum, name, occ, DOB, SIN, password]
+	 * @param addrInfo [street, city, pcode, country]
+	 * @return true if register successfully; false otherwise
+	 */
+	public Boolean register(List<String> userInfo, List<String> addrInfo)
+
+
+/**
+	 * Sign in a user
+	 * @param info [email, password]
+	 * @return true if signIn successfully; false otherwise
+	 */
+	public Boolean signIn(List<String> info)
+
+
+/**
+	 * SignOut the current user
+	 * @return true if sign out successfully; false otherwise
+	 */
+	public Boolean signOut()
+
+
+/**
+	 * Get user's id
+	 * @return user's id
+	 */
+	public Integer getId()
+
+
+/**
+	 * Reply to a comment on a user
+	 * @param info [receiver, parent_comment, content]
+	 * @return true if comment successfully; false otherwise
+	 */
+	public Boolean replyUserComment(List<String> info)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
