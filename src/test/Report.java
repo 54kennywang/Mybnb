@@ -75,6 +75,16 @@ public class Report {
         return hashMap;
     }
 
+    public static ResultSet rankHostsByListingsPerCountry() throws SQLException {
+        String query = "select owner, country, count(listing.id) " +
+                "from listing, address " +
+                "where listing.id = address.id " +
+                "group by owner, country " +
+                "order by country, count(listing.id) desc;";
+        ResultSet resultSet = Database.queryRead(query);
+        return resultSet;
+    }
+
     private static String dateRefactor(LocalDate date){
         return date.toString().replaceAll("-", "");
     }
