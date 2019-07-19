@@ -1,0 +1,114 @@
+/**
+     * Post a listing as a host
+     * @param houseInfo [area, fromDate, toDate, dayPrice, owner, type, amenity]
+     * @param addrInfo [street, city, pcode, country]
+     * @return true if post successfully
+     */
+    public Boolean postListing(List<String> houseInfo, List<String> addrInfo)
+
+/**
+     * Cancel a booking as a host
+     * @param info [l_id, fromDate, toDate]
+     * @return true if cancelBooking successfully; false otherwise
+     */
+    @Override
+    public Boolean cancelBooking(List<String> info)
+
+/**
+     * Update price of a listing
+     * @param info [l_id, newPrice]
+     * @return true if successfully; false otherwise
+     */
+    public Boolean updatePrice(List<String> info)
+
+/**
+     * Update availabilities of a listing
+     * @param info [l_id, from1, to1, from2, to2, ...]
+     * @return true if successfully; false otherwise
+     * sample: ("10", "2020-06-02", "2020-06-05", "2020-07-29", "2020-08-02") add two slots availabilities to listing 10
+     */
+    public Boolean updateAvailability(List<String> info)
+
+/**
+     * Get a list of ID's of my listing
+     * @return a list of ID's of my listing
+     */
+    public List<Integer> getAllMyListing()
+
+/**
+     * print all my listings
+     */
+    public void viewAllMyListing()
+
+/**
+     * Host's initial comment on a Renter
+     * @param info [receiver, rating, content]
+     * @return true if successfully; false otherwise
+     */
+    @Override
+    public Boolean commentOnUser(List<String> info)
+
+/**
+     * Host's reply to a comment on a listing
+     * @param info [receiver, parent_comment, content, l_id]
+     * @return true if successfully; false otherwise
+     */
+    public Boolean replyListingComment(List<String> info)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

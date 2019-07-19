@@ -1,0 +1,71 @@
+/**
+	 * Connect to database
+	 */
+	public static Boolean connect()
+
+/**
+	 * Disconnect from database
+	 */
+	public static Boolean disconnect()
+
+
+/**
+	 * Simple "select" statement in MYSQL to get information from database
+	 * @param query MYSQL queery
+	 * @return a "table" of information
+	 */
+	public static ResultSet queryRead(String query)
+
+/**
+	 * Write date to database
+	 * @param query MYSQL queery
+	 * @return return 1 on success, 0 if not written successfully
+	 */
+	public static Integer queryWrite(String query)
+
+
+
+/**
+	 * Insert new record to database
+	 * @param table MYSQL table name
+	 * @param cols column name
+	 * @param vals values
+	 * @return return 1 on success, 0 if not written successfully
+	 * sample input: "sailers", "name, num, age", "'KENNY', 123, 23"
+	 */
+	public static Boolean insert(String table, String cols, String vals)
+
+/**
+	 * Update existing record in database
+	 * @param table MYSQL table name
+	 * @param newInfo updated information
+	 * @param conditions conditions
+	 * @return return 1 on success, 0 if not written successfully
+	 * sample input: "sailers", "name = 'KENNY', num = -111", "id=35"
+	 */
+	public static Boolean update(String table, String newInfo, String conditions)
+
+/**
+	 * Delete existing record in database
+	 * @param table MYSQL table name
+	 * @param conditions conditions
+	 * @return return 1 on success, 0 if not written successfully
+	 * sample input: "sailers", "id=34"
+	 */
+	public static Boolean delete(String table, String conditions)
+
+/**
+	 * Insert address in database
+	 * @param addrInfo [street, city, pcode, country]
+	 * @param id id of user/listing
+	 * @param type 0 - listing; 1 - user
+	 * @return return 1 on success, 0 if not written successfully
+	 */
+	public static Boolean insertAddr(List<String> addrInfo, int id, int type)
+
+
+
+
+
+
+	

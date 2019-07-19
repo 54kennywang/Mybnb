@@ -21,7 +21,11 @@ import com.google.maps.model.AddressComponentType;
 import com.google.maps.model.GeocodingResult;
 
 public class Map {
-    // given address (may not formatted), return [street, city, pcode, country, lng, lat]
+    /**
+     * Get formatted address information using Google API from unformatted address string input
+     * @param addr address string, may bot be formatted
+     * @return [street, city, pcode, country, lng, lat]
+     */
     public static List<Object> getAllByAddr(String addr) throws Exception {
         GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyBU9xbtYaDk0buYIs4Vti4-J2NqsZV0hmo");
         GeocodingResult[] results = GeocodingApi.geocode(context, addr).await();
@@ -76,8 +80,11 @@ public class Map {
         else return null;
     }
 
-    // given formatted_addr
-    // return [street, city, pcode, country] or null if given formatted_addr is wiredly formatted
+    /**
+     * Get formatted address information using Google API from formatted address string input
+     * @param addr address string, may bot be formatted
+     * @return [street, city, pcode, country] or null if given formatted_addr is wiredly formatted
+     */
     public static List<Object> addrStringtoAddrList(String addr) {
         String[] resultArray = addr.trim().split("\\s*,\\s*");
         List<Object> result = new ArrayList<Object>(Arrays.asList(resultArray));
@@ -87,7 +94,12 @@ public class Map {
         return result;
     }
 
-    // given (lng, lat), return (String) formatted_addr
+    /**
+     * Get formatted address string using (lng, lat)
+     * @param lng longitude
+     * @param lat latitude
+     * @return formatted address string
+     */
     @SuppressWarnings("finally")
     public static String getAllByCoodinate(Double lng, Double lat) throws MalformedURLException, IOException, org.json.simple.parser.ParseException {
         URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBU9xbtYaDk0buYIs4Vti4-J2NqsZV0hmo&latlng="
@@ -120,7 +132,15 @@ public class Map {
         }
     }
 
-    // given (lng1, lat1) & (lng2, lat2) & 'K'/'M', return distance between these two points
+    /**
+     * Get distance between two geo points: (lng1, lat1) & (lng2, lat2)
+     * @param lat1 latitude1
+     * @param lon1 longitude1
+     * @param lat2 latitude2
+     * @param lon2 longitude2
+     * @param unit 'K'/'M'
+     * @return distance between these two points in 'K'/'M'
+     */
     public static double distance(double lat1, double lon1, double lat2, double lon2, char unit) {
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
@@ -144,15 +164,21 @@ public class Map {
         return (rad * 180.0 / Math.PI);
     }
 
-    //	given addrInfo: [street, city, pcode, country]
-    // return the string of formatted_addr
+    /**
+     * Get formatted address string from address information
+     * @param addrInfo [street, city, pcode, country]
+     * @return formatte address string
+     */
     public static String infoToAddr(List<String> addrInfo) {
         return addrInfo.get(0) + ", " + addrInfo.get(1) + ", " + addrInfo.get(2) + ", " + addrInfo.get(3);
     }
 
-    // given unsanitized Pcode from Google API
-    // return 6-char long standard pcode without space (for the sake of search by pcode wildcard)
-    // sample "ON M1H 1B2" -> "M1H1B2"
+    /**
+     * Get 6-char long standard pcode from unsanitized Pcode returned from Google API
+     * @param unsanitizedPcode
+     * @return 6-char long standard pcode without space (for the sake of search by pcode wildcard)
+     * sample "ON M1H 1B2" -> "M1H1B2"
+     */
     public static String pcodeSanitizer(String unsanitizedPcode) {
         String sanitizedPcode = unsanitizedPcode.replaceAll("\\s+", ""); // remove space
         sanitizedPcode = sanitizedPcode.substring(sanitizedPcode.length() - 6); // get last 6 chars

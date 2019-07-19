@@ -10,6 +10,9 @@ import com.sun.rowset.JdbcRowSetImpl;
 public class Database {
 	static Connection c = null;
 	static Statement stmt = null;
+	/**
+	 * Connect to database
+	 */
 	public static Boolean connect() {
 		try {
 //			@SuppressWarnings("resource")
@@ -40,7 +43,10 @@ public class Database {
 		}
 		return true;
 	}
-	
+
+	/**
+	 * Disconnect from database
+	 */
 	public static Boolean disconnect() {
 		try {
 			c.close();
@@ -50,7 +56,12 @@ public class Database {
 		}
 		return true;
 	}
-	// read info from database
+
+	/**
+	 * Simple "select" statement in MYSQL to get information from database
+	 * @param query MYSQL queery
+	 * @return a "table" of information
+	 */
 	public static ResultSet queryRead(String query) {
 		ResultSet rs = null;
 		try {
@@ -62,8 +73,11 @@ public class Database {
 		return rs;
 	}
 	
-	// write to database
-	// success return 1, no affected return 0
+	/**
+	 * Write date to database
+	 * @param query MYSQL queery
+	 * @return return 1 on success, 0 if not written successfully
+	 */
 	public static Integer queryWrite(String query) {
 		Integer result = null;
 		try {
@@ -75,8 +89,14 @@ public class Database {
 		return result;
 	}
 	
-	// insert new record
-	// sample input: "sailers", "name, num, age", "'KENNY', 123, 23"
+	/**
+	 * Insert new record to database
+	 * @param table MYSQL table name
+	 * @param cols column name
+	 * @param vals values
+	 * @return return 1 on success, 0 if not written successfully
+	 * sample input: "sailers", "name, num, age", "'KENNY', 123, 23"
+	 */
 	public static Boolean insert(String table, String cols, String vals) {
 		StringBuilder query = new StringBuilder("insert into ");
 		query.append(table).append(" (").append(cols).append(") Value (").append(vals).append(");");
@@ -86,8 +106,14 @@ public class Database {
 		else return false;
 	}
 	
-	// update existing record
-	// sample input: "sailers", "name = 'KENNY', num = -111", "id=35"
+	/**
+	 * Update existing record in database
+	 * @param table MYSQL table name
+	 * @param newInfo updated information
+	 * @param conditions conditions
+	 * @return return 1 on success, 0 if not written successfully
+	 * sample input: "sailers", "name = 'KENNY', num = -111", "id=35"
+	 */
 	public static Boolean update(String table, String newInfo, String conditions) {
 		StringBuilder query = new StringBuilder("update ");
 		query.append(table).append(" set ").append(newInfo).append(" where ").append(conditions).append(";");
@@ -97,8 +123,13 @@ public class Database {
 		else return false;
 	}
 	
-	// delete existing record
-	// sample input: "sailers", "id=34"
+	/**
+	 * Delete existing record in database
+	 * @param table MYSQL table name
+	 * @param conditions conditions
+	 * @return return 1 on success, 0 if not written successfully
+	 * sample input: "sailers", "id=34"
+	 */
 	public static Boolean delete(String table, String conditions) {
 		StringBuilder query = new StringBuilder("delete from ");
 		query.append(table).append(" where ").append(conditions).append(";");
@@ -108,9 +139,13 @@ public class Database {
 		else return false;
 	}
 	
-	// insert address
-	// given addrInfo: [street, city, pcode, country], id and type in address schema
-	// return true if successfully
+	/**
+	 * Insert address in database
+	 * @param addrInfo [street, city, pcode, country]
+	 * @param id id of user/listing
+	 * @param type 0 - listing; 1 - user
+	 * @return return 1 on success, 0 if not written successfully
+	 */
 	public static Boolean insertAddr(List<String> addrInfo, int id, int type) throws Exception {
 		Boolean success = false;
 		List<Object> sanitizedAddr = new ArrayList<Object>();

@@ -184,7 +184,7 @@ public class Host extends Renter {
     @Override
     public Boolean commentOnUser(List<String> info) throws SQLException {
         Boolean legal = false; // legal to comment on that user?
-        CachedRowSet rowset = this.getAllHistoryBookings();
+        CachedRowSet rowset = this.getBookings(1);
         while (rowset.next()) {
             Integer u_id = rowset.getInt("u_id");
             if(u_id == Integer.parseInt(info.get(0))){

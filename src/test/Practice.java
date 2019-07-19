@@ -10,10 +10,11 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class Practice {
-    public static void main(String args[]) throws Exception{
+    public static void main(String args[]) throws Exception {
 //        if (Database.connect()) {
 //            Renter me = new Renter();
 //
@@ -75,14 +76,14 @@ public class Practice {
 ////            System.out.println("u_id: " + rowset.getInt("u_id") + " l_id: " + rowset.getInt("l_id"));
 //        }
 //        Database.disconnect();
-        String x = "ken ny";
-        System.out.println(x);
-        String z = x.replaceAll("\\s+","");
-        System.out.println(z);
+        System.out.println(round(200, 2));
+    }
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
 
-        String y = "happy";
-        String k = y.substring(y.length() - 3);
-        System.out.println(k);
-
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 }
