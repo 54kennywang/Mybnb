@@ -1,9 +1,10 @@
 <component name="libraryTable">
   <library name="JavaFx">
-    <CLASSES>
-      <root url="jar://D:/APP/java/install/lib/jfxswt.jar!/" />
-    </CLASSES>
-    <JAVADOC />
+    <CLASSES />
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/jar/json-simple-1.1.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jar/gson-2.6.2-javadoc.jar!/" />
+    </JAVADOC>
     <SOURCES />
   </library>
 </component>

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package test;
 
 import java.sql.ResultSet;
@@ -92,7 +91,7 @@ public class Report {
         Database.disconnect();
     }
 }
-=======
+        /*
 package test;
 
 import java.sql.ResultSet;
@@ -196,4 +195,4 @@ public class Report {
         Database.disconnect();
     }
 }
->>>>>>> d2a9547f34df17ea213a79c3796962831dbec1f7
+*/
