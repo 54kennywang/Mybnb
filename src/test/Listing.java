@@ -23,6 +23,7 @@ public class Listing {
 
     /**
      * Prints a listing's info in console.
+     *
      * @param id the id of a listing
      */
     public static void viewListing(int id) throws SQLException {
@@ -48,6 +49,7 @@ public class Listing {
 
     /**
      * Gets all availabilities of a listing.
+     *
      * @param id the id of a listing
      * @return a list of available LocalDate of that listing
      */
@@ -68,6 +70,7 @@ public class Listing {
 
     /**
      * Prints all available dates for a listing on console.
+     *
      * @param id the id of a listing
      */
     public static void printAllAvailabilities(int id) throws SQLException {
@@ -79,6 +82,7 @@ public class Listing {
 
     /**
      * Gets a list of rented/unavailable LocalDate for a listing.
+     *
      * @param id the id of a listing
      * @return a list of rented LocalDate of that listing
      */
@@ -101,6 +105,7 @@ public class Listing {
 
     /**
      * Prints all unavailable dates for a listing on console.
+     *
      * @param id the id of a listing
      */
     public static void printAllUnAvailabilities(int id) throws SQLException {
@@ -112,6 +117,7 @@ public class Listing {
 
     /**
      * Gets a listing's owner ID, return -1 if listing does not exist.
+     *
      * @param l_id the id of a listing
      * @return the owner id of the listing, or -1 if listing does not exist
      */
@@ -126,6 +132,7 @@ public class Listing {
 
     /**
      * Prints amenities to the console.
+     *
      * @param amen the string list of amenities, like [AC, Shower, ...]
      */
     public static void printAmenity(List<String> amen) {
@@ -138,6 +145,7 @@ public class Listing {
 
     /**
      * Parses a binary string amenities into a string list of amenities names.
+     *
      * @param amen the binary string of amenities stored in the database
      * @return a string list of amenities based on amenities array above
      */
@@ -154,8 +162,9 @@ public class Listing {
     /**
      * Gets all LocalDate between two dates (inclusive).
      * sample: ("2019-05-03", "2019-05-05") return ["2019-05-03", "2019-05-04", "2019-05-05"]
+     *
      * @param fromDate the beginning date
-     * @param toDate the ending date
+     * @param toDate   the ending date
      * @return a LocalDate list of dates between two input dates.
      */
     public static List<LocalDate> allDates(String fromDate, String toDate) {
@@ -173,11 +182,12 @@ public class Listing {
     /**
      * Searches by geo-point and gets an ordered list of table rows ranked by distance with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
-     * @param lng longitude
-     * @param lat latitude
+     *
+     * @param lng    longitude
+     * @param lat    latitude
      * @param radius search radius from geo-point (Lng, Lat)
-     * @param unit 'K'/'M'
-     * @param order 1 - from nearest to farthest; 0 - from farthest to nearest
+     * @param unit   'K'/'M'
+     * @param order  1 - from nearest to farthest; 0 - from farthest to nearest
      * @return a list of table rows within the given radius from the geo-point in KM/MILE in specified distance order ranked by distance
      */
     public static List<Row> searchByCoordinates_rankByDistance(Double lng, Double lat, Double radius, char unit, int order) throws SQLException {
@@ -189,11 +199,12 @@ public class Listing {
     /**
      * Searches by geo-point and gets an ordered list of table rows ranked by price with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
-     * @param lng longitude
-     * @param lat latitude
+     *
+     * @param lng    longitude
+     * @param lat    latitude
      * @param radius search radius from geo-point (Lng, Lat)
-     * @param unit 'K'/'M'
-     * @param order 1 - from cheapest to most expensive; 0 - opposite
+     * @param unit   'K'/'M'
+     * @param order  1 - from cheapest to most expensive; 0 - opposite
      * @return a list of table rows within the given radius from the geo-point in KM/MILE in specified price order ranked by price
      */
     public static List<Row> searchByCoordinates_rankByPrice(Double lng, Double lat, Double radius, char unit, int order) throws SQLException {
@@ -205,10 +216,11 @@ public class Listing {
     /**
      * Searches by geo-point and gets an unordered list of table rows with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
-     * @param lng longitude
-     * @param lat latitude
+     *
+     * @param lng    longitude
+     * @param lat    latitude
      * @param radius search radius from geo-point (Lng, Lat)
-     * @param unit 'K'/'M'
+     * @param unit   'K'/'M'
      * @return a list of table rows within the given radius from the geo-point in KM/MILE
      */
     public static List<Row> searchByCoordinates(Double lng, Double lat, Double radius, char unit) throws SQLException {
@@ -258,8 +270,9 @@ public class Listing {
     /**
      * Searches by address and gets an ordered list of table rows in 30km of the specified addr, ranked by distance with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
      * @param addrInfo [street, city, pcode, country]
-     * @param order 1 - from nearest to farthest; 0 - from farthest to nearest
+     * @param order    1 - from nearest to farthest; 0 - from farthest to nearest
      * @return a list of table rows within the 30km of the given addr ranked by distance
      */
     public static List<Row> searchByAddress_rankByDistance(List<String> addrInfo, int order) throws SQLException, Exception {
@@ -271,8 +284,9 @@ public class Listing {
     /**
      * Searches by address and gets an ordered list of table rows in 30km of the specified addr, ranked by price with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
      * @param addrInfo [street, city, pcode, country]
-     * @param order 1 - from cheapest to most expensive; 0 - from most expensive to cheapest
+     * @param order    1 - from cheapest to most expensive; 0 - from most expensive to cheapest
      * @return a list of table rows within the 30km of the given addr ranked by price
      */
     public static List<Row> searchByAddress_rankByPrice(List<String> addrInfo, int order) throws SQLException, Exception {
@@ -284,6 +298,7 @@ public class Listing {
     /**
      * Searches by address and gets an unordered list of table rows in 30km of the specified addr with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
      * @param addrInfo [street, city, pcode, country]
      * @return a list of table rows within the 30km of the given addr
      */
@@ -297,6 +312,7 @@ public class Listing {
     /**
      * Searches by postal code and gets an ordered list of table rows with the exact same input pcode, ranked by price with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
      * @param pcode 6-digit postal code with no space
      * @param order 1 - from cheapest to most expensive; 0 - from most expensive to cheapest
      * @return a list of table rows with the exact same input pcode
@@ -311,6 +327,7 @@ public class Listing {
     /**
      * Searches by postal code and gets an unordered list of table rows with the exact same input pcode with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
      * @param pcode 6-digit postal code with no space
      * @return a list of table rows with the exact same input pcode
      */
@@ -330,6 +347,7 @@ public class Listing {
     /**
      * Searches by postal code and gets an ordered list of table rows with the similar but not same input pcode, ranked by price with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
      * @param pcode 6-digit postal code with no space
      * @param order 1 - from cheapest to most expensive; 0 - from most expensive to cheapest
      * @return a list of table rows with the similar but not same input pcode
@@ -343,6 +361,7 @@ public class Listing {
     /**
      * Searches by postal code and gets an unordered list of table rows with the similar but not same input pcode, ranked by price with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
      * @param pcode 6-digit postal code with no space
      * @return a list of table rows with the similar but not same input pcode
      */
@@ -363,6 +382,7 @@ public class Listing {
 
     /**
      * Converts CachedRowSet to List<Row>
+     *
      * @param input CachedRowSet input
      * @return a converted List<Row> from the CachedRowSet input
      */
@@ -377,7 +397,8 @@ public class Listing {
 
     /**
      * Sort a 'table' by the column colIndex (not index, it's index + 1)
-     * @param input a 'table' to be sorted
+     *
+     * @param input    a 'table' to be sorted
      * @param colIndex the column that is sorted on (index 1, 2, 3... (not from 0), first column index is 1 not 0)
      * @return a sorted (from smallest to biggest) List<Row> based on the colIndex column
      */
@@ -398,6 +419,7 @@ public class Listing {
 
     /**
      * Convert an non-decreasing ordered 'table' to an non-increasing ordered table
+     *
      * @param input an non-decreasing ordered 'table'
      * @return a sorted (from biggest to smallest) List<Row>
      */
@@ -408,20 +430,21 @@ public class Listing {
     /**
      * Filter table rows by time window, input table is of following schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
-     * @param input a 'table' to be filtered
+     *
+     * @param input    a 'table' to be filtered
      * @param fromDate starting date
-     * @param toDate ending date
+     * @param toDate   ending date
      * @return an after-filtered table where all rows satisfy the time window
      */
-    public static List<Row> dateFilter(List<Row> input, String fromDate, String toDate) throws SQLException{
+    public static List<Row> dateFilter(List<Row> input, String fromDate, String toDate) throws SQLException {
         Integer listing_id = new Integer(0);
         List<LocalDate> all_dates = allDates(fromDate, toDate);
-        for (int i = 0; i < input.size(); i ++){
+        for (int i = 0; i < input.size(); i++) {
             listing_id = (Integer) input.get(i).getColumnObject(1);
             List<LocalDate> allAvil = allAvailabilities(listing_id);
-            if(is_sublist(allAvil, all_dates) == false){
+            if (is_sublist(allAvil, all_dates) == false) {
                 input.remove(i);
-                i --;
+                i--;
             }
         }
         return input;
@@ -430,18 +453,19 @@ public class Listing {
     /**
      * Filter table rows by price range, input table is of following schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
-     * @param input a 'table' to be filtered
-     * @param lowest lowest price
+     *
+     * @param input   a 'table' to be filtered
+     * @param lowest  lowest price
      * @param highest highest price
      * @return an after-filtered table where all rows satisfy [lowest <= dayPrice <= highest]
      */
-    public static List<Row> priceFilter(List<Row> input, Double lowest, Double highest) throws SQLException{
+    public static List<Row> priceFilter(List<Row> input, Double lowest, Double highest) throws SQLException {
         Double price = 0.0;
-        for (int i = 0; i < input.size(); i ++){
+        for (int i = 0; i < input.size(); i++) {
             price = (Double) input.get(i).getColumnObject(10);
-            if((price < lowest) || (price > highest)){
+            if ((price < lowest) || (price > highest)) {
                 input.remove(i);
-                i --;
+                i--;
             }
         }
         return input;
@@ -450,20 +474,21 @@ public class Listing {
     /**
      * Filter table rows by amenities, input table is of following schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
-     * @param input a 'table' to be filtered
+     *
+     * @param input       a 'table' to be filtered
      * @param amenRequest the must-have amenities
      * @return an after-filtered table where all rows satisfy the specified amenities
      * sample: (input, "1.............") -> filter all rows with WIFI
      */
-    public static List<Row> amenityFilter(List<Row> input, String amenRequest) throws SQLException{
+    public static List<Row> amenityFilter(List<Row> input, String amenRequest) throws SQLException {
         Pattern p = Pattern.compile(amenRequest);
         String amen = "";
-        for (int i = 0; i < input.size(); i ++){
+        for (int i = 0; i < input.size(); i++) {
             amen = (String) input.get(i).getColumnObject(12);
             Matcher m = p.matcher(amen);
-            if (!m.find()){
+            if (!m.find()) {
                 input.remove(i);
-                i --;
+                i--;
             }
         }
         return input;
@@ -471,20 +496,22 @@ public class Listing {
 
     /**
      * Check if a set is a subset of another
-     * @param list parent set
+     *
+     * @param list    parent set
      * @param sublist child set
      * @return true if sublist is a subset of list, false otherwise
      */
     public static boolean is_sublist(List<?> list, List<?> sublist) {
         boolean is = true;
-        for(int i = 0; i < sublist.size(); i ++){
-            if(list.indexOf(sublist.get(i)) == -1) {
+        for (int i = 0; i < sublist.size(); i++) {
+            if (list.indexOf(sublist.get(i)) == -1) {
                 is = false;
                 break;
             }
         }
         return is;
     }
+
 
     public static void main(String args[]) throws Exception {
         if (Database.connect()) {
@@ -500,8 +527,8 @@ public class Listing {
 //            List<Row> result = searchByCoordinates_rankByPrice(-79.186043, 43.784554, 3.0, 'K', 1);
 
             // given addrInfo: [street, city, pcode, country]
-            List<String> addrInfo = Arrays.asList("1265 military", "toronto", "m1c1a6", "Canada");
-            List<Row> result = searchByAddress_rankByDistance(addrInfo, 1);
+//            List<String> addrInfo = Arrays.asList("1265 military", "toronto", "m1c1a6", "Canada");
+//            List<Row> result = searchByAddress_rankByDistance(addrInfo, 1);
 //            List<Row> result = searchByAddress_rankByPrice(addrInfo, 1);
 
 
@@ -510,15 +537,22 @@ public class Listing {
 
 //            result = dateFilter(result, "2009-06-29", "2009-07-01");
 //            result = priceFilter(result, 50.0, 77.0);
-            result = amenityFilter(result, "1.............");
+//            result = amenityFilter(result, "1.............");
 
-            for (int i = 0; i < result.size(); i++) {
+//            for (int i = 0; i < result.size(); i++) {
 //                System.out.println(result.get(i).getColumnObject(1) + " Price: " + result.get(i).getColumnObject(10));
-                System.out.println(result.get(i).getColumnObject(1) + " Distance: " + result.get(i).getColumnObject(13));
-            }
+//                System.out.println(result.get(i).getColumnObject(1) + " Distance: " + result.get(i).getColumnObject(13));
+//            }
+
+
         }
 
 
         Database.disconnect();
     }
+
+
+
+
+
 }

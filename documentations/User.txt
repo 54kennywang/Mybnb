@@ -38,40 +38,39 @@
 
 
 /**
-	 * Get's comments on a user
-	 * @param id user's id
-	 * @return listing of tables of comments, each table is a comment block
-	 * table schema: [id, parent_comment, sender, sender_name, receiver, receiver_name, rating, content, date]
-	 * i.e. * initial comment 1			 |	* initial comment 2
-	 * 		  - reply to comment 1 (1)	 |	  - reply to comment 2 (7)
-	 * 		  - reply to (1) (2)		 |	  - reply to (7) (8)           => two comment blocks on a user
-	 * 		  - reply to (2) (3)		 |	  - reply to (8) (9)
-	 */
-	public List<List<Row>> getCommentsOnUser(int id)
+     	* Get comments on a user/listing
+     	*
+     	* @param id user/listing's id
+     	* @param type 1 - user; 0 - listing
+     	* @return listing of tables of comments, each table is a comment block
+     	* table schema: [id, parent_comment, sender, sender_name, receiver, receiver_name, rating, content, date]
+     	* i.e. * initial comment 1			 |	* initial comment 2
+     	* - reply to comment 1 (1)	 |	  - reply to comment 2 (7)
+     	* - reply to (1) (2)		 |	  - reply to (7) (8)           => two comment blocks on a user
+     	* - reply to (2) (3)		 |	  - reply to (8) (9)
+     	*/
+    	public List<List<Row>> getComments(int id, int type)
 
 
 /**
-	 * View comments on a user and it's average rating
-	 * @param id user's id
-	 */
-	public void viewCommentsOnUser(int id)
+     	* View comments on a user/listing and it's average rating
+     	*
+     	* @param id user/listing's id
+     	* @param type 1 - user; 0 - listing
+     	*/
+    	public void viewComments(int id, int type)
 
 /**
-	 * Get a user's average rating from other users
-	 * @param id a user's id
-	 * @return a user's average rating
-	 */
-	public Double getRating(int id)
+     	* Get a user/listing's average rating
+     	*
+     	* @param id a user/listing's id
+     	* @param type 1 - user; 0 - listing
+     	* @return a user/listing's average rating
+     	*/
+    	public Double getRating(int id, int type)
 
 
-/**
-	 * Make a double with n decimal-digit
-	 * @param value a double
-	 * @param places n decimal-digit
-	 * @return a double with n decimal-digit
-	 * sample: (200.1234, 2) => 200.12
-	 */
-	public static double round(double value, int places)
+
 
 
 
