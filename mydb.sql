@@ -31,7 +31,7 @@ CREATE TABLE `address` (
   `lng` double NOT NULL,
   `lat` double NOT NULL,
   `type` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -55,7 +55,8 @@ DROP TABLE IF EXISTS `availability`;
 CREATE TABLE `availability` (
   `id` int(11) NOT NULL,
   `avilDate` date NOT NULL,
-  PRIMARY KEY (`id`,`avilDate`)
+  PRIMARY KEY (`id`,`avilDate`),
+  CONSTRAINT `id` FOREIGN KEY (`id`) REFERENCES `listing` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -65,7 +66,7 @@ CREATE TABLE `availability` (
 
 LOCK TABLES `availability` WRITE;
 /*!40000 ALTER TABLE `availability` DISABLE KEYS */;
-INSERT INTO `availability` VALUES (2,'2019-05-03'),(4,'2019-07-02'),(4,'2019-07-03'),(5,'2019-06-28'),(5,'2019-06-29'),(5,'2019-06-30'),(5,'2019-07-01'),(5,'2019-07-02'),(7,'2009-06-29'),(7,'2009-06-30'),(7,'2009-07-01'),(7,'2009-07-02'),(9,'1999-06-29'),(9,'1999-06-30'),(9,'1999-07-01'),(9,'1999-07-02'),(10,'2020-06-02'),(10,'2020-06-03'),(10,'2020-06-04'),(10,'2020-06-05'),(10,'2020-07-29'),(10,'2020-07-30'),(10,'2020-07-31'),(10,'2020-08-01'),(10,'2020-08-02'),(11,'2020-06-29'),(11,'2020-06-30'),(11,'2020-07-01'),(11,'2020-07-02'),(12,'2019-07-29'),(12,'2019-07-30'),(12,'2019-07-31'),(12,'2019-08-01'),(12,'2019-08-02'),(13,'2019-07-29'),(13,'2019-07-30'),(13,'2019-07-31'),(13,'2019-08-01'),(13,'2019-08-02'),(14,'2019-07-29'),(14,'2019-07-30'),(14,'2019-07-31'),(14,'2019-08-01'),(14,'2019-08-02'),(15,'2019-07-29'),(15,'2019-07-30'),(15,'2019-07-31'),(15,'2019-08-01'),(15,'2019-08-02');
+INSERT INTO `availability` VALUES (2,'2019-05-03'),(4,'2019-07-02'),(4,'2019-07-03'),(5,'2019-06-28'),(5,'2019-06-29'),(5,'2019-06-30'),(5,'2019-07-01'),(5,'2019-07-02'),(7,'2009-06-29'),(7,'2009-06-30'),(7,'2009-07-01'),(7,'2009-07-02'),(9,'1999-06-29'),(9,'1999-06-30'),(9,'1999-07-01'),(9,'1999-07-02'),(10,'2020-06-02'),(10,'2020-06-03'),(10,'2020-06-04'),(10,'2020-06-05'),(10,'2020-07-29'),(10,'2020-07-30'),(10,'2020-07-31'),(10,'2020-08-01'),(10,'2020-08-02'),(11,'2020-06-29'),(11,'2020-06-30'),(11,'2020-07-01'),(11,'2020-07-02'),(12,'2019-07-31'),(12,'2019-08-01'),(12,'2019-08-02'),(13,'2019-07-29'),(13,'2019-07-30'),(13,'2019-07-31'),(13,'2019-08-01'),(13,'2019-08-02'),(14,'2019-07-29'),(14,'2019-07-30'),(14,'2019-07-31'),(14,'2019-08-01'),(14,'2019-08-02'),(15,'2019-07-29'),(15,'2019-07-30'),(15,'2019-07-31'),(15,'2019-08-01'),(15,'2019-08-02');
 /*!40000 ALTER TABLE `availability` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,8 +86,10 @@ CREATE TABLE `listing` (
   `type` text NOT NULL,
   `amenity` text NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `owner_idx` (`owner`),
+  CONSTRAINT `owner` FOREIGN KEY (`owner`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +98,7 @@ CREATE TABLE `listing` (
 
 LOCK TABLES `listing` WRITE;
 /*!40000 ALTER TABLE `listing` DISABLE KEYS */;
-INSERT INTO `listing` VALUES (1,'2019-07-02 21:31:42',10,50,3,'Condo','01111111111111'),(2,'2019-07-02 23:05:36',20,50,3,'condo','10110100100111'),(3,'2019-07-03 10:28:34',20,50,3,'condo','10110100100111'),(4,'2019-07-03 10:30:01',20,50,3,'condo','10110100100111'),(5,'2019-07-03 10:37:26',20,50,3,'condo','10110100100111'),(7,'2019-07-03 20:34:57',99,50,3,'House','01010111010100'),(9,'2019-07-03 20:47:55',9,50,3,'Room','01010111010100'),(10,'2019-07-03 21:01:46',19,19.99,3,'Apt','01010111010100'),(11,'2019-07-09 17:54:00',77,67,3,'Room','01010111010100'),(12,'2019-07-13 12:01:05',177,99,3,'Room','01010111010100'),(13,'2019-07-13 12:09:15',177,99,3,'Room','01010111010100'),(14,'2019-07-13 12:11:56',177,99,3,'Room','01010111010100'),(15,'2019-07-13 12:12:38',177,99,3,'Room','01010111010100');
+INSERT INTO `listing` VALUES (1,'2019-07-02 21:31:42',10,50,3,'Condo','01111111111111'),(2,'2019-07-02 23:05:36',20,50,3,'condo','10110100100111'),(3,'2019-07-03 10:28:34',20,50,3,'condo','10110100100111'),(4,'2019-07-03 10:30:01',20,50,3,'condo','10110100100111'),(5,'2019-07-03 10:37:26',20,50,3,'condo','10110100100111'),(7,'2019-07-03 20:34:57',99,50,3,'House','11010111010100'),(9,'2019-07-03 20:47:55',9,50,3,'Room','01010111010100'),(10,'2019-07-03 21:01:46',19,19.99,3,'Apt','01010111010100'),(11,'2019-07-09 17:54:00',77,67,3,'Room','01010111010100'),(12,'2019-07-13 12:01:05',177,99,3,'Room','01010111010100'),(13,'2019-07-13 12:09:15',177,99,3,'Room','01010111010100'),(14,'2019-07-13 12:11:56',177,99,3,'Room','01010111010100'),(15,'2019-07-13 12:12:38',177,77,3,'Room','01010111010100');
 /*!40000 ALTER TABLE `listing` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -115,7 +118,9 @@ CREATE TABLE `listing_comment` (
   `rating` int(11) DEFAULT NULL,
   `content` text NOT NULL,
   `date` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `l_id_idx` (`l_id`),
+  CONSTRAINT `l_id` FOREIGN KEY (`l_id`) REFERENCES `listing` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -154,7 +159,7 @@ CREATE TABLE `rented` (
 
 LOCK TABLES `rented` WRITE;
 /*!40000 ALTER TABLE `rented` DISABLE KEYS */;
-INSERT INTO `rented` VALUES (5,2,'2019-05-03','2019-05-03',-1,'2019-07-03 00:00:00',50),(5,4,'2019-07-02','2019-07-02',-2,'2019-07-03 17:19:30',50),(5,5,'2019-06-28','2019-06-29',-1,'2019-07-03 11:23:52',50),(5,5,'2019-07-01','2019-07-02',-2,'2019-07-03 17:16:59',50),(5,5,'2019-07-01','2019-07-02',-1,'2019-07-03 17:06:20',50),(6,10,'2020-07-01','2020-07-02',0,'2019-07-03 22:00:39',50);
+INSERT INTO `rented` VALUES (5,2,'2019-05-03','2019-05-03',-1,'2019-07-03 00:00:00',50),(5,4,'2019-07-02','2019-07-02',-2,'2019-07-03 17:19:30',50),(5,5,'2019-06-28','2019-06-29',-1,'2019-07-03 11:23:52',50),(5,5,'2019-07-01','2019-07-02',-2,'2019-07-03 17:16:59',50),(5,5,'2019-07-01','2019-07-02',-1,'2019-07-03 17:06:20',50),(6,10,'2020-07-01','2020-07-02',0,'2019-07-03 22:00:39',50),(6,12,'2019-07-29','2019-07-30',0,'2019-07-16 23:21:26',99);
 /*!40000 ALTER TABLE `rented` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,7 +182,7 @@ CREATE TABLE `user` (
   `SIN` text NOT NULL,
   `password` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,7 +211,7 @@ CREATE TABLE `user_comment` (
   `content` text NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -215,7 +220,7 @@ CREATE TABLE `user_comment` (
 
 LOCK TABLES `user_comment` WRITE;
 /*!40000 ALTER TABLE `user_comment` DISABLE KEYS */;
-INSERT INTO `user_comment` VALUES (1,6,3,NULL,5,'this user is good','2019-07-05 00:00:00'),(2,3,6,1,NULL,'thanks for the comment: this user is good','2019-07-05 00:00:00');
+INSERT INTO `user_comment` VALUES (1,6,3,NULL,5,'this user is good','2019-07-03 00:00:00'),(2,3,6,1,NULL,'thanks for the comment: this user is good','2019-07-04 00:00:00'),(3,6,3,2,5,'reply to comment id = 2','2019-07-05 00:00:00'),(4,5,6,NULL,4,'comment on user id = 6','2019-07-05 00:00:00'),(5,6,5,4,4,'reply to comment id = 4','2019-07-05 00:00:00'),(6,5,3,NULL,5,'comment on user id = 3','2019-07-05 00:00:00'),(7,3,5,6,5,'reply to comment id = 6','2019-07-05 00:00:00'),(8,5,3,1,5,'xxxxxxxxxx','2019-08-05 00:00:00');
 /*!40000 ALTER TABLE `user_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -228,4 +233,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-07-16 12:49:40
+-- Dump completed on 2019-07-18 21:01:28

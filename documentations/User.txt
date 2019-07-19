@@ -37,15 +37,41 @@
 	public Boolean replyUserComment(List<String> info)
 
 
+/**
+	 * Get's comments on a user
+	 * @param id user's id
+	 * @return listing of tables of comments, each table is a comment block
+	 * table schema: [id, parent_comment, sender, sender_name, receiver, receiver_name, rating, content, date]
+	 * i.e. * initial comment 1			 |	* initial comment 2
+	 * 		  - reply to comment 1 (1)	 |	  - reply to comment 2 (7)
+	 * 		  - reply to (1) (2)		 |	  - reply to (7) (8)           => two comment blocks on a user
+	 * 		  - reply to (2) (3)		 |	  - reply to (8) (9)
+	 */
+	public List<List<Row>> getCommentsOnUser(int id)
 
 
+/**
+	 * View comments on a user and it's average rating
+	 * @param id user's id
+	 */
+	public void viewCommentsOnUser(int id)
+
+/**
+	 * Get a user's average rating from other users
+	 * @param id a user's id
+	 * @return a user's average rating
+	 */
+	public Double getRating(int id)
 
 
-
-
-
-
-
+/**
+	 * Make a double with n decimal-digit
+	 * @param value a double
+	 * @param places n decimal-digit
+	 * @return a double with n decimal-digit
+	 * sample: (200.1234, 2) => 200.12
+	 */
+	public static double round(double value, int places)
 
 
 
