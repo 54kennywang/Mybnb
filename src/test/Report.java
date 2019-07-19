@@ -85,6 +85,16 @@ public class Report {
         return resultSet;
     }
 
+    public static ResultSet rankHostsByListingsPerCity() throws SQLException{
+        String query = "select owner, city, count(listing.id) " +
+                "from listing, address " +
+                "where listing.id = address.id " +
+                "group by owner, city " +
+                "order by city, count(listing.id) desc;";
+        ResultSet resultSet = Database.queryRead(query);
+        return resultSet;
+    }
+
     private static String dateRefactor(LocalDate date){
         return date.toString().replaceAll("-", "");
     }
