@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static test.Listing.allDates;
+
 public class Renter extends User {
 
     /**
@@ -36,6 +38,11 @@ public class Renter extends User {
     public Boolean bookListing(List<String> info) throws SQLException {
         Boolean success = false;
         if (this.active) {
+            // check if this booking is legal
+            List<LocalDate> allAvil = Listing.allAvailabilities(Integer.parseInt(info.get(0)));
+            List<LocalDate> allDays = Listing.allDates(info.get(1), info.get(2));
+            if (!Listing.is_sublist(allAvil, allDays)) return success;
+
             // add to "rented" table
             String query = "select * from listing where id = " + info.get(0);
             ResultSet rs = Database.queryRead(query);
@@ -69,7 +76,19 @@ public class Renter extends User {
      * @param info [receiver, rating, content, l_id]
      * @return true if successfully; false otherwise
      */
-    public Boolean commentOnListing(List<String> info) {
+    public Boolean commentOnListing(List<String> info) throws SQLException {
+        Boolean legal = false; // legal to comment on that listing
+        CachedRowSet rowset = this.getBookings(1);
+        while (rowset.next()) {
+            Integer l_id = rowset.getInt("l_id");
+            if (l_id == Integer.parseInt(info.get(3))) {
+                legal = true;
+                break;
+            }
+        }
+        if (!legal) return false;
+
+
         Boolean success = false;
         if (this.active) {
             // add to "listing_comment" table
@@ -84,6 +103,7 @@ public class Renter extends User {
 
     /**
      * Get renter's bookings based on type
+     *
      * @param type 1 for history booking; 0 for future booking; 2 for all (history + future bookings)
      * @return renter's bookings (history + future bookings)
      */
@@ -100,6 +120,7 @@ public class Renter extends User {
 
     /**
      * Renter's initial comment on a host user
+     *
      * @param info [receiver, rating, content]
      * @return true if successfully; false otherwise
      */
@@ -130,11 +151,28 @@ public class Renter extends User {
 
     /**
      * Renter cancels a booking
-     * @param info [l_id, fromDate, toDate, cancel_status]
+     *
+     * @param info [l_id, fromDate, toDate]
      * @return true if successfully; false otherwise
      */
     @Override
-    public Boolean cancelBooking(List<String> info) {
+    public Boolean cancelBooking(List<String> info) throws SQLException {
+        Boolean legal = false; // legal to cancel this booking?
+        CachedRowSet rowset = this.getBookings(0);
+        while (rowset.next()) {
+            Integer l_id = rowset.getInt("l_id");
+            Integer u_id = rowset.getInt("u_id");
+            String booked_from = LocalDate.parse(rowset.getString("fromDate")).plusDays(1).toString();
+            String booked_to = LocalDate.parse(rowset.getString("toDate")).plusDays(1).toString();
+            System.out.println(booked_from + " -- " + booked_to);
+            if (u_id == this.id && l_id == Integer.parseInt(info.get(0)) && booked_from.equals(info.get(1)) && booked_to.equals(info.get(2))) {
+                legal = true;
+                break;
+            }
+        }
+        if (!legal) return false;
+
+
         Boolean success = false;
         if (this.active) {
             // update "rented (status)" table
@@ -166,17 +204,19 @@ public class Renter extends User {
             List<String> cred = Arrays.asList("michael@outlook.com", "password");
             System.out.println(me.signIn(cred));
 
-//			List<String> info = Arrays.asList("10", "2020-07-01", "2020-07-02");
+//			List<String> info = Arrays.asList("2", "2019-05-03", "2019-05-05");
 //			System.out.println(me.bookListing(info));
 
-//			List<String> info = Arrays.asList("5", "2019-07-01", "2019-07-02");
-//			System.out.println(me.cancelBooking(info));
+            //[l_id, fromDate, toDate]
+			List<String> info = Arrays.asList("12", "2019-07-29", "2019-07-30");
+			System.out.println(me.cancelBooking(info));
 
-//			List<String> info = Arrays.asList("3", "5", "this Apt is good.", "10");
+            // [receiver, rating, content, l_id]
+//			List<String> info = Arrays.asList("3", "3", "this Condo is good.", "1");
 //			System.out.println(me.commentOnListing(info));
 
-            List<String> info = Arrays.asList("3", "0", "This host is soooo bad!!!");
-            System.out.println(me.commentOnUser(info));
+//            List<String> info = Arrays.asList("3", "0", "This host is soooo bad!!!");
+//            System.out.println(me.commentOnUser(info));
         }
         Database.disconnect();
     }

@@ -101,7 +101,7 @@ public abstract class User {
         return this.id;
     }
 
-    public abstract Boolean cancelBooking(List<String> info);
+    public abstract Boolean cancelBooking(List<String> info) throws SQLException;
 
     // initial comment on a user
     // given a list of commentInfo: [receiver, rating, content]

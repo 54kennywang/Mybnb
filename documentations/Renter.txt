@@ -39,7 +39,7 @@
 
 /**
      * Renter cancels a booking
-     * @param info [l_id, fromDate, toDate, cancel_status]
+     * @param info [l_id, fromDate, toDate]
      * @return true if successfully; false otherwise
      */
     @Override
