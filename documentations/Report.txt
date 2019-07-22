@@ -1,0 +1,59 @@
+/**
+     * Get the number of bookings in a city in a specified time window
+     *
+     * @param fromDate time window start
+     * @param toDate time window end
+     * @param city a city name
+     * @return the number of bookings in a city in a specified time window
+     */
+    public static int numOfBookingsByCity(LocalDate fromDate, LocalDate toDate, String city)
+
+/**
+     * Get the number of bookings in a zipCode area in a specified time window
+     *
+     * @param fromDate time window start
+     * @param toDate time window end
+     * @param zipCode a zipCode
+     * @return the number of bookings in a zipCode area in a specified time window
+     */
+    public static int numOfBookingsByZipCode(LocalDate fromDate, LocalDate toDate, String zipCode)
+
+/**
+     * Get the number of listing for different countries
+     *
+     * @return a table of the number of listing for different countries
+     *  [country, count(listing.id)]
+     */
+    public static List<Row> numOfListingsPerCountry()
+
+/**
+     * Get the number of listing for different (country, city) pair
+     *
+     * @return a table of the number of listing for different (country, city) pair
+     *  [city, country, count(listing.id)]
+     */
+    public static List<Row> numOfListingsPerCountryPerCity()
+
+/**
+     * Get the number of listing for different (country, city, pcode) pair
+     *
+     * @return a table of the number of listing for different (country, city, pcode) pair
+     *  [city, pcode, country, count(listing.id)]
+     */
+    public static List<Row> numOfListingsPerCountryPerCityPerPCode()
+
+
+/**
+     * Get the table of number of listings for different hosts in different countries, descending order by count (all records)
+     *
+     * @return a table of number of listings for different hosts in different countries, descending order by count (all records)
+     *  [ownerID, country, count(listing.id)]
+     */
+    public static List<Row> rankHostsByListingsPerCountry()
+
+
+
+
+
+
+

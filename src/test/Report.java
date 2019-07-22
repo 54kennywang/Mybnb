@@ -1,5 +1,9 @@
 package test;
 
+import com.sun.rowset.CachedRowSetImpl;
+import com.sun.rowset.internal.Row;
+
+import javax.sql.rowset.CachedRowSet;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.*;
@@ -7,6 +11,14 @@ import java.sql.SQLException;
 
 public class Report {
 
+    /**
+     * Get the number of bookings in a city in a specified time window
+     *
+     * @param fromDate time window start
+     * @param toDate   time window end
+     * @param city     a city name
+     * @return the number of bookings in a city in a specified time window
+     */
     public static int numOfBookingsByCity(LocalDate fromDate, LocalDate toDate, String city) throws SQLException {
         //remove "-" from date
         String fDate = dateRefactor(fromDate);
@@ -19,7 +31,16 @@ public class Report {
         return resultSet.getInt("count(status)");
     }
 
-    public static int numOfBookingsByZipCode(LocalDate fromDate, LocalDate toDate, String zipCode) throws SQLException{
+
+    /**
+     * Get the number of bookings in a zipCode area in a specified time window
+     *
+     * @param fromDate time window start
+     * @param toDate   time window end
+     * @param zipCode  a zipCode
+     * @return the number of bookings in a zipCode area in a specified time window
+     */
+    public static int numOfBookingsByZipCode(LocalDate fromDate, LocalDate toDate, String zipCode) throws SQLException {
         //remove "-" from date
         String fDate = dateRefactor(fromDate);
         String tDate = dateRefactor(toDate);
@@ -31,68 +52,120 @@ public class Report {
         return resultSet.getInt("count(status)");
     }
 
-    public static HashMap<String, Integer> numOfListingsPerCountry() throws SQLException{
+    /**
+     * Get the number of listing for different countries
+     *
+     * @return a table of the number of listing for different countries
+     *  [country, count(listing.id)]
+     */
+    public static List<Row> numOfListingsPerCountry() throws SQLException {
+//    public static HashMap<String, Integer> numOfListingsPerCountry() throws SQLException{
         String query = "select country, count(listing.id) from address, listing" +
                 " where address.id = listing.id group by country;";
         ResultSet resultSet = Database.queryRead(query);
-        HashMap<String, Integer> hashMap = new HashMap<>();
-        while(resultSet.next()){
-            String country = resultSet.getString("country");
-            int num = resultSet.getInt("count(listing.id)");
-            hashMap.put(country, num);
-        }
-        return hashMap;
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(resultSet);
+        return Listing.CachedRowSet_to_ListRow(rowset);
+
+//        HashMap<String, Integer> hashMap = new HashMap<>();
+//        while(resultSet.next()){
+//            String country = resultSet.getString("country");
+//            int num = resultSet.getInt("count(listing.id)");
+//            hashMap.put(country, num);
+//        }
+//        return hashMap;
     }
 
-    public static HashMap<String, Integer> numOfListingsPerCountryPerCity() throws SQLException{
+    /**
+     * Get the number of listing for different (country, city) pair
+     *
+     * @return a table of the number of listing for different (country, city) pair
+     *  [city, country, count(listing.id)]
+     */
+    public static List<Row> numOfListingsPerCountryPerCity() throws SQLException {
+//        public static HashMap<String, Integer> numOfListingsPerCountryPerCity() throws SQLException {
         String query = "select city, country, count(listing.id) from address, listing" +
                 " where address.id = listing.id group by city, country;";
         ResultSet resultSet = Database.queryRead(query);
-        HashMap<String, Integer> hashMap = new HashMap<>();
-        while(resultSet.next()){
-            String country = resultSet.getString("country");
-            String city = resultSet.getString("city");
-            String place = "(" + city + "," + country + ")";
-            int num = resultSet.getInt("count(listing.id)");
-            hashMap.put(place, num);
-        }
-        return hashMap;
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(resultSet);
+        return Listing.CachedRowSet_to_ListRow(rowset);
+
+//        HashMap<String, Integer> hashMap = new HashMap<>();
+//        while (resultSet.next()) {
+//            String country = resultSet.getString("country");
+//            String city = resultSet.getString("city");
+//            String place = "(" + city + "," + country + ")";
+//            int num = resultSet.getInt("count(listing.id)");
+//            hashMap.put(place, num);
+//        }
+//        return hashMap;
     }
 
-    public static HashMap<String, Integer> numOfListingsPerCountryPerCityPerPCode() throws SQLException{
+    /**
+     * Get the number of listing for different (country, city, pcode) pair
+     *
+     * @return a table of the number of listing for different (country, city, pcode) pair
+     *  [city, pcode, country, count(listing.id)]
+     */
+    public static List<Row> numOfListingsPerCountryPerCityPerPCode() throws SQLException {
+//        public static HashMap<String, Integer> numOfListingsPerCountryPerCityPerPCode() throws SQLException {
         String query = "select city, pcode, country, count(listing.id) from address, listing" +
                 " where address.id = listing.id group by city, pcode, country;";
         ResultSet resultSet = Database.queryRead(query);
-        HashMap<String, Integer> hashMap = new HashMap<>();
-        while(resultSet.next()){
-            String country = resultSet.getString("country");
-            String city = resultSet.getString("city");
-            String pcode = resultSet.getString("pcode");
-            String place = "(" + city + "," + "," + pcode + "," + country + ")";
-            int num = resultSet.getInt("count(listing.id)");
-            hashMap.put(place, num);
-        }
-        return hashMap;
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(resultSet);
+        return Listing.CachedRowSet_to_ListRow(rowset);
+//        HashMap<String, Integer> hashMap = new HashMap<>();
+//        while (resultSet.next()) {
+//            String country = resultSet.getString("country");
+//            String city = resultSet.getString("city");
+//            String pcode = resultSet.getString("pcode");
+//            String place = "(" + city + "," + "," + pcode + "," + country + ")";
+//            int num = resultSet.getInt("count(listing.id)");
+//            hashMap.put(place, num);
+//        }
+//        return hashMap;
     }
 
-    public static ResultSet rankHostsByListingsPerCountry() throws SQLException {
+    /**
+     * Get the table of number of listings for different hosts in different countries, descending order by count (all records)
+     *
+     * @return a table of number of listings for different hosts in different countries, descending order by count (all records)
+     *  [ownerID, country, count(listing.id)]
+     */
+    public static List<Row> rankHostsByListingsPerCountry() throws SQLException {
+//        public static ResultSet rankHostsByListingsPerCountry() throws SQLException {
         String query = "select owner, country, count(listing.id) " +
                 "from listing, address " +
                 "where listing.id = address.id " +
                 "group by owner, country " +
                 "order by country, count(listing.id) desc;";
         ResultSet resultSet = Database.queryRead(query);
-        return resultSet;
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(resultSet);
+        return Listing.CachedRowSet_to_ListRow(rowset);
+//        return resultSet;
     }
 
-    public static ResultSet rankHostsByListingsPerCity() throws SQLException{
+    /**
+     * Get the table of number of listings for different hosts in different cities, descending order by count (all records)
+     *
+     * @return a table of number of listings for different hosts in different cities, descending order by count (all records)
+     *  [ownerID, city, count(listing.id)]
+     */
+    public static List<Row> rankHostsByListingsPerCity() throws SQLException {
+//        public static ResultSet rankHostsByListingsPerCity() throws SQLException {
         String query = "select owner, city, count(listing.id) " +
                 "from listing, address " +
                 "where listing.id = address.id " +
                 "group by owner, city " +
                 "order by city, count(listing.id) desc;";
         ResultSet resultSet = Database.queryRead(query);
-        return resultSet;
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(resultSet);
+        return Listing.CachedRowSet_to_ListRow(rowset);
+//        return resultSet;
     }
 
     public static void rankRentersByNumOfBookings(LocalDate startDate, LocalDate toDate) throws SQLException {
@@ -100,18 +173,18 @@ public class Report {
         // count the number of bookings in that condition
     }
 
-    private static String dateRefactor(LocalDate date){
+    private static String dateRefactor(LocalDate date) {
         return date.toString().replaceAll("-", "");
     }
 
     public static void main(String args[]) throws SQLException {
-        if (Database.connect()){
+        if (Database.connect()) {
             LocalDate fromDate = LocalDate.parse("2020-01-01");
             LocalDate toDate = LocalDate.parse("2021-01-01");
 //            System.out.println(numOfBookingsByCity(fromDate, toDate, "London"));
 //            System.out.println(numOfBookingsByZipCode(fromDate, toDate, "C3A8BF"));
-            HashMap<String, Integer> hashMap = numOfListingsPerCountryPerCityPerPCode();
-            System.out.println(hashMap.entrySet());
+//            HashMap<String, Integer> hashMap = numOfListingsPerCountryPerCityPerPCode();
+//            System.out.println(hashMap.entrySet());
         }
         Database.disconnect();
     }
