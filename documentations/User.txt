@@ -69,7 +69,14 @@
      	*/
     	public Double getRating(int id, int type)
 
-
+/**
+     * User cancels a booking
+     *
+     * @param info [l_id, fromDate, toDate]
+     * @param type 1 - renter; 2 - host
+     * @return true if successfully; false otherwise
+     */
+    public Boolean cancelBooking(List<String> info, int type)
 
 
 

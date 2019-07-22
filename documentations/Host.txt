@@ -6,13 +6,7 @@
      */
     public Boolean postListing(List<String> houseInfo, List<String> addrInfo)
 
-/**
-     * Cancel a booking as a host
-     * @param info [l_id, fromDate, toDate]
-     * @return true if cancelBooking successfully; false otherwise
-     */
-    @Override
-    public Boolean cancelBooking(List<String> info)
+
 
 /**
      * Update price of a listing

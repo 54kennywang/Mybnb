@@ -101,7 +101,6 @@ public abstract class User {
         return this.id;
     }
 
-    public abstract Boolean cancelBooking(List<String> info) throws SQLException;
 
     // initial comment on a user
     // given a list of commentInfo: [receiver, rating, content]
@@ -130,7 +129,7 @@ public abstract class User {
     /**
      * Get a user/listing's average rating
      *
-     * @param id a user/listing's id
+     * @param id   a user/listing's id
      * @param type 1 - user; 0 - listing
      * @return a user/listing's average rating
      */
@@ -152,7 +151,7 @@ public abstract class User {
     /**
      * Get comments on a user/listing
      *
-     * @param id user/listing's id
+     * @param id   user/listing's id
      * @param type 1 - user; 0 - listing
      * @return listing of tables of comments, each table is a comment block
      * table schema: [id, parent_comment, sender, sender_name, receiver, receiver_name, rating, content, date]
@@ -214,7 +213,7 @@ public abstract class User {
     /**
      * View comments on a user/listing and it's average rating
      *
-     * @param id user/listing's id
+     * @param id   user/listing's id
      * @param type 1 - user; 0 - listing
      */
     public void viewComments(int id, int type) throws SQLException {
@@ -223,7 +222,8 @@ public abstract class User {
         for (int i = 0; i < comments.size(); i++) {
             for (int j = 0; j < comments.get(i).size(); j++) {
                 if (k == 0) {
-                    if (type == 1) System.out.println("Comments on " + comments.get(i).get(j).getColumnObject(6) + "(rating: " + getRating(id, type) + ")");
+                    if (type == 1)
+                        System.out.println("Comments on " + comments.get(i).get(j).getColumnObject(6) + "(rating: " + getRating(id, type) + ")");
                     else System.out.println("Comments on listing ID = " + id + "(rating: " + getRating(id, type) + ")");
                     k++;
                 }
@@ -234,6 +234,72 @@ public abstract class User {
                         + "(" + comments.get(i).get(j).getColumnObject(9) + ")");
             }
         }
+    }
+
+    /**
+     * User cancels a booking
+     *
+     * @param info [l_id, fromDate, toDate]
+     * @param type 1 - renter; 2 - host
+     * @return true if successfully; false otherwise
+     */
+    public Boolean cancelBooking(List<String> info, int type) throws SQLException {
+        String newInfo = "";
+        String conditions = "";
+        if (type == 1) { // renter
+            Boolean legal = false; // legal to cancel this booking?
+
+            String query = "SELECT * FROM mydb.rented where status = 0 and u_id = " + this.id + " and l_id = " + info.get(0) +
+                    " and fromDate = '" + info.get(1) +
+                    "' and toDate = '" + info.get(2) + "'; ";
+            ResultSet rowset = Database.queryRead(query);
+            while (rowset.next()) {
+                legal = true;
+                newInfo = "status = -1";
+                conditions = "u_id=" + this.id + " and l_id=" + info.get(0) + " and fromDate = '" + info.get(1)
+                        + "' and toDate='" + info.get(2) + "'";
+                break;
+            }
+            if (!legal) return false;
+        }
+        else if (type == 2){ // host
+            Boolean legal = false; // legal to cancel this booking?
+            if (Listing.getOwnerId(Integer.parseInt(info.get(0))) != this.id) return false;
+
+            String query = "SELECT * FROM mydb.rented where status = 0 and l_id = " + info.get(0) +
+                    " and fromDate = '" + info.get(1) +
+                    "' and toDate = '" + info.get(2) + "'; ";
+            ResultSet rowset = Database.queryRead(query);
+            while (rowset.next()) {
+                legal = true;
+                newInfo = "status = -2";
+                conditions = "l_id=" + info.get(0) + " and fromDate = '" + info.get(1)
+                        + "' and toDate='" + info.get(2) + "' and status = 0";
+                break;
+            }
+            if (!legal) return false;
+        }
+
+        Boolean success = false;
+        if (this.active) {
+            // update "rented (status)" table
+            String table1 = "rented";
+
+            if (Database.update(table1, newInfo, conditions)) {
+                // recover "availability" table
+                String table2 = "availability";
+                String cols2 = "id, avilDate";
+                List<LocalDate> dates = Listing.allDates(info.get(1), info.get(2));
+                for (int i = 0; i < dates.size(); i++) {
+                    String vals2 = info.get(0) + ", '" + dates.get(i) + "'";
+                    if (!Database.insert(table2, cols2, vals2)) {
+                        return false;
+                    }
+                }
+                success = true;
+            }
+        }
+        return success;
     }
 
 

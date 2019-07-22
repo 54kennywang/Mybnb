@@ -15,11 +15,30 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+import static test.Database.queryRead;
+
 public class Listing {
     // 0, 1, ..., 13
     public static List<String> amenities = Arrays.asList(
             "WIFI", "TV", "AC", "Microwave", "Laundry", "Refrigerator", "Hair Dryer", "Iron",
             "Hangers", "Fire extinguisher", "Coffee Maker", "Dishwasher", "Oven", "BBQ Grill");
+
+    /**
+     * Get the ownerID of a listing
+     *
+     * @param l_id the id of a listing
+     * @return ownerID of that listing
+     */
+    public static Integer getOwnerID(int l_id) throws SQLException{
+        String query = "SELECT owner FROM mydb.listing where id = " + l_id + ";";
+        ResultSet rowset = Database.queryRead(query);
+        Integer ownerID = null;
+        if(rowset.next()){
+            ownerID = rowset.getInt("owner");
+        }
+        return ownerID;
+    }
+
 
     /**
      * Prints a listing's info in console.
@@ -28,7 +47,7 @@ public class Listing {
      */
     public static void viewListing(int id) throws SQLException {
         String query = "select * from listing where id = " + id;
-        ResultSet rs = Database.queryRead(query);
+        ResultSet rs = queryRead(query);
         if (rs.next()) {
             System.out.println("Area: " + rs.getString("area"));
             System.out.println("Price: $" + rs.getString("dayPrice"));
@@ -55,7 +74,7 @@ public class Listing {
      */
     public static List<LocalDate> allAvailabilities(int id) throws SQLException {
         String query = "select * from availability where id = " + id;
-        ResultSet rs = Database.queryRead(query);
+        ResultSet rs = queryRead(query);
         List<LocalDate> avilDates = new ArrayList<LocalDate>();
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(rs);
@@ -88,7 +107,7 @@ public class Listing {
      */
     public static List<LocalDate> allUnavailabilities(int id) throws SQLException {
         String query = "select * from rented where l_id = " + id + " and status = 0";
-        ResultSet rs = Database.queryRead(query);
+        ResultSet rs = queryRead(query);
         List<LocalDate> UnavilDates = new ArrayList<LocalDate>();
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(rs);
@@ -123,7 +142,7 @@ public class Listing {
      */
     public static Integer getOwnerId(int l_id) throws SQLException {
         String query = "SELECT * FROM listing where id = " + l_id + ";";
-        ResultSet rs = Database.queryRead(query);
+        ResultSet rs = queryRead(query);
         if (rs.next()) {
             return rs.getInt("owner");
         }
@@ -227,7 +246,7 @@ public class Listing {
         String query = "SELECT address.*, listing.area, listing.dayPrice, listing.owner, listing.amenity, 0.0 as distance " +
                 "FROM address join listing " +
                 "on listing.id = address.id and address.type = 0;";
-        ResultSet rs = Database.queryRead(query);
+        ResultSet rs = queryRead(query);
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(rs);
         List<Row> result = CachedRowSet_to_ListRow(rowset);
@@ -336,7 +355,7 @@ public class Listing {
         String exactQuery = "SELECT address.*, listing.area, listing.dayPrice, listing.owner, listing.amenity, 0.0 as distance " +
                 "FROM address join listing " +
                 "on listing.id = address.id and address.type = 0 where address.pcode = '" + sanitizedPcode + "';";
-        ResultSet rs = Database.queryRead(exactQuery);
+        ResultSet rs = queryRead(exactQuery);
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(rs);
         return CachedRowSet_to_ListRow(rowset);
@@ -372,7 +391,7 @@ public class Listing {
                 "FROM address join listing " +
                 "on listing.id = address.id and address.type = 0 and address.pcode != '" + sanitizedPcode + "'" +
                 " where address.pcode like '" + wildcard_pcode + "';";
-        ResultSet rs = Database.queryRead(query);
+        ResultSet rs = queryRead(query);
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(rs);
 

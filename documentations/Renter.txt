@@ -37,13 +37,7 @@
     public Boolean commentOnUser(List<String> info)
 
 
-/**
-     * Renter cancels a booking
-     * @param info [l_id, fromDate, toDate]
-     * @return true if successfully; false otherwise
-     */
-    @Override
-    public Boolean cancelBooking(List<String> info)
+
 
 
 

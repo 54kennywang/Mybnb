@@ -1,4 +1,12 @@
 /**
+     * Get the ownerID of a listing
+     *
+     * @param l_id the id of a listing
+     * @return ownerID of that listing
+     */
+    public static Integer getOwnerID
+
+/**
      * Displays a listing's info in console.
      * @param id the id of a listing
      */

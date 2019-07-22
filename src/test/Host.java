@@ -7,14 +7,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.sql.rowset.CachedRowSet;
+
 import com.sun.rowset.CachedRowSetImpl;
+
+import static test.Database.queryRead;
 
 public class Host extends Renter {
 
     /**
      * Post a listing as a host
+     *
      * @param houseInfo [area, fromDate, toDate, dayPrice, owner, type, amenity]
-     * @param addrInfo [street, city, pcode, country]
+     * @param addrInfo  [street, city, pcode, country]
      * @return true if post successfully
      */
     public Boolean postListing(List<String> houseInfo, List<String> addrInfo) throws Exception {
@@ -29,7 +33,7 @@ public class Host extends Renter {
             if (Database.insert(table1, cols1, vals1)) {
                 // insert availability
                 String query = "SELECT LAST_INSERT_ID()";
-                ResultSet result = Database.queryRead(query);
+                ResultSet result = queryRead(query);
                 Integer newID = null;
                 if (result.next()) {
                     newID = result.getInt("LAST_INSERT_ID()");
@@ -69,11 +73,27 @@ public class Host extends Renter {
 
     /**
      * Cancel a booking as a host
+     *
      * @param info [l_id, fromDate, toDate]
      * @return true if cancelBooking successfully; false otherwise
      */
+    /*
     @Override
-    public Boolean cancelBooking(List<String> info) {
+    public Boolean cancelBooking(List<String> info) throws SQLException {
+        Boolean legal = false; // legal to cancel this booking?
+        if (Listing.getOwnerId(Integer.parseInt(info.get(0))) != this.id) return false;
+
+        String query = "SELECT * FROM mydb.rented where status = 0 and l_id = " + info.get(0) +
+                " and fromDate = '" + info.get(1) +
+                "' and toDate = '" + info.get(2) + "'; ";
+        ResultSet rowset = Database.queryRead(query);
+        while (rowset.next()) {
+            legal = true;
+            break;
+        }
+        if (!legal) return false;
+
+
         Boolean success = false;
         if (this.active) {
             // update "rented (status)" table
@@ -97,14 +117,15 @@ public class Host extends Renter {
         }
         return success;
     }
-
+    */
     /**
      * Update price of a listing
+     *
      * @param info [l_id, newPrice]
      * @return true if successfully; false otherwise
      */
     public Boolean updatePrice(List<String> info) throws SQLException {
-        if(!this.getAllMyListing().contains(info.get(0))) return  false;
+        if (!this.getAllMyListing().contains(info.get(0))) return false;
         Boolean success = false;
         if (this.active && this.type.equals(2)) {
             String table = "listing";
@@ -117,12 +138,13 @@ public class Host extends Renter {
 
     /**
      * Update availabilities of a listing
+     *
      * @param info [l_id, from1, to1, from2, to2, ...]
      * @return true if successfully; false otherwise
      * sample: ("10", "2020-06-02", "2020-06-05", "2020-07-29", "2020-08-02") add two slots availabilities to listing 10
      */
     public Boolean updateAvailability(List<String> info) throws SQLException {
-        if(!this.getAllMyListing().contains(info.get(0))) return  false;
+        if (!this.getAllMyListing().contains(info.get(0))) return false;
         Boolean success = false;
         if (this.active && this.type.equals(2)) {
             // delete existing availabilities
@@ -148,11 +170,12 @@ public class Host extends Renter {
 
     /**
      * Get a list of ID's of my listing
+     *
      * @return a list of ID's of my listing
      */
     public List<Integer> getAllMyListing() throws SQLException {
         String query = "SELECT * FROM listing where owner = " + this.id + ";";
-        ResultSet rs = Database.queryRead(query);
+        ResultSet rs = queryRead(query);
         List<Integer> allIDs = new ArrayList<Integer>();
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(rs);
@@ -169,7 +192,7 @@ public class Host extends Renter {
      */
     public void viewAllMyListing() throws SQLException {
         List<Integer> allMyListings = this.getAllMyListing();
-        for(int i = 0; i < allMyListings.size(); i ++){
+        for (int i = 0; i < allMyListings.size(); i++) {
             System.out.println("==== Listing ID: " + allMyListings.get(i) + " ====");
             Listing.viewListing(allMyListings.get(i));
         }
@@ -178,6 +201,7 @@ public class Host extends Renter {
 
     /**
      * Host's initial comment on a Renter
+     *
      * @param info [receiver, rating, content]
      * @return true if successfully; false otherwise
      */
@@ -187,27 +211,28 @@ public class Host extends Renter {
         CachedRowSet rowset = this.getBookings(1);
         while (rowset.next()) {
             Integer u_id = rowset.getInt("u_id");
-            if(u_id == Integer.parseInt(info.get(0))){
+            if (u_id == Integer.parseInt(info.get(0))) {
                 legal = true;
                 break;
             }
         }
-        if(!legal) return false;
+        if (!legal) return false;
 
         Boolean success = false;
-        if(this.active) {
+        if (this.active) {
             // add to "user_comment" table
             String table = "user_comment";
             String cols = "sender, receiver, parent_comment, rating, content, date";
             String vals = this.id + ", " + info.get(0) + ", null, " + info.get(1) + ", '" +
-                    info.get(2) + "', " + "NOW()" ;
-            if(Database.insert(table, cols, vals)) success =true;
+                    info.get(2) + "', " + "NOW()";
+            if (Database.insert(table, cols, vals)) success = true;
         }
         return success;
     }
 
     /**
      * Host's reply to a comment on a listing
+     *
      * @param info [receiver, parent_comment, content, l_id]
      * @return true if successfully; false otherwise
      */
@@ -230,14 +255,16 @@ public class Host extends Renter {
             List<String> cred = Arrays.asList("qibowang7@outlook.com", "password");
             System.out.println(me.signIn(cred));
 
-//			List<String> info = Arrays.asList("4", "2019-07-02", "2019-07-02");
-//			System.out.println(me.cancelBooking(info));
+            // [l_id, fromDate, toDate]
+            List<String> info = Arrays.asList("17", "2019-07-27", "2019-07-31");
+			System.out.println(me.cancelBooking(info, 2));
 
             // given houseInfo: [area, fromDate, toDate, dayPrice, owner, type, amenity]
             // given addrInfo: [street, city, pcode, country]
-			List<String> houseInfo = Arrays.asList("177", "2019-07-29", "2019-08-02", "99", me.getId().toString(), "Room", "01010111010100");
-			List<String> addrInfo = Arrays.asList("701 Military", "Toronto", "ON M1E 4P6", "Canada");
-			System.out.println(me.postListing(houseInfo, addrInfo));
+
+//            List<String> houseInfo = Arrays.asList("77", "2019-07-27", "2019-08-07", "77.77", me.getId().toString(), "Condo", "01010111010100");
+//            List<String> addrInfo = Arrays.asList("384 Old Kingston", "Toronto", "ON M1C 1B6", "Canada");
+//            System.out.println(me.postListing(houseInfo, addrInfo));
 
 //			List<String> info = Arrays.asList("10", "19.99");
 //			System.out.println(me.updatePrice(info));
