@@ -118,6 +118,7 @@ public class Host extends Renter {
         return success;
     }
     */
+
     /**
      * Update price of a listing
      *
@@ -125,7 +126,8 @@ public class Host extends Renter {
      * @return true if successfully; false otherwise
      */
     public Boolean updatePrice(List<String> info) throws SQLException {
-        if (!this.getAllMyListing().contains(info.get(0))) return false;
+        if (Listing.getOwnerId(Integer.parseInt(info.get(0))) != this.id) return false;
+//        if (!this.getAllMyListing().contains(info.get(0))) return false;
         Boolean success = false;
         if (this.active && this.type.equals(2)) {
             String table = "listing";
@@ -144,7 +146,24 @@ public class Host extends Renter {
      * sample: ("10", "2020-06-02", "2020-06-05", "2020-07-29", "2020-08-02") add two slots availabilities to listing 10
      */
     public Boolean updateAvailability(List<String> info) throws SQLException {
-        if (!this.getAllMyListing().contains(info.get(0))) return false;
+        if (Listing.getOwnerId(Integer.parseInt(info.get(0))) != this.id) return false;
+//        if (!this.getAllMyListing().contains(info.get(0))) return false;
+
+        List<LocalDate> newDates = new ArrayList<LocalDate>();
+        for (int i = 1; i < info.size(); i++) {
+            List<LocalDate> dates = Listing.allDates(info.get(i), info.get(++i));
+            newDates.addAll(dates);
+        }
+//        System.out.println("want to add: " + newDates);
+        List<LocalDate> unAvail = Listing.allUnavailabilities(Integer.parseInt(info.get(0)));
+//        System.out.println("unavailable: " + unAvail);
+
+        unAvail.retainAll(newDates);
+
+        System.out.println("conflicts: " + unAvail);
+
+        if (unAvail.size() > 0) return false;
+
         Boolean success = false;
         if (this.active && this.type.equals(2)) {
             // delete existing availabilities
@@ -152,19 +171,17 @@ public class Host extends Renter {
             String conditions = "id = " + info.get(0);
             Database.delete(table, conditions);
             // add new availabilities
-            for (int i = 1; i < info.size(); i++) {
+            for (int i = 0; i < newDates.size(); i++) {
                 String table2 = "availability";
                 String cols2 = "id, avilDate";
-                List<LocalDate> dates = Listing.allDates(info.get(i), info.get(++i));
-                for (int j = 0; j < dates.size(); j++) {
-                    String vals2 = info.get(0) + ", '" + dates.get(j) + "'";
-                    if (!Database.insert(table2, cols2, vals2)) {
-                        return false;
-                    }
+                String vals2 = info.get(0) + ", '" + newDates.get(i) + "'";
+                if (!Database.insert(table2, cols2, vals2)) {
+                    return false;
                 }
             }
             success = true;
         }
+
         return success;
     }
 
@@ -256,8 +273,8 @@ public class Host extends Renter {
             System.out.println(me.signIn(cred));
 
             // [l_id, fromDate, toDate]
-            List<String> info = Arrays.asList("17", "2019-07-27", "2019-07-31");
-			System.out.println(me.cancelBooking(info, 2));
+//            List<String> info = Arrays.asList("17", "2019-07-27", "2019-07-31");
+//            System.out.println(me.cancelBooking(info, 2));
 
             // given houseInfo: [area, fromDate, toDate, dayPrice, owner, type, amenity]
             // given addrInfo: [street, city, pcode, country]
@@ -269,8 +286,8 @@ public class Host extends Renter {
 //			List<String> info = Arrays.asList("10", "19.99");
 //			System.out.println(me.updatePrice(info));
 
-//			List<String> info = Arrays.asList("10", "2020-06-02", "2020-06-05", "2020-07-29", "2020-08-02");
-//			System.out.println(me.updateAvailability(info));
+			List<String> info = Arrays.asList("10", "2020-07-01", "2020-07-02", "2020-02-27", "2020-03-02");
+			System.out.println(me.updateAvailability(info));
 
 //			List<String> info = Arrays.asList("6", "1", "thx for the comment: this Apt is good.", "10");
 //			System.out.println(me.replyListingComment(info));

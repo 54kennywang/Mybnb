@@ -76,14 +76,18 @@ public class Practice {
 ////            System.out.println("u_id: " + rowset.getInt("u_id") + " l_id: " + rowset.getInt("l_id"));
 //        }
 //        Database.disconnect();
-        System.out.println(round(200, 2));
-    }
-    public static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
+        List<LocalDate> dates1 = new ArrayList<LocalDate>();
+        dates1.add(LocalDate.now());
+        dates1.add(LocalDate.now().plusDays(-1));
 
-        long factor = (long) Math.pow(10, places);
-        value = value * factor;
-        long tmp = Math.round(value);
-        return (double) tmp / factor;
+        List<LocalDate> dates2 = new ArrayList<LocalDate>();
+        dates2.add(LocalDate.now().plusDays(-1));
+        dates2.add(LocalDate.now().plusDays(-2));
+
+        List<LocalDate> dates3 = new ArrayList<LocalDate>(dates1);
+        dates3.retainAll(dates2);
+        System.out.println(dates1);
+        System.out.println(dates2);
+        System.out.println(dates3);
     }
 }

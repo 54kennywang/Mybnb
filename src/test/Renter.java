@@ -202,8 +202,8 @@ public class Renter extends User {
             List<String> cred = Arrays.asList("michael@outlook.com", "password");
             System.out.println(me.signIn(cred));
 
-//			List<String> info = Arrays.asList("17", "2019-07-27", "2019-07-31");
-//			System.out.println(me.bookListing(info));
+			List<String> info = Arrays.asList("10", "2020-07-01", "2020-07-02");
+			System.out.println(me.bookListing(info));
 
             //[l_id, fromDate, toDate]
 //			List<String> info = Arrays.asList("16", "2019-07-28", "2019-08-02");
