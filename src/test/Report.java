@@ -95,6 +95,11 @@ public class Report {
         return resultSet;
     }
 
+    public static void rankRentersByNumOfBookings(LocalDate startDate, LocalDate toDate) throws SQLException {
+        // compare the input duration and the duration of the bookings
+        // count the number of bookings in that condition
+    }
+
     private static String dateRefactor(LocalDate date){
         return date.toString().replaceAll("-", "");
     }
