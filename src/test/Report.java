@@ -134,13 +134,13 @@ public class Report {
      * @return a table of number of listings for different hosts in different countries, descending order by count (all records)
      *  [ownerID, country, count(listing.id)]
      */
-    public static List<Row> rankHostsByListingsPerCountry() throws SQLException {
+    public static List<Row> rankHostsByListingsPerCountry(String country) throws SQLException {
 //        public static ResultSet rankHostsByListingsPerCountry() throws SQLException {
         String query = "select owner, country, count(listing.id) " +
                 "from listing, address " +
-                "where listing.id = address.id " +
-                "group by owner, country " +
-                "order by country, count(listing.id) desc;";
+                "where listing.id = address.id and address.type = 0 and address.country = '" + country +
+                "' group by owner, country " +
+                "order by count(listing.id) desc;";
         ResultSet resultSet = Database.queryRead(query);
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(resultSet);
@@ -154,13 +154,13 @@ public class Report {
      * @return a table of number of listings for different hosts in different cities, descending order by count (all records)
      *  [ownerID, city, count(listing.id)]
      */
-    public static List<Row> rankHostsByListingsPerCity() throws SQLException {
+    public static List<Row> rankHostsByListingsPerCity(String city) throws SQLException {
 //        public static ResultSet rankHostsByListingsPerCity() throws SQLException {
         String query = "select owner, city, count(listing.id) " +
                 "from listing, address " +
-                "where listing.id = address.id " +
-                "group by owner, city " +
-                "order by city, count(listing.id) desc;";
+                "where listing.id = address.id and address.type = 0 and address.city = '" + city +
+                "' group by owner, city " +
+                "order by count(listing.id) desc;";
         ResultSet resultSet = Database.queryRead(query);
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(resultSet);
@@ -185,6 +185,12 @@ public class Report {
 //            System.out.println(numOfBookingsByZipCode(fromDate, toDate, "C3A8BF"));
 //            HashMap<String, Integer> hashMap = numOfListingsPerCountryPerCityPerPCode();
 //            System.out.println(hashMap.entrySet());
+
+//            List<Row> x = rankHostsByListingsPerCountry("Canada");
+            List<Row> x = rankHostsByListingsPerCity("Scarborough");
+            for(int i = 0; i < x.size(); i ++){
+                System.out.println("owner: " + x.get(i).getColumnObject(1) + " | count: " + x.get(i).getColumnObject(3));
+            }
         }
         Database.disconnect();
     }
