@@ -161,11 +161,20 @@ public class Database {
 	}
 	
 	
-	public static void main( String args[] ) {
+	public static void main( String args[] ) throws  Exception{
 		if(Database.connect()) {
 //			System.out.println(Database.insert("sailers", "name, num, age", "'KENNY', 123, 23"));
 //			System.out.println(Database.update("sailers", "name = 'KENNY', num = -111", "id=36"));
-			System.out.println(Database.delete("sailers", "id=36"));
+//			System.out.println(Database.delete("sailers", "id=36"));
+
+
+//			List<Object> x = Map.getAllByAddr("530 Oxford St W, London, ON N6H 1T6, Canada");
+//			List<String> xx = new ArrayList<String>();
+//			for(int i = 0; i < x.size(); i ++) {
+//				xx.add(x.get(i).toString());
+//			}
+//
+//			System.out.println(Database.insertAddr(xx, 5, 0));
 		}
 		Database.disconnect();
 	}

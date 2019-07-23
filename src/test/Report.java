@@ -56,7 +56,7 @@ public class Report {
      * Get the number of listing for different countries
      *
      * @return a table of the number of listing for different countries
-     *  [country, count(listing.id)]
+     * [country, count(listing.id)]
      */
     public static List<Row> numOfListingsPerCountry() throws SQLException {
 //    public static HashMap<String, Integer> numOfListingsPerCountry() throws SQLException{
@@ -80,7 +80,7 @@ public class Report {
      * Get the number of listing for different (country, city) pair
      *
      * @return a table of the number of listing for different (country, city) pair
-     *  [city, country, count(listing.id)]
+     * [city, country, count(listing.id)]
      */
     public static List<Row> numOfListingsPerCountryPerCity() throws SQLException {
 //        public static HashMap<String, Integer> numOfListingsPerCountryPerCity() throws SQLException {
@@ -106,7 +106,7 @@ public class Report {
      * Get the number of listing for different (country, city, pcode) pair
      *
      * @return a table of the number of listing for different (country, city, pcode) pair
-     *  [city, pcode, country, count(listing.id)]
+     * [city, pcode, country, count(listing.id)]
      */
     public static List<Row> numOfListingsPerCountryPerCityPerPCode() throws SQLException {
 //        public static HashMap<String, Integer> numOfListingsPerCountryPerCityPerPCode() throws SQLException {
@@ -131,8 +131,9 @@ public class Report {
     /**
      * Get the table of number of listings for different hosts in different countries, descending order by count (all records)
      *
+     * @param country country name
      * @return a table of number of listings for different hosts in different countries, descending order by count (all records)
-     *  [ownerID, country, count(listing.id)]
+     * [ownerID, country, count(listing.id)]
      */
     public static List<Row> rankHostsByListingsPerCountry(String country) throws SQLException {
 //        public static ResultSet rankHostsByListingsPerCountry() throws SQLException {
@@ -151,14 +152,16 @@ public class Report {
     /**
      * Get the table of number of listings for different hosts in different cities, descending order by count (all records)
      *
+     * @param country country name
+     * @param city    city name
      * @return a table of number of listings for different hosts in different cities, descending order by count (all records)
-     *  [ownerID, city, count(listing.id)]
+     * [ownerID, city, count(listing.id)]
      */
-    public static List<Row> rankHostsByListingsPerCity(String city) throws SQLException {
+    public static List<Row> rankHostsByListingsPerCity(String country, String city) throws SQLException {
 //        public static ResultSet rankHostsByListingsPerCity() throws SQLException {
         String query = "select owner, city, count(listing.id) " +
                 "from listing, address " +
-                "where listing.id = address.id and address.type = 0 and address.city = '" + city +
+                "where listing.id = address.id and address.type = 0 and address.country = '" + country + "' and address.city = '" + city +
                 "' group by owner, city " +
                 "order by count(listing.id) desc;";
         ResultSet resultSet = Database.queryRead(query);
@@ -168,9 +171,51 @@ public class Report {
 //        return resultSet;
     }
 
-    public static void rankRentersByNumOfBookings(LocalDate startDate, LocalDate toDate) throws SQLException {
-        // compare the input duration and the duration of the bookings
-        // count the number of bookings in that condition
+
+    public static void spamPosting() {
+
+    }
+
+    /**
+     * Get the table of renter booking (lived) times in a time window
+     *
+     * @param startDate time window begin time
+     * @param toDate    time window ending time
+     * @return a table of renter booking (lived) times in a time window
+     * [u_id, country, city, count]
+     */
+    public static List<Row> rankRentersByNumOfBookings(LocalDate startDate, LocalDate toDate) throws SQLException {
+        String query =
+                "select r.u_id, a.country, a.city, count(*) as 'count' from rented r, address a " +
+                        "where a.id = r.l_id and a.type = 0 and r.fromDate >= '" + startDate + "' and r.toDate <= '" + toDate + "' " +
+                        "and r.status = 1 " +
+                        "group by r.u_id, a.country, a.city having count(*) > 1 " +
+                        "order by count(*) desc;";
+        ResultSet resultSet = Database.queryRead(query);
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(resultSet);
+        return Listing.CachedRowSet_to_ListRow(rowset);
+    }
+
+    /**
+     * Get the table of renter booking (lived) times in a time window in a particular city
+     *
+     * @param startDate time window begin time
+     * @param toDate    time window ending time
+     * @param country   country name
+     * @param city      city name
+     * @return a table of renter booking (lived) times in a time window in a particular city
+     * [u_id, country, city, count]
+     */
+    public static List<Row> rankRentersByNumOfBookingsPerCity(LocalDate startDate, LocalDate toDate, String country, String city) throws SQLException {
+        List<Row> result = Report.rankRentersByNumOfBookings(startDate, toDate);
+        for (int i = 0; i < result.size(); i++) {
+            if (!result.get(i).getColumnObject(2).toString().equals(country) || !result.get(i).getColumnObject(3).toString().equals(city)) {
+                result.remove(i);
+                i--;
+            }
+        }
+        return result;
     }
 
     private static String dateRefactor(LocalDate date) {
@@ -179,18 +224,27 @@ public class Report {
 
     public static void main(String args[]) throws SQLException {
         if (Database.connect()) {
-            LocalDate fromDate = LocalDate.parse("2020-01-01");
-            LocalDate toDate = LocalDate.parse("2021-01-01");
+//            LocalDate fromDate = LocalDate.parse("2020-01-01");
+//            LocalDate toDate = LocalDate.parse("2021-01-01");
 //            System.out.println(numOfBookingsByCity(fromDate, toDate, "London"));
 //            System.out.println(numOfBookingsByZipCode(fromDate, toDate, "C3A8BF"));
 //            HashMap<String, Integer> hashMap = numOfListingsPerCountryPerCityPerPCode();
 //            System.out.println(hashMap.entrySet());
 
 //            List<Row> x = rankHostsByListingsPerCountry("Canada");
-            List<Row> x = rankHostsByListingsPerCity("Scarborough");
-            for(int i = 0; i < x.size(); i ++){
-                System.out.println("owner: " + x.get(i).getColumnObject(1) + " | count: " + x.get(i).getColumnObject(3));
-            }
+//            List<Row> x = rankHostsByListingsPerCity("Canada", "London");
+//            for(int i = 0; i < x.size(); i ++){
+//                System.out.println("owner: " + x.get(i).getColumnObject(1) + " | count: " + x.get(i).getColumnObject(3));
+//            }
+
+//            List<Row> x = rankRentersByNumOfBookings(LocalDate.parse("2019-01-01"), LocalDate.parse("2019-12-12"));
+//            for (int i = 0; i < x.size(); i++) {
+//                System.out.println("owner: " + x.get(i).getColumnObject(1) + " | city: " + x.get(i).getColumnObject(3) +" | count: " + x.get(i).getColumnObject(4));
+//            }
+
+            List<Row> y = rankRentersByNumOfBookingsPerCity(LocalDate.parse("2019-01-01"), LocalDate.parse("2019-12-12"), "Canada", "x");
+            if(y.size() == 0) System.out.println("correct");
+
         }
         Database.disconnect();
     }

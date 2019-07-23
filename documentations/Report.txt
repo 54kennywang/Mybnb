@@ -46,14 +46,43 @@
 /**
      * Get the table of number of listings for different hosts in different countries, descending order by count (all records)
      *
+     * @param country country name
      * @return a table of number of listings for different hosts in different countries, descending order by count (all records)
      *  [ownerID, country, count(listing.id)]
      */
-    public static List<Row> rankHostsByListingsPerCountry()
+    public static List<Row> rankHostsByListingsPerCountry(String country)
+
+/**
+     * Get the table of number of listings for different hosts in different cities, descending order by count (all records)
+     *
+     * @param country country name
+     * @param city city name
+     * @return a table of number of listings for different hosts in different cities, descending order by count (all records)
+     *  [ownerID, city, count(listing.id)]
+     */
+    public static List<Row> rankHostsByListingsPerCity(String country, String city)
+
+/**
+     * Get the table of renter booking (lived) times in a time window
+     *
+     * @param startDate time window begin time
+     * @param toDate    time window ending time
+     * @return a table of renter booking (lived) times in a time window
+     * [u_id, country, city, count]
+     */
+    public static List<Row> rankRentersByNumOfBookings(LocalDate startDate, LocalDate toDate)
 
 
-
-
-
+/**
+     * Get the table of renter booking (lived) times in a time window in a particular city
+     *
+     * @param startDate time window begin time
+     * @param toDate    time window ending time
+     * @param country   country name
+     * @param city      city name
+     * @return a table of renter booking (lived) times in a time window in a particular city
+     * [u_id, country, city, count]
+     */
+    public static List<Row> rankRentersByNumOfBookingsPerCity(LocalDate startDate, LocalDate toDate, String country, String city)
 
 
