@@ -56,20 +56,20 @@ public class Host extends Renter {
         return success;
     }
 
-    @Override
-    public Boolean becomeHost() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Boolean bookListing(List<String> info) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Boolean commentOnListing(List<String> info) {
-        throw new UnsupportedOperationException();
-    }
+//    @Override
+//    public Boolean becomeHost() {
+//        throw new UnsupportedOperationException();
+//    }
+//
+//    @Override
+//    public Boolean bookListing(List<String> info) {
+//        throw new UnsupportedOperationException();
+//    }
+//
+//    @Override
+//    public Boolean commentOnListing(List<String> info) {
+//        throw new UnsupportedOperationException();
+//    }
 
     /**
      * Cancel a booking as a host
@@ -269,8 +269,12 @@ public class Host extends Renter {
     public static void main(String args[]) throws Exception {
         if (Database.connect()) {
             Host me = new Host();
-            List<String> cred = Arrays.asList("qibowang7@outlook.com", "password");
+//            List<String> cred = Arrays.asList("qibowang7@outlook.com", "password");
+//            System.out.println(me.signIn(cred));
+
+            List<String> cred = Arrays.asList("michael@outlook.com", "password");
             System.out.println(me.signIn(cred));
+//            System.out.println(me.becomeHost());
 
             // [l_id, fromDate, toDate]
 //            List<String> info = Arrays.asList("17", "2019-07-27", "2019-07-31");
@@ -279,15 +283,15 @@ public class Host extends Renter {
             // given houseInfo: [area, fromDate, toDate, dayPrice, owner, type, amenity]
             // given addrInfo: [street, city, pcode, country]
 
-//            List<String> houseInfo = Arrays.asList("77", "2019-07-27", "2019-08-07", "77.77", me.getId().toString(), "Condo", "01010111010100");
-//            List<String> addrInfo = Arrays.asList("384 Old Kingston", "Toronto", "ON M1C 1B6", "Canada");
-//            System.out.println(me.postListing(houseInfo, addrInfo));
+            List<String> houseInfo = Arrays.asList("177", "2019-06-27", "2019-07-02", "177.77", me.getId().toString(), "Room", "01010111010100");
+            List<String> addrInfo = Arrays.asList("300 Borough Dr", "Toronto", "ON M1P 4P5", "Canada");
+            System.out.println(me.postListing(houseInfo, addrInfo));
 
 //			List<String> info = Arrays.asList("10", "19.99");
 //			System.out.println(me.updatePrice(info));
 
-			List<String> info = Arrays.asList("10", "2020-07-01", "2020-07-02", "2020-02-27", "2020-03-02");
-			System.out.println(me.updateAvailability(info));
+//			List<String> info = Arrays.asList("10", "2020-07-01", "2020-07-02", "2020-02-27", "2020-03-02");
+//			System.out.println(me.updateAvailability(info));
 
 //			List<String> info = Arrays.asList("6", "1", "thx for the comment: this Apt is good.", "10");
 //			System.out.println(me.replyListingComment(info));

@@ -172,8 +172,37 @@ public class Report {
     }
 
 
-    public static void spamPosting() {
-
+    /**
+     * Get the table of overposting users, if fromDate and toDate are not empty, a time window is specified
+     *
+     * @param fromDate time window start
+     * @param toDate   time window end
+     * @return a table of overposting users
+     * [owner, count, count_percentage]
+     */
+    public static List<Row> spamPosting(String fromDate, String toDate) throws SQLException{
+        String query = "";
+        if (fromDate.equals("")) {
+            query =
+                    "select * from " +
+                            "(select owner, count(*) as 'count', " +
+                            "count(*) / (SELECT count(*) as 'count' FROM listing) as 'count_percentage' " +
+                            "FROM listing group by owner order by count Desc) x " +
+                            "where x.count_percentage > 0.1;";
+        } else {
+            query =
+                    "select * from " +
+                            "(select owner, count(*) as 'count', " +
+                            "count(*) / (SELECT count(*) as 'count' FROM listing where date >= '" + fromDate + "' and date <= '" + toDate + "') " +
+                            "as 'count_percentage' " +
+                            "FROM listing where date >= '" + fromDate + "' and date <= '" + toDate + "' " +
+                            "group by owner order by count Desc) x " +
+                            "where x.count_percentage > 0.1;";
+        }
+        ResultSet resultSet = Database.queryRead(query);
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(resultSet);
+        return Listing.CachedRowSet_to_ListRow(rowset);
     }
 
     /**
@@ -242,8 +271,13 @@ public class Report {
 //                System.out.println("owner: " + x.get(i).getColumnObject(1) + " | city: " + x.get(i).getColumnObject(3) +" | count: " + x.get(i).getColumnObject(4));
 //            }
 
-            List<Row> y = rankRentersByNumOfBookingsPerCity(LocalDate.parse("2019-01-01"), LocalDate.parse("2019-12-12"), "Canada", "x");
-            if(y.size() == 0) System.out.println("correct");
+//            List<Row> y = rankRentersByNumOfBookingsPerCity(LocalDate.parse("2019-01-01"), LocalDate.parse("2019-12-12"), "Canada", "x");
+//            if (y.size() == 0) System.out.println("correct");
+
+            List<Row> x = spamPosting("2019-07-10", "2019-07-31");
+            for(int i = 0; i < x.size(); i ++){
+                System.out.println("owner: " + x.get(i).getColumnObject(1) + " | count: " + x.get(i).getColumnObject(2) +" | count_percentage: " + x.get(i).getColumnObject(3));
+            }
 
         }
         Database.disconnect();
