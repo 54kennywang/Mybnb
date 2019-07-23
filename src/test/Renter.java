@@ -199,14 +199,17 @@ public class Renter extends User {
         if (Database.connect()) {
             Renter me = new Renter();
 
-            List<String> cred = Arrays.asList("michael@outlook.com", "password");
+            List<String> cred = Arrays.asList("qibowang7@outlook.com", "password");
             System.out.println(me.signIn(cred));
 
-			List<String> info = Arrays.asList("10", "2020-07-01", "2020-07-02");
+//            List<String> cred = Arrays.asList("michael@outlook.com", "password");
+//            System.out.println(me.signIn(cred));
+
+			List<String> info = Arrays.asList("18", "2019-06-27", "2019-07-02");
 			System.out.println(me.bookListing(info));
 
             //[l_id, fromDate, toDate]
-//			List<String> info = Arrays.asList("16", "2019-07-28", "2019-08-02");
+//			List<String> info = Arrays.asList("18", "2019-06-27", "2019-07-02");
 //			System.out.println(me.cancelBooking(info, 1));
 
             // [receiver, rating, content, l_id]

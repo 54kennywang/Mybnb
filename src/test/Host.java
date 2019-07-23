@@ -277,15 +277,15 @@ public class Host extends Renter {
 //            System.out.println(me.becomeHost());
 
             // [l_id, fromDate, toDate]
-//            List<String> info = Arrays.asList("17", "2019-07-27", "2019-07-31");
-//            System.out.println(me.cancelBooking(info, 2));
+            List<String> info = Arrays.asList("18", "2019-06-27", "2019-07-02");
+            System.out.println(me.cancelBooking(info, 2));
 
             // given houseInfo: [area, fromDate, toDate, dayPrice, owner, type, amenity]
             // given addrInfo: [street, city, pcode, country]
 
-            List<String> houseInfo = Arrays.asList("177", "2019-06-27", "2019-07-02", "177.77", me.getId().toString(), "Room", "01010111010100");
-            List<String> addrInfo = Arrays.asList("300 Borough Dr", "Toronto", "ON M1P 4P5", "Canada");
-            System.out.println(me.postListing(houseInfo, addrInfo));
+//            List<String> houseInfo = Arrays.asList("177", "2019-06-27", "2019-07-02", "177.77", me.getId().toString(), "Room", "01010111010100");
+//            List<String> addrInfo = Arrays.asList("300 Borough Dr", "Toronto", "ON M1P 4P5", "Canada");
+//            System.out.println(me.postListing(houseInfo, addrInfo));
 
 //			List<String> info = Arrays.asList("10", "19.99");
 //			System.out.println(me.updatePrice(info));

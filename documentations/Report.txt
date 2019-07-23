@@ -85,4 +85,24 @@
      */
     public static List<Row> rankRentersByNumOfBookingsPerCity(LocalDate startDate, LocalDate toDate, String country, String city)
 
+/**
+     * Get the table of overposting users, if fromDate and toDate are not empty, a time window is specified
+     *
+     * @param fromDate time window start
+     * @param toDate   time window end
+     * @return a table of overposting users
+     * [owner, count, count_percentage]
+     */
+    public static List<Row> spamPosting(String fromDate, String toDate)
 
+
+/**
+     * Get a table of largest cancellation times in a specified time window for host/renter (at least one row, maybe severa users have same largest num)
+     *
+     * @param type     1 - renter; 2 - host
+     * @param fromDate time window begin time
+     * @param toDate   time window ending time
+     * @return a table of largest cancellation times in a specified time window for host/renter
+     * [u_id, count]
+     */
+    public static List<Row> largestCancellation(int type, String fromDate, String toDate)

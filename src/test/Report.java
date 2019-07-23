@@ -180,7 +180,7 @@ public class Report {
      * @return a table of overposting users
      * [owner, count, count_percentage]
      */
-    public static List<Row> spamPosting(String fromDate, String toDate) throws SQLException{
+    public static List<Row> spamPosting(String fromDate, String toDate) throws SQLException {
         String query = "";
         if (fromDate.equals("")) {
             query =
@@ -247,6 +247,49 @@ public class Report {
         return result;
     }
 
+    /**
+     * Get a table of largest cancellation times in a specified time window for host/renter (at least one row, maybe severa users have same largest num)
+     *
+     * @param type     1 - renter; 2 - host
+     * @param fromDate time window begin time
+     * @param toDate   time window ending time
+     * @return a table of largest cancellation times in a specified time window for host/renter
+     * [u_id, count]
+     */
+    public static List<Row> largestCancellation(int type, String fromDate, String toDate) throws SQLException {
+        String query = "";
+        if (type == 1) {
+            query =
+                    "select * from " +
+                            "(select r.u_id, count(*) as 'count' from rented r " +
+                            "where r.status = -1 " +
+                            "and r.date >= '" + fromDate + "' and r.date <= '" + toDate + "' " +
+                            "group by r.u_id) o " +
+                            "where o.count >= all " +
+                            "(select count(*) as 'count' from rented r " +
+                            "where r.status = -1 " +
+                            "and r.date >= '" + fromDate + "' and r.date <= '" + toDate + "' " +
+                            "group by r.u_id); ";
+        } else if (type == 2) {
+            query =
+                    "select * from " +
+                            "(select l.owner as 'u_id', count(*) as 'count' from rented r, listing l " +
+                            "where r.l_id = l.id and r.status = -2 " +
+                            "and r.date >= '" + fromDate + "' and r.date <= '" + toDate + "' " +
+                            "group by l.owner) o " +
+                            "where o.count >= all " +
+                            "(select count(*) as 'count' from rented r, listing l " +
+                            "where r.l_id = l.id and r.status = -2 " +
+                            "and r.date >= '" + fromDate + "' and r.date <= '" + toDate + "' " +
+                            "group by l.owner); ";
+        }
+        ResultSet resultSet = Database.queryRead(query);
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(resultSet);
+        return Listing.CachedRowSet_to_ListRow(rowset);
+    }
+
+
     private static String dateRefactor(LocalDate date) {
         return date.toString().replaceAll("-", "");
     }
@@ -274,12 +317,16 @@ public class Report {
 //            List<Row> y = rankRentersByNumOfBookingsPerCity(LocalDate.parse("2019-01-01"), LocalDate.parse("2019-12-12"), "Canada", "x");
 //            if (y.size() == 0) System.out.println("correct");
 
-            List<Row> x = spamPosting("2019-07-10", "2019-07-31");
-            for(int i = 0; i < x.size(); i ++){
-                System.out.println("owner: " + x.get(i).getColumnObject(1) + " | count: " + x.get(i).getColumnObject(2) +" | count_percentage: " + x.get(i).getColumnObject(3));
-            }
+//            List<Row> x = spamPosting("2019-07-10", "2019-07-31");
+//            for (int i = 0; i < x.size(); i++) {
+//                System.out.println("owner: " + x.get(i).getColumnObject(1) + " | count: " + x.get(i).getColumnObject(2) + " | count_percentage: " + x.get(i).getColumnObject(3));
+//            }
 
+            List<Row> x = largestCancellation(2, "2019-01-01", "2019-12-31");
+            for (int i = 0; i < x.size(); i++) {
+                System.out.println("u_id: " + x.get(i).getColumnObject(1) + " | count: " + x.get(i).getColumnObject(2));
+            }
+            Database.disconnect();
         }
-        Database.disconnect();
     }
 }
