@@ -71,6 +71,34 @@ public class Renter extends User {
     }
 
     /**
+     * Renter's confirmation of living after finishing
+     *
+     * @param info [l_id, fromDate, toDate]
+     * @return true if successfully; false otherwise
+     */
+    public Boolean confirmation_AfterLiving(List<String> info) throws SQLException {
+        Boolean legal = false; // valid info?
+        String query =
+                "SELECT * FROM rented " +
+                        "where u_id = " + this.id + " and l_id = " + info.get(0) + " " +
+                        "and fromDate = '" + info.get(1) + "' and toDate = '" + info.get(2) + "' " +
+                        "and status = 0;";
+        System.out.println(query);
+        ResultSet rs = Database.queryRead(query);
+        if (rs.next()) legal = true;
+        if (!legal) return false;
+
+        String table = "rented";
+        String newInfo = "status = 1";
+        String conditions =
+                "u_id = " + this.id + " and l_id = " + info.get(0) + " " +
+                        " and fromDate = '" + info.get(1) + "' and toDate = '" + info.get(2) + "'" +
+                        " and status = 0;";;
+        if (Database.update(table, newInfo, conditions)) return true;
+        else return false;
+    }
+
+    /**
      * Renter's initial comment on a listing
      *
      * @param info [receiver, rating, content, l_id]
@@ -205,8 +233,12 @@ public class Renter extends User {
 //            List<String> cred = Arrays.asList("michael@outlook.com", "password");
 //            System.out.println(me.signIn(cred));
 
-			List<String> info = Arrays.asList("18", "2019-06-27", "2019-07-02");
-			System.out.println(me.bookListing(info));
+//            List<String> info = Arrays.asList("18", "2019-06-27", "2019-07-02");
+//            System.out.println(me.bookListing(info));
+
+//            [l_id, fromDate, toDate]
+            List<String> info = Arrays.asList("18", "2019-06-27", "2019-07-02");
+            System.out.println(me.confirmation_AfterLiving(info));
 
             //[l_id, fromDate, toDate]
 //			List<String> info = Arrays.asList("18", "2019-06-27", "2019-07-02");

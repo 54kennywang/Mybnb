@@ -36,7 +36,13 @@
     @Override
     public Boolean commentOnUser(List<String> info)
 
-
+/**
+     * Renter's confirmation of living after finishing
+     *
+     * @param info [l_id, fromDate, toDate]
+     * @return true if successfully; false otherwise
+     */
+    public Boolean confirmation_AfterLiving(List<String> info)
 
 
 
