@@ -1,0 +1,76 @@
+//            // Toronto, load renters
+//            String renters = "ABCDEFGHIJ";
+//            Renter renter = new Renter();
+//            for (int i=0; i< renters.length(); i++) {
+//                String info = renters.substring(i,i+1);
+//                List<String> userInfo = Arrays.asList(info, info, info, "graduate", "1996-03-05", info, "pass");
+//                List<String> addrInfo = Arrays.asList("1 Hayes Lane", "Toronto", "M2N0E7", "Canada");
+//                renter.register(userInfo, addrInfo);
+//            }
+//            String hosts = "ABC";
+//            for (int i=0; i<3; i++) {
+//                Renter renter = new Renter();
+//                String email = hosts.substring(i,i+1);
+//                List<String> userInfo = Arrays.asList(email, "pass");
+//                renter.signIn(userInfo);
+//                renter.becomeHost();
+
+            // add listings, A:2, B:3, C:5
+            //A
+//            Host a = new Host();
+//            List<String> cred = Arrays.asList("A", "pass");
+//            a.signIn(cred);
+//            List<String> houseInfo;
+//            List<String> addrInfo;
+//            //1
+//            houseInfo = Arrays.asList("50", "2019-06-27", "2019-07-02", "177.77", a.getId().toString(), "Condo", "01010111010100");
+//            addrInfo = Arrays.asList("350 Seneca Hill Drive", "Toronto", "ON M2J 4S7", "Canada");
+//            a.postListing(houseInfo, addrInfo);
+//            //2
+//            houseInfo = Arrays.asList("75", "2019-08-01", "2019-08-05", "177.77", a.getId().toString(), "Room", "01010111010100");
+//            addrInfo = Arrays.asList("1 Cliff Fern Way", "Toronto", "ON M2J 4L6", "Canada");
+//            a.postListing(houseInfo, addrInfo);
+//            //B
+//            Host b = new Host();
+//            List<String> cred = Arrays.asList("B", "pass");
+//            b.signIn(cred);
+//            List<String> houseInfo;
+//            List<String> addrInfo;
+//            //1
+//            houseInfo = Arrays.asList("50", "2019-05-01", "2019-05-11", "177.77", b.getId().toString(), "House", "01010111010100");
+//            addrInfo = Arrays.asList("1 Liszt Gate", "Toronto", "ON M2H 1G7", "Canada");
+//            b.postListing(houseInfo, addrInfo);
+//            //2
+//            houseInfo = Arrays.asList("75", "2019-08-08", "2019-08-10", "177.77", b.getId().toString(), "House", "01010111010100");
+//            addrInfo = Arrays.asList("2 Cliff Fern Way", "Toronto", "ON M2J 4L7", "Canada");
+//            b.postListing(houseInfo, addrInfo);
+//            //3
+//            houseInfo = Arrays.asList("100", "2019-10-01", "2019-10-07", "177.77", b.getId().toString(), "House", "11110001110001");
+//            addrInfo = Arrays.asList("2 Greyhound Dr", "Toronto", "ON M2H 1K3", "Canada");
+//            b.postListing(houseInfo, addrInfo);
+//            //C
+//            Host c = new Host();
+//            List<String> cred = Arrays.asList("C", "pass");
+//            c.signIn(cred);
+//            List<String> houseInfo;
+//            List<String> addrInfo;
+//            //1
+//            houseInfo = Arrays.asList("50", "2019-05-16", "2019-05-21", "177.77", c.getId().toString(), "Room", "10100101110111");
+//            addrInfo = Arrays.asList("1 Liszt Gate", "Toronto", "ON M2H 1G7", "Canada");
+//            c.postListing(houseInfo, addrInfo);
+//            //2
+//            houseInfo = Arrays.asList("75", "2019-06-05", "2019-06-20", "177.77", c.getId().toString(), "Condo", "01010010101110");
+//            addrInfo = Arrays.asList("8 floor Cinema Tower Condos", "Toronto", "ON M5V 0B8", "Canada");
+//            c.postListing(houseInfo, addrInfo);
+//            //3
+//            houseInfo = Arrays.asList("100", "2019-03-03", "2019-03-07", "200", c.getId().toString(), "Condo", "01001101001110");
+//            addrInfo = Arrays.asList("8 Charlotte St", "Toronto", "ON M5V 0K4", "Canada");
+//            c.postListing(houseInfo, addrInfo);
+//            //4
+//            houseInfo = Arrays.asList("200", "2019-10-09", "2019-10-25", "210", c.getId().toString(), "Condo", "10101101011011");
+//            addrInfo = Arrays.asList("350 Adelaide St W", "Toronto", "ON M5V 1R7", "Canada");
+//            c.postListing(houseInfo, addrInfo);
+//            //5
+//            houseInfo = Arrays.asList("100", "2019-11-01", "2019-11-07", "250", c.getId().toString(), "Apt", "01001010110110");
+//            addrInfo = Arrays.asList("168 Simcoe St", "Toronto", "ON M5H 4C9", "Canada");
+//            c.postListing(houseInfo, addrInfo);
