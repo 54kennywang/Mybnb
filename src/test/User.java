@@ -29,10 +29,10 @@ public abstract class User {
     public Boolean register(List<String> userInfo, List<String> addrInfo) throws Exception {
         Boolean success = false;
         if (!this.active) {
-            if (ChronoUnit.YEARS.between(LocalDate.parse(userInfo.get(4)), LocalDate.now()) < 18) {
-                System.out.println("From register() in User.java: you are under 18, too young.");
-                return false;
-            }
+//            if (ChronoUnit.YEARS.between(LocalDate.parse(userInfo.get(4)), LocalDate.now()) < 18) {
+//                System.out.println("From register() in User.java: you are under 18, too young.");
+//                return false;
+//            }
             // insert user
             String table = "user";
             String cols = "email, type, cardNum, name, occ, date, DOB, SIN, password";
