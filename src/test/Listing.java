@@ -95,13 +95,17 @@ public class Listing {
     /**
      * Prints the result from a search query defined below
      *
-     * @param input the returned result from a search query defined below
-     *              input schema: [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     * @param printDistance 1 - print the distance; 0 not print the distance
+     * @param input         the returned result from a search query defined below
+     *                      input schema: [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
      */
-    public static void viewAllListing(List<Row> input) throws SQLException {
+    public static void viewAllListing(List<Row> input, int printDistance) throws SQLException {
+        if(input.size() == 0) System.out.println("***Sorry, no result found***");
         for (int i = 0; i < input.size(); i++) {
             viewListing(Integer.parseInt(input.get(i).getColumnObject(1).toString()));
-            System.out.println("Distance from searching location: " + input.get(i).getColumnObject(13) + " KM");
+            if (printDistance == 1) {
+                System.out.println("Distance from searching location: " + input.get(i).getColumnObject(13) + " KM");
+            }
             System.out.println("==========");
         }
     }
@@ -292,6 +296,36 @@ public class Listing {
         rowset.populate(rs);
         List<Row> result = CachedRowSet_to_ListRow(rowset);
 
+        return addDistanceToSearchResult(result, lat, lng, radius, 'K');
+//        Double tempLng = new Double(0);
+//        Double tempLat = new Double(0);
+//        for (int i = 0; i < result.size(); i++) {
+//            tempLng = Double.parseDouble(result.get(i).getColumnObject(6).toString());
+//            tempLat = Double.parseDouble(result.get(i).getColumnObject(7).toString());
+//
+//            Double dis = Map.distance(tempLat, tempLng, lat, lng, unit);
+//            if (dis > radius) {
+//                result.remove(i);
+//                i--;
+//            } else {
+//                result.get(i).setColumnObject(13, dis);
+//            }
+//        }
+//        return result;
+    }
+
+    /**
+     * Add distance from (lat, lng) to a search query, input distance column all 0, remove the ones with distance bigger than radius
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
+     * @param result result from a search query with distance column all 0
+     * @param lng    longitude
+     * @param lat    latitude
+     * @param radius search radius from geo-point (Lng, Lat)
+     * @param unit   'K'/'M'
+     * @return a list of table rows with distance from (lat, lng), remove the ones with distance bigger than radius
+     */
+    public static List<Row> addDistanceToSearchResult(List<Row> result, double lat, double lng, double radius, char unit) throws SQLException {
         Double tempLng = new Double(0);
         Double tempLat = new Double(0);
         for (int i = 0; i < result.size(); i++) {
@@ -304,27 +338,9 @@ public class Listing {
                 i--;
             } else {
                 result.get(i).setColumnObject(13, dis);
-//                rowset.updateDouble("distance", dis);
             }
-//            rowset.updateDouble("distance", dis);
         }
-//        System.out.println(rowset.size() + "==================");
         return result;
-/*
-        while (rowset.next()) {
-            Double tempLng = rowset.getDouble("lng");
-            Double tempLat = rowset.getDouble("lat");
-            Double dis = Map.distance(tempLat, tempLng, lat, lng, unit);
-//            System.out.println("id: " + rowset.getInt("id") + " | distance: " + dis);
-            if (dis > radius) rowset.updateDouble("distance", -1.0); // use -1 to mark unqualified rows
-            else rowset.updateDouble("distance", dis);
-//            rowset.updateDouble("distance", dis);
-        }
-        rowset.beforeFirst();
-//        System.out.println(rowset.size() + "==================");
-        return CachedRowSet_to_ListRow(rowset);
-
- */
     }
 
     /**

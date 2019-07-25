@@ -1,5 +1,7 @@
 package test;
 
+import com.sun.rowset.internal.Row;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -8,7 +10,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MenuController {
-    public Renter client = new Renter();
+    public Host client = null;
+    public int type = 0; // 1 for renter; 2 for host
 
     public void start() throws Exception {
         Scanner input = new Scanner(System.in);
@@ -24,15 +27,21 @@ public class MenuController {
             } else if (option.equals("2")) {
                 this.signUp();
             } else if (option.equals("3")) {
-                this.searchByCoordinates();
+                this.logOut();
             } else if (option.equals("4")) {
-
+                System.out.println("  Please specify searching options (1 for searching by geo-location; 2 for searching by postal code; 3 for searching by address)");
+                System.out.print("> ");
+                String subOption = input.nextLine();
+                if (subOption.equals("1")) this.searchByCoordinates();
+                else if (subOption.equals("2")) this.searchByPcode();
+                else if (subOption.equals("3")) this.searchByAddress();
             } else if (option.equals("5")) {
-                this.searchByAddress();
+            } else if (option.equals("6")) {
+            } else if (option.equals("9")) {
             }
             System.out.println("Tell me what's next, type MENU to see options.");
             System.out.print("> ");
-            option = input.next();
+            option = input.nextLine();
         }
         System.out.println("Bye!");
     }
@@ -40,13 +49,20 @@ public class MenuController {
     public void printMenu() {
         System.out.println("  1. Login");
         System.out.println("  2. Register");
-        System.out.println("  3. Search by geo-location");
-        System.out.println("  4. Search by postal code");
-        System.out.println("  5. Search by address");
-        System.out.println("  6. Logout");
+        System.out.println("  3. Logout");
+        System.out.println("  4. Search listings");
+
+        System.out.println("  5. Book/cancel a listing");
+        System.out.println("  6. Post/update a listing");
+        System.out.println("  7. Comment");
+        System.out.println("  8. View user info");
     }
 
     public void logIn() throws Exception {
+        if(client != null) {
+            System.out.println("***You already logged in***");
+            return;
+        }
         Scanner input = new Scanner(System.in);
         List<String> info = new ArrayList<String>();
         System.out.println("Username (email):");
@@ -56,11 +72,25 @@ public class MenuController {
         System.out.println("Password:");
         System.out.print("> ");
         info.add(input.next());
-        if (client.signIn(info)) System.out.println("Login successfully!");
+        Host user = new Host();
+        if (user.signIn(info)) {
+            this.client = user;
+            if(client.getType() == 1) {
+                this.type = 1;
+            }
+            else if (client.getType() == 2){
+                this.type = 2;
+            }
+            System.out.println("Login successfully!");
+        }
         else System.out.println("Username/password wrong.");
     }
 
     public void signUp() throws Exception {
+        if(client != null) {
+            System.out.println("***You already logged in***");
+            return;
+        }
         Scanner input = new Scanner(System.in);
         List<String> info = new ArrayList<String>();
         System.out.println("Username (email):");
@@ -115,8 +145,17 @@ public class MenuController {
         System.out.print("> ");
         addrInfo.add(input.next());
 
-        if (client.register(info, addrInfo)) System.out.println("Register successfully!");
+        if ((new Renter()).register(info, addrInfo)) System.out.println("Register successfully! Now you can login.");
         else System.out.println("Register failed.");
+    }
+
+    public void logOut(){
+        if(client == null) {
+            System.out.println("***You are not logged in***");
+            return;
+        }
+        this.client = null;
+        this.type = 0;
     }
 
     public void searchByCoordinates() throws Exception {
@@ -148,9 +187,37 @@ public class MenuController {
 
 
         if (option == 1) {
-            Listing.viewAllListing(Listing.searchByCoordinates_rankByPrice(lng, lat, radius, 'K', order));
+            Listing.viewAllListing(Listing.searchByCoordinates_rankByPrice(lng, lat, radius, 'K', order), 1);
         } else if (option == 2) {
-            Listing.viewAllListing(Listing.searchByCoordinates_rankByDistance(lng, lat, radius, 'K', order));
+            Listing.viewAllListing(Listing.searchByCoordinates_rankByDistance(lng, lat, radius, 'K', order), 1);
+        }
+    }
+
+    public void searchByPcode() throws Exception {
+        Scanner input = new Scanner(System.in);
+        String pcode = "";
+        int order = 0;
+        Double radius = 0.0;
+        System.out.println("Note: search by postal code doesn't support ranking by distance. By default, result will be shown ranked by price.");
+        System.out.println("Postal Code:");
+        System.out.print("> ");
+        pcode = input.nextLine();
+
+        System.out.println("(Ranking by price) order (1 for ascending, 0 for descending)");
+        System.out.print("> ");
+        order = input.nextInt();
+
+        List<Row> exactResult = Listing.searchByPcode_rankByPrice_exact(pcode, order);
+        List<Row> wildcardResult = Listing.searchByPcode_rankByPrice_wildcard(pcode, order);
+        if (exactResult.size() == 0) {
+            System.out.println("***Sorry, not result found with the exactly same postal code, nearby area are shown below***");
+            Listing.viewAllListing(wildcardResult, 0);
+        } else {
+            System.out.println("***We have found the listing with the same postal code you want***");
+            Listing.viewAllListing(exactResult, 0);
+            System.out.println("**************************************************************");
+            System.out.println("***Here are also some nearby areas***");
+            Listing.viewAllListing(wildcardResult, 0);
         }
     }
 
@@ -190,9 +257,9 @@ public class MenuController {
 
 
         if (option == 1) {
-            Listing.viewAllListing(Listing.searchByAddress_rankByPrice(addrInfo, radius, order));
+            Listing.viewAllListing(Listing.searchByAddress_rankByPrice(addrInfo, radius, order), 1);
         } else if (option == 2) {
-            Listing.viewAllListing(Listing.searchByAddress_rankByDistance(addrInfo, radius, order));
+            Listing.viewAllListing(Listing.searchByAddress_rankByDistance(addrInfo, radius, order), 1);
         }
     }
 

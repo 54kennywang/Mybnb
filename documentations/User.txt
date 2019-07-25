@@ -28,6 +28,12 @@
 	 */
 	public Integer getId()
 
+/**
+     * Get user's type
+     *
+     * @return user's type
+     */
+    public Integer getType()
 
 /**
 	 * Reply to a comment on a user

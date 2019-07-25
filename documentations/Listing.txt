@@ -24,10 +24,11 @@
 /**
      * Prints the result from a search query defined below
      *
+     * @param printDistance 1 - print the distance; 0 not print the distance
      * @param input the returned result from a search query defined below
-     *  input schema: [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *              input schema: [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
      */
-    public static void viewAllListing(List<Row> input) 
+    public static void viewAllListing(List<Row> input, int printDistance) 
 
 /**
      * Gets all availabilities of a listing
@@ -122,6 +123,19 @@
      * @return a list of table rows within the given radius from the geo-point in KM/MILE
      */
     public static List<Row> searchByCoordinates(Double lng, Double lat, Double radius, char unit)
+
+/**
+     * Add distance from (lat, lng) to a search query, input distance column all 0, remove the ones with distance bigger than radius
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
+     * @param result result from a search query with distance column all 0
+     * @param lng    longitude
+     * @param lat    latitude
+     * @param radius search radius from geo-point (Lng, Lat)
+     * @param unit   'K'/'M'
+     * @return a list of table rows with distance from (lat, lng), remove the ones with distance bigger than radius
+     */
+    public static List<Row> addDistanceToSearchResult(List<Row> result, double lat, double lng, double radius, char unit)
 
 /**
      * Searches by address and gets an ordered list of table rows within the searching radius of the specified addr, ranked by distance with the schema

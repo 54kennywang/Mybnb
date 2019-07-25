@@ -19,6 +19,8 @@ public abstract class User {
     protected Integer type = null;
     protected Boolean active = false;
 
+
+
     /**
      * Register a new user
      *
@@ -101,6 +103,14 @@ public abstract class User {
         return this.id;
     }
 
+    /**
+     * Get user's type
+     *
+     * @return user's type
+     */
+    public Integer getType() {
+        return this.type;
+    }
 
     // initial comment on a user
     // given a list of commentInfo: [receiver, rating, content]
