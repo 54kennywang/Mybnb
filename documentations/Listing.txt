@@ -7,11 +7,27 @@
     public static Integer getOwnerID
 
 /**
+     * Get the address row of a listing
+     *
+     * @param l_id the id of a listing
+     * @return address row of a listing
+     * [id, country, city, street, pcode, lng, lat, type]
+     */
+    public static List<Row> getListingAddr(int l_id)
+
+/**
      * Displays a listing's info in console.
      * @param id the id of a listing
      */
     public static void viewListing(int id);
 
+/**
+     * Prints the result from a search query defined below
+     *
+     * @param input the returned result from a search query defined below
+     *  input schema: [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     */
+    public static void viewAllListing(List<Row> input) 
 
 /**
      * Gets all availabilities of a listing
@@ -108,30 +124,36 @@
     public static List<Row> searchByCoordinates(Double lng, Double lat, Double radius, char unit)
 
 /**
-     * Searches by address and gets an ordered list of table rows in 30km of the specified addr, ranked by distance with the schema
+     * Searches by address and gets an ordered list of table rows within the searching radius of the specified addr, ranked by distance with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
      * @param addrInfo [street, city, pcode, country]
-     * @param order 1 - from nearest to farthest; 0 - from farthest to nearest
-     * @return a list of table rows within the 30km of the given addr ranked by distance
+     * @param order    1 - from nearest to farthest; 0 - from farthest to nearest
+     * @param radius searching radius
+     * @return a list of table rows within the searching radius of the given addr ranked by distance
      */
-    public static List<Row> searchByAddress_rankByDistance(List<String> addrInfo, int order)
+    public static List<Row> searchByAddress_rankByDistance(List<String> addrInfo, Double radius, int order)
 
 /**
-     * Searches by address and gets an ordered list of table rows in 30km of the specified addr, ranked by price with the schema
+     * Searches by address and gets an ordered list of table rows within the searching radius of the specified addr, ranked by price with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
      * @param addrInfo [street, city, pcode, country]
-     * @param order 1 - from cheapest to most expensive; 0 - from most expensive to cheapest
-     * @return a list of table rows within the 30km of the given addr ranked by price
+     * @param order    1 - from cheapest to most expensive; 0 - from most expensive to cheapest
+     * @param radius searching radius
+     * @return a list of table rows within the searching radius of the given addr ranked by price
      */
-    public static List<Row> searchByAddress_rankByPrice(List<String> addrInfo, int order)
+    public static List<Row> searchByAddress_rankByPrice(List<String> addrInfo, Double radius, int order)
 
 /**
-     * Searches by address and gets an unordered list of table rows in 30km of the specified addr with the schema
+     * Searches by address and gets an unordered list of table rows within the searching radius of the specified addr with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
      * @param addrInfo [street, city, pcode, country]
-     * @return a list of table rows within the 30km of the given addr
+     * @param radius searching radius
+     * @return a list of table rows within the searching radius
      */
-    public static List<Row> searchByAddress(List<String> addrInfo)
+    public static List<Row> searchByAddress(List<String> addrInfo, Double radius)
 
 /**
      * Searches by postal code and gets an ordered list of table rows with the exact same input pcode, ranked by price with the schema

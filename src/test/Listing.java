@@ -29,14 +29,30 @@ public class Listing {
      * @param l_id the id of a listing
      * @return ownerID of that listing
      */
-    public static Integer getOwnerID(int l_id) throws SQLException{
+    public static Integer getOwnerID(int l_id) throws SQLException {
         String query = "SELECT owner FROM mydb.listing where id = " + l_id + ";";
         ResultSet rowset = Database.queryRead(query);
         Integer ownerID = null;
-        if(rowset.next()){
+        if (rowset.next()) {
             ownerID = rowset.getInt("owner");
         }
         return ownerID;
+    }
+
+    /**
+     * Get the address row of a listing
+     *
+     * @param l_id the id of a listing
+     * @return address row of a listing
+     * [id, country, city, street, pcode, lng, lat, type]
+     */
+    public static List<Row> getListingAddr(int l_id) throws SQLException {
+        List<String> addr = new ArrayList<String>();
+        String query = "SELECT * FROM address where id = " + l_id + " and type = 0;";
+        ResultSet rs = Database.queryRead(query);
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(rs);
+        return CachedRowSet_to_ListRow(rowset);
     }
 
 
@@ -49,12 +65,13 @@ public class Listing {
         String query = "select * from listing where id = " + id;
         ResultSet rs = queryRead(query);
         if (rs.next()) {
-            System.out.println("Area: " + rs.getString("area"));
+            System.out.println("Listing ID: " + id);
             System.out.println("Price: $" + rs.getString("dayPrice"));
             System.out.println("Type: " + rs.getString("type"));
             System.out.println("Area: " + rs.getString("area") + " m^2");
             System.out.print("Amenities: ");
             Listing.printAmenity(parseAmenity(rs.getString("amenity")));
+
 
             System.out.print("Available: ");
             Listing.printAllAvailabilities(id);
@@ -63,8 +80,32 @@ public class Listing {
             System.out.print("Unavailable: ");
             Listing.printAllUnAvailabilities(id);
             System.out.println();
+
+            List<Row> addrRow = getListingAddr(id);
+            List<String> addrInfo = new ArrayList<String>();
+            addrInfo.add(addrRow.get(0).getColumnObject(4).toString());
+            addrInfo.add(addrRow.get(0).getColumnObject(3).toString());
+            addrInfo.add(addrRow.get(0).getColumnObject(5).toString());
+            addrInfo.add(addrRow.get(0).getColumnObject(2).toString());
+            System.out.println("Address: " + Map.infoToAddr(addrInfo));
         }
     }
+
+
+    /**
+     * Prints the result from a search query defined below
+     *
+     * @param input the returned result from a search query defined below
+     *              input schema: [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     */
+    public static void viewAllListing(List<Row> input) throws SQLException {
+        for (int i = 0; i < input.size(); i++) {
+            viewListing(Integer.parseInt(input.get(i).getColumnObject(1).toString()));
+            System.out.println("Distance from searching location: " + input.get(i).getColumnObject(13) + " KM");
+            System.out.println("==========");
+        }
+    }
+
 
     /**
      * Gets all availabilities of a listing.
@@ -287,44 +328,47 @@ public class Listing {
     }
 
     /**
-     * Searches by address and gets an ordered list of table rows in 30km of the specified addr, ranked by distance with the schema
+     * Searches by address and gets an ordered list of table rows within the searching radius of the specified addr, ranked by distance with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
      *
      * @param addrInfo [street, city, pcode, country]
      * @param order    1 - from nearest to farthest; 0 - from farthest to nearest
-     * @return a list of table rows within the 30km of the given addr ranked by distance
+     * @param radius   searching radius
+     * @return a list of table rows within the searching radius of the given addr ranked by distance
      */
-    public static List<Row> searchByAddress_rankByDistance(List<String> addrInfo, int order) throws SQLException, Exception {
-        List<Row> tempResult = searchByAddress(addrInfo);
+    public static List<Row> searchByAddress_rankByDistance(List<String> addrInfo, Double radius, int order) throws SQLException, Exception {
+        List<Row> tempResult = searchByAddress(addrInfo, radius);
         if (order == 1) return increaseSort(tempResult, 13);
         else return orderReverse(increaseSort(tempResult, 13));
     }
 
     /**
-     * Searches by address and gets an ordered list of table rows in 30km of the specified addr, ranked by price with the schema
+     * Searches by address and gets an ordered list of table rows within the searching radius of the specified addr, ranked by price with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
      *
      * @param addrInfo [street, city, pcode, country]
      * @param order    1 - from cheapest to most expensive; 0 - from most expensive to cheapest
-     * @return a list of table rows within the 30km of the given addr ranked by price
+     * @param radius   searching radius
+     * @return a list of table rows within the searching radius of the given addr ranked by price
      */
-    public static List<Row> searchByAddress_rankByPrice(List<String> addrInfo, int order) throws SQLException, Exception {
-        List<Row> tempResult = searchByAddress(addrInfo);
+    public static List<Row> searchByAddress_rankByPrice(List<String> addrInfo, Double radius, int order) throws SQLException, Exception {
+        List<Row> tempResult = searchByAddress(addrInfo, radius);
         if (order == 1) return increaseSort(tempResult, 10);
         else return orderReverse(increaseSort(tempResult, 10));
     }
 
     /**
-     * Searches by address and gets an unordered list of table rows in 30km of the specified addr with the schema
+     * Searches by address and gets an unordered list of table rows within the searching radius of the specified addr with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
      *
      * @param addrInfo [street, city, pcode, country]
-     * @return a list of table rows within the 30km of the given addr
+     * @param radius   searching radius
+     * @return a list of table rows within the searching radius
      */
-    public static List<Row> searchByAddress(List<String> addrInfo) throws SQLException, Exception {
+    public static List<Row> searchByAddress(List<String> addrInfo, Double radius) throws SQLException, Exception {
         List<Object> allInfo = Map.getAllByAddr(Map.infoToAddr(addrInfo)); // [street, city, pcode, country, lng, lat]
 //        CachedRowSet rowset = searchByCoordinates((Double) allInfo.get(4), (Double) allInfo.get(5), 30.0, 'K');
-        List<Row> rowset = searchByCoordinates((Double) allInfo.get(4), (Double) allInfo.get(5), 30.0, 'K');
+        List<Row> rowset = searchByCoordinates((Double) allInfo.get(4), (Double) allInfo.get(5), radius, 'K');
         return rowset;
     }
 
@@ -569,9 +613,6 @@ public class Listing {
 
         Database.disconnect();
     }
-
-
-
 
 
 }
