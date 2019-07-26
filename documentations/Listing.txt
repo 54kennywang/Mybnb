@@ -16,10 +16,12 @@
     public static List<Row> getListingAddr(int l_id)
 
 /**
-     * Displays a listing's info in console.
+     * Prints a listing's info in console.
+     *
      * @param id the id of a listing
+     * @return 1 if listing exists; 0 for not exist
      */
-    public static void viewListing(int id);
+    public static int viewListing(int id)
 
 /**
      * Prints the result from a search query defined below

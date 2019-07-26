@@ -1,6 +1,7 @@
 package test;
 
 import com.sun.rowset.CachedRowSetImpl;
+import com.sun.rowset.internal.Row;
 
 import javax.sql.rowset.CachedRowSet;
 import java.sql.ResultSet;
@@ -144,6 +145,48 @@ public class Renter extends User {
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(rs);
         return rowset;
+    }
+
+
+    /**
+     * Check if user has that type of booking
+     *
+     * @param type 1 for history booking; 0 for future booking; 2 for all (history + future bookings)
+     * @param l_id listing id
+     * @return true if this user has that type of listing with u_id; false otherwise
+     */
+    public boolean bookingValidation(int type, int l_id) throws SQLException {
+        String query = "";
+        if (type == 1) query = "SELECT * FROM rented where u_id = " + this.id + " and l_id = " + l_id +" and status = 1;";
+        else if (type == 0) query = "SELECT * FROM rented where u_id = " + this.id + " and l_id = " + l_id +" and status = 0;";
+        else if (type == 2) query = "SELECT * FROM rented where u_id = " + this.id + " and l_id = " + l_id +" ;";
+        ResultSet rs = Database.queryRead(query);
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(rs);
+        if(Listing.CachedRowSet_to_ListRow(rowset).size() == 0) return false;
+        return true;
+    }
+
+    /**
+     * Prints booking info in console.
+     *
+     * @param bookings the returned CachedRowSet from getBookings(int type)
+     * @return 1 if booking exists; 0 for not exist
+     */
+    public int viewBooking(CachedRowSet bookings) throws SQLException {
+        List<Row> booking_table = Listing.CachedRowSet_to_ListRow(bookings);
+        if(booking_table.size() == 0) {
+            System.out.println("***Sorry, no result found***");
+            return 0;
+        }
+        for (int i = 0; i < booking_table.size(); i++) {
+            System.out.println("Listing ID: " + booking_table.get(i).getColumnObject(2));
+            System.out.println("Renting period: " + LocalDate.parse(booking_table.get(i).getColumnObject(3).toString()).plusDays(1)
+                    + " - " + LocalDate.parse(booking_table.get(i).getColumnObject(4).toString()).plusDays(1));
+            System.out.println("Price: $" + booking_table.get(i).getColumnObject(7) + " per day");
+            System.out.println("==========");
+        }
+        return 1;
     }
 
     /**

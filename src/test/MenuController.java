@@ -8,6 +8,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MenuController {
     public Host client = null;
@@ -29,14 +31,22 @@ public class MenuController {
             } else if (option.equals("3")) {
                 this.logOut();
             } else if (option.equals("4")) {
-                System.out.println("  Please specify searching options (1 for searching by geo-location; 2 for searching by postal code; 3 for searching by address)");
+                System.out.println("  Please specify listing options (1 for searching by geo-location; 2 for searching by postal code; 3 for searching by address)");
                 System.out.print("> ");
                 String subOption = input.nextLine();
                 if (subOption.equals("1")) this.searchByCoordinates();
                 else if (subOption.equals("2")) this.searchByPcode();
                 else if (subOption.equals("3")) this.searchByAddress();
             } else if (option.equals("5")) {
+                System.out.println("  Please specify searching options (1 for viewing; 2 for booking; 3 for cancelling)");
+                System.out.print("> ");
+                String subOption = input.nextLine();
+                if (subOption.equals("1")) this.viewListing();
+                else if (subOption.equals("2")) this.bookOrCancel_Listing(1);
+                else if (subOption.equals("3")) this.bookOrCancel_Listing(0);
             } else if (option.equals("6")) {
+            } else if (option.equals("7")) {
+            } else if (option.equals("8")) {
             } else if (option.equals("9")) {
             }
             System.out.println("Tell me what's next, type MENU to see options.");
@@ -52,14 +62,19 @@ public class MenuController {
         System.out.println("  3. Logout");
         System.out.println("  4. Search listings");
 
-        System.out.println("  5. Book/cancel a listing");
-        System.out.println("  6. Post/update a listing");
-        System.out.println("  7. Comment");
+        System.out.println("  5. View/book/cancel a listing");
+        System.out.println("  6. Post/update/delete a listing");
+        System.out.println("  7. Comment/reply");
         System.out.println("  8. View user info");
     }
 
+    public boolean dateFormat(String date) {
+        if (date.matches("^\\d{4}-\\d{2}-\\d{2}$")) return true;
+        else return false;
+    }
+
     public void logIn() throws Exception {
-        if(client != null) {
+        if (client != null) {
             System.out.println("***You already logged in***");
             return;
         }
@@ -75,19 +90,17 @@ public class MenuController {
         Host user = new Host();
         if (user.signIn(info)) {
             this.client = user;
-            if(client.getType() == 1) {
+            if (client.getType() == 1) {
                 this.type = 1;
-            }
-            else if (client.getType() == 2){
+            } else if (client.getType() == 2) {
                 this.type = 2;
             }
             System.out.println("Login successfully!");
-        }
-        else System.out.println("Username/password wrong.");
+        } else System.out.println("Username/password wrong.");
     }
 
     public void signUp() throws Exception {
-        if(client != null) {
+        if (client != null) {
             System.out.println("***You already logged in***");
             return;
         }
@@ -112,6 +125,7 @@ public class MenuController {
         System.out.println("DOB:");
         System.out.print("> ");
         String DOB = input.next();
+        if (!dateFormat(DOB)) return;
         if (ChronoUnit.YEARS.between(LocalDate.parse(DOB), LocalDate.now()) < 18) {
             System.out.println("You are under 18, register failed.");
             return;
@@ -149,8 +163,8 @@ public class MenuController {
         else System.out.println("Register failed.");
     }
 
-    public void logOut(){
-        if(client == null) {
+    public void logOut() {
+        if (client == null) {
             System.out.println("***You are not logged in***");
             return;
         }
@@ -262,6 +276,78 @@ public class MenuController {
             Listing.viewAllListing(Listing.searchByAddress_rankByDistance(addrInfo, radius, order), 1);
         }
     }
+
+    public void viewListing() throws SQLException {
+        Scanner input = new Scanner(System.in);
+        int id = 0;
+        System.out.println("Listing ID:");
+        System.out.print("> ");
+        id = input.nextInt();
+        Listing.viewListing(id);
+    }
+
+    // 1 for book, 0 for cancel
+    public void bookOrCancel_Listing(int i) throws Exception {
+        if (client == null) {
+            System.out.println("***Please login first***");
+            return;
+        }
+        Scanner input = new Scanner(System.in);
+        List<String> info = new ArrayList<String>();
+        System.out.println();
+        if (i == 0) {
+            System.out.println("***Here are your bookings***");
+            if (client.viewBooking(client.getBookings(0)) == 0) return;
+        }
+        System.out.println("Listing ID:");
+        System.out.print("> ");
+        String l_id = input.nextLine();
+        if (i == 1) {
+            if (Listing.viewListing(Integer.parseInt(l_id)) == 1) {
+                info.add(l_id);
+            } else return;
+        } else if (i == 0) {
+            if (client.bookingValidation(0, Integer.parseInt(l_id))) {
+                info.add(l_id);
+            } else {
+                System.out.println("***You don't have bookings with listing ID " + l_id + "***");
+                return;
+            }
+        }
+
+        System.out.println("Starting date (yyyy-mm-dd):");
+        System.out.print("> ");
+        String fromDate = input.nextLine();
+        if (!dateFormat(fromDate)) {
+            System.out.println("***Format error***");
+            return;
+        }
+        info.add(fromDate);
+
+        System.out.println("Ending date (yyyy-mm-dd):");
+        System.out.print("> ");
+        String toDate = input.nextLine();
+        if (!dateFormat(toDate)) {
+            System.out.println("***Format error***");
+            return;
+        }
+        info.add(toDate);
+
+        if (i == 1) {
+            if (client.bookListing(info)) {
+                System.out.println("***Booked listing successfully***");
+            } else {
+                System.out.println("***Booking listing failed***");
+            }
+        } else if (i == 0) {
+            if (client.cancelBooking(info, this.type)) {
+                System.out.println("***Cancelled booking successfully***");
+            } else {
+                System.out.println("***Cancelled booking failed***");
+            }
+        }
+    }
+
 
     public static void main(String args[]) throws Exception {
         if (Database.connect()) {

@@ -60,8 +60,9 @@ public class Listing {
      * Prints a listing's info in console.
      *
      * @param id the id of a listing
+     * @return 1 if listing exists; 0 for not exist
      */
-    public static void viewListing(int id) throws SQLException {
+    public static int viewListing(int id) throws SQLException {
         String query = "select * from listing where id = " + id;
         ResultSet rs = queryRead(query);
         if (rs.next()) {
@@ -88,6 +89,11 @@ public class Listing {
             addrInfo.add(addrRow.get(0).getColumnObject(5).toString());
             addrInfo.add(addrRow.get(0).getColumnObject(2).toString());
             System.out.println("Address: " + Map.infoToAddr(addrInfo));
+            return 1;
+        }
+        else {
+            System.out.println("***Sorry, no result found***");
+            return 0;
         }
     }
 
@@ -100,7 +106,10 @@ public class Listing {
      *                      input schema: [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
      */
     public static void viewAllListing(List<Row> input, int printDistance) throws SQLException {
-        if(input.size() == 0) System.out.println("***Sorry, no result found***");
+        if(input.size() == 0) {
+            System.out.println("***Sorry, no result found***");
+            return;
+        }
         for (int i = 0; i < input.size(); i++) {
             viewListing(Integer.parseInt(input.get(i).getColumnObject(1).toString()));
             if (printDistance == 1) {

@@ -44,7 +44,13 @@
      */
     public Boolean confirmation_AfterLiving(List<String> info)
 
-
+/**
+     * Prints booking info in console.
+     *
+     * @param bookings the returned CachedRowSet from getBookings(int type)
+     * @return 1 if booking exists; 0 for not exist
+     */
+    public int viewBooking(CachedRowSet bookings)
 
 
 
