@@ -606,7 +606,7 @@ public class Listing {
             Host me = new Host();
             List<String> info = Arrays.asList("qibowang7@outlook.com", "password");
             System.out.println(me.signIn(info));
-//            viewListing(1);
+            System.out.println(getOwnerId(19));
 
 //            printAllUnAvailabilities(12);
 

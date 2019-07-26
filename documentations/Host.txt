@@ -31,8 +31,10 @@
 
 /**
      * print all my listings
+     *
+     * @return 0 if no listing exists; 1 otherwise
      */
-    public void viewAllMyListing()
+    public int viewAllMyListing() throws SQLException
 
 /**
      * Host's initial comment on a Renter

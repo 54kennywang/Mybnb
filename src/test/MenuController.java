@@ -45,9 +45,22 @@ public class MenuController {
                 else if (subOption.equals("2")) this.bookOrCancel_Listing(1);
                 else if (subOption.equals("3")) this.bookOrCancel_Listing(0);
             } else if (option.equals("6")) {
+                System.out.println("  Please specify searching options (1 for posting; 2 for updating; 3 for deleting)");
+                System.out.print("> ");
+                String subOption = input.nextLine();
+                if (subOption.equals("1")) this.postLIsting();
+                else if (subOption.equals("2")) this.updatePosting();
+                else if (subOption.equals("3")) ;
             } else if (option.equals("7")) {
             } else if (option.equals("8")) {
+                System.out.println("  Please specify options (1 for viewing my postings; 2 for ; 3 for )");
+                System.out.print("> ");
+                String subOption = input.nextLine();
+                if (subOption.equals("1")) this.viewMyListing();
+                else if (subOption.equals("2")) ;
+                else if (subOption.equals("3")) ;
             } else if (option.equals("9")) {
+                this.becomeHost();
             }
             System.out.println("Tell me what's next, type MENU to see options.");
             System.out.print("> ");
@@ -66,6 +79,7 @@ public class MenuController {
         System.out.println("  6. Post/update/delete a listing");
         System.out.println("  7. Comment/reply");
         System.out.println("  8. View user info");
+        System.out.println("  9. Become a host");
     }
 
     public boolean dateFormat(String date) {
@@ -74,7 +88,7 @@ public class MenuController {
     }
 
     public void logIn() throws Exception {
-        if (client != null) {
+        if (loggedIn()) {
             System.out.println("***You already logged in***");
             return;
         }
@@ -82,11 +96,11 @@ public class MenuController {
         List<String> info = new ArrayList<String>();
         System.out.println("Username (email):");
         System.out.print("> ");
-        info.add(input.next());
+        info.add(input.nextLine());
 
         System.out.println("Password:");
         System.out.print("> ");
-        info.add(input.next());
+        info.add(input.nextLine());
         Host user = new Host();
         if (user.signIn(info)) {
             this.client = user;
@@ -100,7 +114,7 @@ public class MenuController {
     }
 
     public void signUp() throws Exception {
-        if (client != null) {
+        if (loggedIn()) {
             System.out.println("***You already logged in***");
             return;
         }
@@ -108,23 +122,23 @@ public class MenuController {
         List<String> info = new ArrayList<String>();
         System.out.println("Username (email):");
         System.out.print("> ");
-        info.add(input.next());
+        info.add(input.nextLine());
 
         System.out.println("Credit Card Number:");
         System.out.print("> ");
-        info.add(input.next());
+        info.add(input.nextLine());
 
         System.out.println("Real Name:");
         System.out.print("> ");
-        info.add(input.next());
+        info.add(input.nextLine());
 
         System.out.println("Occupation:");
         System.out.print("> ");
-        info.add(input.next());
+        info.add(input.nextLine());
 
         System.out.println("DOB:");
         System.out.print("> ");
-        String DOB = input.next();
+        String DOB = input.nextLine();
         if (!dateFormat(DOB)) return;
         if (ChronoUnit.YEARS.between(LocalDate.parse(DOB), LocalDate.now()) < 18) {
             System.out.println("You are under 18, register failed.");
@@ -134,37 +148,37 @@ public class MenuController {
 
         System.out.println("SIN:");
         System.out.print("> ");
-        info.add(input.next());
+        info.add(input.nextLine());
 
         System.out.println("Password:");
         System.out.print("> ");
-        info.add(input.next());
+        info.add(input.nextLine());
 
 
         List<String> addrInfo = new ArrayList<String>();
         System.out.println("Please tell us your address.");
         System.out.println("Street:");
         System.out.print("> ");
-        addrInfo.add(input.next());
+        addrInfo.add(input.nextLine());
 
         System.out.println("City:");
         System.out.print("> ");
-        addrInfo.add(input.next());
+        addrInfo.add(input.nextLine());
 
         System.out.println("Postal Code:");
         System.out.print("> ");
-        addrInfo.add(input.next());
+        addrInfo.add(input.nextLine());
 
         System.out.println("Country:");
         System.out.print("> ");
-        addrInfo.add(input.next());
+        addrInfo.add(input.nextLine());
 
         if ((new Renter()).register(info, addrInfo)) System.out.println("Register successfully! Now you can login.");
         else System.out.println("Register failed.");
     }
 
     public void logOut() {
-        if (client == null) {
+        if (!loggedIn()) {
             System.out.println("***You are not logged in***");
             return;
         }
@@ -181,24 +195,23 @@ public class MenuController {
         int option = 0;
         System.out.println("Longitude:");
         System.out.print("> ");
-        lng = input.nextDouble();
+        lng = Double.parseDouble(input.nextLine());
 
         System.out.println("Latitude:");
         System.out.print("> ");
-        lat = input.nextDouble();
+        lat = Double.parseDouble(input.nextLine());
 
         System.out.println("Rank by price (1) or rank by distance (2):");
         System.out.print("> ");
-        option = input.nextInt();
+        option = Integer.parseInt(input.nextLine());
 
         System.out.println("Searching radius (km):");
         System.out.print("> ");
-        radius = input.nextDouble();
+        radius = Double.parseDouble(input.nextLine());
 
         System.out.println("Order (1 for ascending, 0 for descending)");
         System.out.print("> ");
-        order = input.nextInt();
-
+        order = Integer.parseInt(input.nextLine());
 
         if (option == 1) {
             Listing.viewAllListing(Listing.searchByCoordinates_rankByPrice(lng, lat, radius, 'K', order), 1);
@@ -219,7 +232,7 @@ public class MenuController {
 
         System.out.println("(Ranking by price) order (1 for ascending, 0 for descending)");
         System.out.print("> ");
-        order = input.nextInt();
+        order = Integer.parseInt(input.nextLine());
 
         List<Row> exactResult = Listing.searchByPcode_rankByPrice_exact(pcode, order);
         List<Row> wildcardResult = Listing.searchByPcode_rankByPrice_wildcard(pcode, order);
@@ -259,16 +272,15 @@ public class MenuController {
 
         System.out.println("Searching radius (km):");
         System.out.print("> ");
-        radius = input.nextDouble();
+        radius = Double.parseDouble(input.nextLine());
 
         System.out.println("Rank by price (1) or rank by distance (2):");
         System.out.print("> ");
-        option = input.nextInt();
+        option = Integer.parseInt(input.nextLine());
 
         System.out.println("Order (1 for ascending, 0 for descending)");
         System.out.print("> ");
-        order = input.nextInt();
-
+        order = Integer.parseInt(input.nextLine());
 
         if (option == 1) {
             Listing.viewAllListing(Listing.searchByAddress_rankByPrice(addrInfo, radius, order), 1);
@@ -282,13 +294,13 @@ public class MenuController {
         int id = 0;
         System.out.println("Listing ID:");
         System.out.print("> ");
-        id = input.nextInt();
+        id = Integer.parseInt(input.nextLine());
         Listing.viewListing(id);
     }
 
     // 1 for book, 0 for cancel
     public void bookOrCancel_Listing(int i) throws Exception {
-        if (client == null) {
+        if (!loggedIn()) {
             System.out.println("***Please login first***");
             return;
         }
@@ -348,6 +360,211 @@ public class MenuController {
         }
     }
 
+
+    public void postLIsting() throws Exception {
+        if (!loggedIn()) {
+            System.out.println("***Please login first***");
+            return;
+        }
+        if (!isHost()) {
+            System.out.println("***Only Host type user can post a listing, you can choose to become a host from the main menu***");
+            return;
+        }
+
+
+        Scanner input = new Scanner(System.in);
+        List<String> houseInfo = new ArrayList<String>();
+        System.out.println("Area (m^2):");
+        System.out.print("> ");
+        houseInfo.add(input.nextLine());
+
+        System.out.println("Starting date (yyyy-mm-dd):");
+        System.out.print("> ");
+        String fromDate = input.nextLine();
+        if (!dateFormat(fromDate)) {
+            System.out.println("***Format error***");
+            return;
+        }
+        houseInfo.add(fromDate);
+
+        System.out.println("Ending date (yyyy-mm-dd):");
+        System.out.print("> ");
+        String toDate = input.nextLine();
+        if (!dateFormat(toDate)) {
+            System.out.println("***Format error***");
+            return;
+        }
+        houseInfo.add(toDate);
+
+        System.out.println("Price per day ($):");
+        System.out.print("> ");
+        houseInfo.add(input.nextLine());
+
+        houseInfo.add(client.getId().toString());
+
+        System.out.println("Type (House, Room, etc.):");
+        System.out.print("> ");
+        houseInfo.add(input.nextLine());
+
+        System.out.println("Amenities (1 means yes, 0 means no):");
+        String amen = "";
+        for (int i = 0; i < Listing.amenities.size(); i++) {
+            System.out.println(Listing.amenities.get(i));
+            System.out.print("> ");
+            amen = amen + input.nextLine().trim();
+        }
+        // here to add recommendation
+        houseInfo.add(amen);
+
+        System.out.println("***Now address info for the new listing***");
+
+        List<String> addrInfo = new ArrayList<String>();
+        System.out.println("Street:");
+        System.out.print("> ");
+        addrInfo.add(input.nextLine());
+
+        System.out.println("City:");
+        System.out.print("> ");
+        addrInfo.add(input.nextLine());
+
+        System.out.println("Postal Code:");
+        System.out.print("> ");
+        addrInfo.add(input.nextLine());
+
+        System.out.println("Country:");
+        System.out.print("> ");
+        addrInfo.add(input.nextLine());
+
+        if (client.postListing(houseInfo, addrInfo)) {
+            System.out.println("***Posted listing successfully***");
+        } else System.out.println("***Posted listing failed***");
+    }
+
+    public void updatePosting() throws SQLException {
+        System.out.println("***Here are your postings***");
+        if(viewMyListing() == 0) return;
+
+        Scanner input = new Scanner(System.in);
+        System.out.println();
+        System.out.println("Update option (1 for price, 2 for availabilities):");
+        System.out.print("> ");
+        int option = Integer.parseInt(input.nextLine());
+
+        if(option != 1 && option != 2) return;
+
+        System.out.println("Listing ID:");
+        System.out.print("> ");
+        Integer l_id = Integer.parseInt(input.nextLine());
+
+        if(Listing.getOwnerId(l_id) == client.getId()){
+            Listing.viewListing(l_id);
+        }
+        else {
+            System.out.println("***You don't own that listing***");
+            return;
+        }
+
+        if(option == 1){
+            System.out.println();
+            System.out.println("New price ($):");
+            System.out.print("> ");
+            String price = input.nextLine();
+            List<String> info = new ArrayList<String>();
+            info.add(l_id.toString().trim());
+            info.add(price);
+            if(client.updatePrice(info)){
+                System.out.println("***Updated price successfully***");
+            }
+            else System.out.println("***Updated price failed***");
+        }
+        else if (option == 2){
+            System.out.println("***You can add multiple time slots***");
+            List<String> info = new ArrayList<String>();
+            info.add(l_id.toString());
+            int k = 1;
+            String more = "1";
+            do{
+                System.out.println("***Slot " + k + "***");
+                System.out.println("From:");
+                System.out.print("> ");
+                String fromDate = input.nextLine();
+                if (!dateFormat(fromDate)) {
+                    System.out.println("***Format error***");
+                    return;
+                }
+
+                System.out.println("To:");
+                System.out.print("> ");
+                String toDate = input.nextLine();
+                if (!dateFormat(toDate)) {
+                    System.out.println("***Format error***");
+                    return;
+                }
+                info.add(fromDate);
+                info.add(toDate);
+
+                System.out.println("Do you want to add more time slots (1 for yes, 0 for no):");
+                System.out.print("> ");
+                more = input.nextLine().trim();
+                k ++;
+            }while (more.equals("1"));
+            if(client.updateAvailability(info)) System.out.println("***Updated availabilities successfully***");
+            else System.out.println("***Updated availabilities failed***");
+        }
+    }
+
+    public void becomeHost() {
+        if (loggedIn()) {
+            System.out.println("***Please login first***");
+            return;
+        }
+        if (isHost()) {
+            System.out.println("***You are already a host***");
+            return;
+        }
+
+        if (client.becomeHost()) {
+            client.type = 2;
+            System.out.println("***Now you are a host (you can still rent listing)***");
+        }
+    }
+
+    // 1
+    public int viewMyListing() throws SQLException {
+        if (!loggedIn()) {
+            System.out.println("***Please login first***");
+            return 0;
+        }
+        if (!isHost()) {
+            System.out.println("***You are not a host, you have not posted anything***");
+            return 0;
+        }
+        if(client.viewAllMyListing() == 1) return 1;
+        else return 0;
+    }
+
+    public void viewMyBooking() {
+
+    }
+
+
+    public boolean loggedIn() {
+        if (client == null) {
+            return false;
+        } else return true;
+    }
+
+    public boolean isRenter() {
+        if (client.type == 1) {
+            return true;
+        } else return false;
+    }
+
+    public boolean isHost() {
+        if (client.type == 2) {
+            return true;
+        } else return false;
+    }
 
     public static void main(String args[]) throws Exception {
         if (Database.connect()) {

@@ -160,7 +160,7 @@ public class Host extends Renter {
 
         unAvail.retainAll(newDates);
 
-        System.out.println("conflicts: " + unAvail);
+//        System.out.println("conflicts: " + unAvail);
 
         if (unAvail.size() > 0) return false;
 
@@ -206,13 +206,20 @@ public class Host extends Renter {
 
     /**
      * print all my listings
+     *
+     * @return 0 if no listing exists; 1 otherwise
      */
-    public void viewAllMyListing() throws SQLException {
+    public int viewAllMyListing() throws SQLException {
         List<Integer> allMyListings = this.getAllMyListing();
+        if(allMyListings.size() == 0) {
+            System.out.println("***No listings found***");
+            return 0;
+        }
         for (int i = 0; i < allMyListings.size(); i++) {
-            System.out.println("==== Listing ID: " + allMyListings.get(i) + " ====");
+//            System.out.println("==== Listing ID: " + allMyListings.get(i) + " ====");
             Listing.viewListing(allMyListings.get(i));
         }
+        return 1;
     }
 
 
