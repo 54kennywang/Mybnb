@@ -125,7 +125,7 @@ CREATE TABLE `listing_comment` (
 
 LOCK TABLES `listing_comment` WRITE;
 /*!40000 ALTER TABLE `listing_comment` DISABLE KEYS */;
-INSERT INTO `listing_comment` VALUES (3,17,4,1,NULL,5,'The condo is comfortable and wifi is fast ','2019-07-24 18:13:37'),(4,19,5,2,NULL,1,'How is the price so high without WiFi? The place is bad too','2019-07-24 18:32:43'),(5,22,1,3,NULL,3,'The place has all the amenities I need and it feels like home','2019-07-24 19:03:30'),(6,23,6,3,NULL,3,'The price is very cheap. It\'s cost effective','2019-07-24 19:03:44'),(7,24,7,3,NULL,3,'The price is reasonable and the host is friendly','2019-07-24 19:04:01'),(8,28,11,9,NULL,5,'The house is so beautiful and comfortable. Can\'t wait to live here next time','2019-07-24 22:06:07'),(9,29,12,9,NULL,1,'The sound insulation of the house is not good. You can hear people walking around. Also it smells weird in my room','2019-07-24 22:06:36'),(10,30,13,9,NULL,3,'The house is not good with sound insulation but it is bearable considering the price is cheap','2019-07-24 22:06:53'),(11,38,1,13,NULL,3,'I had a good time living in this room but the price is little high considering the size of the room is small','2019-07-25 13:41:13'),(12,40,2,15,NULL,4,'The wifi is fast and stable. I had a good experience','2019-07-25 13:41:14'),(13,42,3,15,NULL,2,'It does not have AC. It feels very cold to live in ','2019-07-25 13:41:14'),(14,43,4,15,NULL,2,'The price is not reasonable when it does not have AC. It feels hot inside the room','2019-07-25 13:41:14'),(15,45,5,15,NULL,5,'I love the house! It offers me so many amenities and I feel like I am home!','2019-07-25 13:41:14');
+INSERT INTO `listing_comment` VALUES (3,17,4,1,NULL,5,'The condo is comfortable and wifi is fast ','2019-07-24 18:13:37'),(4,19,5,2,NULL,1,'How is the price so high without WiFi? The place is bad too','2019-07-24 18:32:43'),(5,22,1,3,NULL,4,'The place has all the amenities I need and it feels like home','2019-07-24 19:03:30'),(6,23,6,3,NULL,3,'The price is very cheap. It\'s cost effective','2019-07-24 19:03:44'),(7,24,7,3,NULL,3,'The price is reasonable and the host is friendly','2019-07-24 19:04:01'),(8,28,11,9,NULL,5,'The house is so beautiful and comfortable. Can\'t wait to live here next time','2019-07-24 22:06:07'),(9,29,12,9,NULL,1,'The sound insulation of the house is not good. You can hear people walking around. Also it smells weird in my room','2019-07-24 22:06:36'),(10,30,13,9,NULL,3,'The house is not good with sound insulation but it is bearable considering the price is cheap','2019-07-24 22:06:53'),(11,38,1,13,NULL,3,'I had a good time living in this room but the price is little high considering the size of the room is small','2019-07-25 13:41:13'),(12,40,2,15,NULL,4,'The wifi is fast and stable. I had a good experience','2019-07-25 13:41:14'),(13,42,3,15,NULL,2,'It does not have AC. It feels very cold to live in ','2019-07-25 13:41:14'),(14,43,4,15,NULL,2,'The price is not reasonable when it does not have AC. It feels hot inside the room','2019-07-25 13:41:14'),(15,45,5,15,NULL,5,'I love the house! It offers me so many amenities and I feel like I am home!','2019-07-25 13:41:14');
 /*!40000 ALTER TABLE `listing_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -206,7 +206,7 @@ CREATE TABLE `user_comment` (
   `content` text NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -215,6 +215,7 @@ CREATE TABLE `user_comment` (
 
 LOCK TABLES `user_comment` WRITE;
 /*!40000 ALTER TABLE `user_comment` DISABLE KEYS */;
+INSERT INTO `user_comment` VALUES (3,5,2,NULL,3,'The host is okay but he should renovate his house','2019-07-26 12:13:18'),(4,1,3,NULL,5,'The host was a wonderful host, super helpful and super easy to communicate with. He kindly let us check in early so we didn’t have to carry our bags around Toronto. The place itself was beautiful, and really relaxed setting.','2019-07-26 12:13:19'),(5,6,3,NULL,4,'Breathtaking view of the city, very modern yet homey feel. Will stay again!! Had an amazing time','2019-07-26 12:13:19'),(6,7,3,NULL,4,'It is good overall','2019-07-26 12:13:19'),(7,4,1,NULL,5,'As always, 5 star ... will book again for sure!','2019-07-26 12:18:27'),(8,11,9,NULL,5,'The place is great. The place is clean, stylish and has a parking spot included which was quite convenient for us. Would definitely go back!','2019-07-26 12:41:31'),(9,12,9,NULL,2,'The host is friendly but the house is not good','2019-07-26 12:41:31'),(10,13,9,NULL,3,'Mediocre','2019-07-26 12:41:31'),(11,2,15,NULL,4,'The room is so clean and super organized. The location is GREAT as it’s close to everything we needed during our stay. I would come back sometime soon.','2019-07-26 12:41:32'),(12,1,13,NULL,4,'Super clean modern space in a great quiet location.','2019-07-26 13:15:38'),(13,4,15,NULL,3,'I hope the host can install an AC sooner','2019-07-26 13:17:04'),(14,3,15,NULL,3,'I will not recommend this to others unless AC is installed','2019-07-26 13:17:24');
 /*!40000 ALTER TABLE `user_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -227,4 +228,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-07-25 13:44:02
+-- Dump completed on 2019-07-26 13:19:53
