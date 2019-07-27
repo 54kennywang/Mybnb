@@ -89,6 +89,8 @@ public class Listing {
             addrInfo.add(addrRow.get(0).getColumnObject(5).toString());
             addrInfo.add(addrRow.get(0).getColumnObject(2).toString());
             System.out.println("Address: " + Map.infoToAddr(addrInfo));
+
+            User.viewComments(id, 0);
             return 1;
         }
         else {
@@ -134,7 +136,7 @@ public class Listing {
         rowset.populate(rs);
         while (rowset.next()) {
             // why do i need to add one day???
-            // https://stackoverflow.com/questions/11296606/java-jdbc-dates-consistently-two-days-off
+            // https://stackoveU:\data\Living_Organ_Donation_Database\BErflow.com/questions/11296606/java-jdbc-dates-consistently-two-days-off
             LocalDate date = LocalDate.parse(rowset.getString("avilDate")).plusDays(1);
             avilDates.add(date);
         }

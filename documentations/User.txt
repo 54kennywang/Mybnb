@@ -55,7 +55,7 @@
      	* - reply to (1) (2)		 |	  - reply to (7) (8)           => two comment blocks on a user
      	* - reply to (2) (3)		 |	  - reply to (8) (9)
      	*/
-    	public List<List<Row>> getComments(int id, int type)
+    	public static List<List<Row>> getComments(int id, int type)
 
 
 /**
@@ -64,7 +64,7 @@
      	* @param id user/listing's id
      	* @param type 1 - user; 0 - listing
      	*/
-    	public void viewComments(int id, int type)
+    	public static void viewComments(int id, int type)
 
 /**
      	* Get a user/listing's average rating
@@ -73,7 +73,7 @@
      	* @param type 1 - user; 0 - listing
      	* @return a user/listing's average rating
      	*/
-    	public Double getRating(int id, int type)
+    	public static Double getRating(int id, int type)
 
 /**
      * User cancels a booking

@@ -360,7 +360,6 @@ public class MenuController {
         }
     }
 
-
     public void postLIsting() throws Exception {
         if (!loggedIn()) {
             System.out.println("***Please login first***");
@@ -529,7 +528,7 @@ public class MenuController {
         }
     }
 
-    // 1
+    // 1 for having listing; 0 for no result
     public int viewMyListing() throws SQLException {
         if (!loggedIn()) {
             System.out.println("***Please login first***");
@@ -543,7 +542,7 @@ public class MenuController {
         else return 0;
     }
 
-    public void viewMyBooking() {
+    public void viewComments() {
 
     }
 

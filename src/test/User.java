@@ -143,7 +143,7 @@ public abstract class User {
      * @param type 1 - user; 0 - listing
      * @return a user/listing's average rating
      */
-    public Double getRating(int id, int type) throws SQLException {
+    public static Double getRating(int id, int type) throws SQLException {
         String query;
         if (type == 1)
             query = "select avg(rating) as 'rating_avg' from user_comment where receiver = " + id + " and parent_comment is null;";
@@ -170,7 +170,7 @@ public abstract class User {
      * - reply to (1) (2)		 |	  - reply to (7) (8)           => two comment blocks on a user
      * - reply to (2) (3)		 |	  - reply to (8) (9)
      */
-    public List<List<Row>> getComments(int id, int type) throws SQLException {
+    public static List<List<Row>> getComments(int id, int type) throws SQLException {
         List<List<Row>> allComments = new ArrayList<List<Row>>();
         String head_query;
         if (type == 1)
@@ -226,8 +226,10 @@ public abstract class User {
      * @param id   user/listing's id
      * @param type 1 - user; 0 - listing
      */
-    public void viewComments(int id, int type) throws SQLException {
+    public static void viewComments(int id, int type) throws SQLException {
+        System.out.println("***Comments***");
         List<List<Row>> comments = getComments(id, type);
+        if(comments.size() == 0) System.out.println("***No comments found***");
         int k = 0;
         for (int i = 0; i < comments.size(); i++) {
             for (int j = 0; j < comments.get(i).size(); j++) {
@@ -237,9 +239,17 @@ public abstract class User {
                     else System.out.println("Comments on listing ID = " + id + "(rating: " + getRating(id, type) + ")");
                     k++;
                 }
-                if (j == 0) System.out.println("*** " + comments.get(i).get(j).getColumnObject(8) + " ***");
+                // [id, parent_comment, sender, sender_name, receiver, receiver_name, rating, content, date]
+                if (j == 0) {
+                    System.out.println("\"" + comments.get(i).get(j).getColumnObject(8) + "\"" +
+                            " (commentID: " + comments.get(i).get(j).getColumnObject(1) + ")" +
+                            " -- " +
+                            comments.get(i).get(j).getColumnObject(4) + "(" + comments.get(i).get(j).getColumnObject(9) + ")"
+                    );
+                }
                 else System.out.println("    @" + comments.get(i).get(j).getColumnObject(6) + " "
-                        + comments.get(i).get(j).getColumnObject(8)
+                        + "\"" + comments.get(i).get(j).getColumnObject(8) + "\""
+                        + " (commentID: " + comments.get(i).get(j).getColumnObject(1) + ")"
                         + " -- " + comments.get(i).get(j).getColumnObject(4)
                         + "(" + comments.get(i).get(j).getColumnObject(9) + ")");
             }
@@ -331,7 +341,7 @@ public abstract class User {
 //			List<String> info = Arrays.asList("6", "1", "thanks for the comment: this user is good");
 //			System.out.println(me.replyUserComment(info));
 
-            me.viewComments(3, 1);
+//            me.viewComments(3, 1);
             me.viewComments(10, 0);
         }
         Database.disconnect();
