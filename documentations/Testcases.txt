@@ -1,5 +1,5 @@
 //            // Toronto, load renters
-//            String renters = "ABCDEFGHIJ";
+//            String renters = "ABCDEFG";
 //            Renter renter = new Renter();
 //            for (int i=0; i< renters.length(); i++) {
 //                String info = renters.substring(i,i+1);
@@ -74,3 +74,562 @@
 //            houseInfo = Arrays.asList("100", "2019-11-01", "2019-11-07", "250", c.getId().toString(), "Apt", "01001010110110");
 //            addrInfo = Arrays.asList("168 Simcoe St", "Toronto", "ON M5H 4C9", "Canada");
 //            c.postListing(houseInfo, addrInfo);
+
+//            renter.signIn(Arrays.asList("D", "pass"));
+//            System.out.println(renter.bookListing(Arrays.asList("17", "2019-06-27", "2019-07-02")));
+            // comment after staying
+//            renter.commentOnListing(Arrays.asList("1", "5", "Excellent", "17"));
+//            renter.signIn(Arrays.asList("E", "pass"));
+//            System.out.println(renter.bookListing(Arrays.asList("19", "2019-05-01", "2019-05-05")));
+//            System.out.println(renter.commentOnListing(Arrays.asList("2", "1", "worst", "19")));
+//            renter.signIn(Arrays.asList("A", "pass"));
+//            System.out.println(renter.commentOnListing(Arrays.asList("3", "3", "good", "22")));
+//            renter.signIn(Arrays.asList("F", "pass"));
+//            System.out.println(renter.commentOnListing(Arrays.asList("3", "3", "good", "23")));
+//            renter.signIn(Arrays.asList("G", "pass"));
+//            System.out.println(renter.commentOnListing(Arrays.asList("3", "3", "good", "24")));
+
+
+
+
+
+//            // Ottawa, load renters
+//            String renters = "HIJKLMN";
+           Renter renter = new Renter();
+//            for (int i=0; i< renters.length(); i++) {
+//                String info = renters.substring(i,i+1);
+//                List<String> userInfo = Arrays.asList(info, info, info, "graduate", "1996-03-05", info, "pass");
+//                List<String> addrInfo = Arrays.asList("216 Hudson Ave", "Ottawa", " ON K2C 0G4", "Canada");
+//                renter.register(userInfo, addrInfo);
+//            }
+//            String hosts = "HIJ";
+//            for (int i = 0; i < 3; i++) {
+//                Renter renter = new Renter();
+//                String email = hosts.substring(i, i + 1);
+//                List<String> userInfo = Arrays.asList(email, "pass");
+//                renter.signIn(userInfo);
+//                renter.becomeHost();
+//            }
+//            // add listings, C:1, H:2, I:5, J:2
+//            //C
+//            Host i = new Host();
+//            List<String> cred;
+//            cred = Arrays.asList("C", "pass");
+//            i.signIn(cred);
+//            List<String> houseInfo;
+//            List<String> addrInfo;
+//            houseInfo = Arrays.asList("220", "2019-09-01", "2019-09-05", "150", i.getId().toString(), "House", "10110100101001");
+//            addrInfo = Arrays.asList("1025 Stormont St", "Ottawa", "ON K2C 0N1", "Canada");
+//            i.postListing(houseInfo, addrInfo);
+//
+//            //H
+//            //1
+//            cred = Arrays.asList("H", "pass");
+//            i.signIn(cred);
+//            houseInfo = Arrays.asList("220", "2019-01-06", "2019-01-22", "150", i.getId().toString(), "House", "10110100101001");
+//            addrInfo = Arrays.asList("1026 Stormont St", "Ottawa", "ON K2C 0M9", "Canada");
+//            i.postListing(houseInfo, addrInfo);
+//            //2
+//            houseInfo = Arrays.asList("50", "2019-08-05", "2019-08-22", "150", i.getId().toString(), "Room", "10110100101001");
+//            addrInfo = Arrays.asList("1027 Stormont St", "Ottawa", "ON K2C 0N1", "Canada");
+//            i.postListing(houseInfo, addrInfo);
+//
+//            //J
+//            //1
+//            cred = Arrays.asList("J", "pass");
+//            i.signIn(cred);
+//            houseInfo = Arrays.asList("100", "2019-02-06", "2019-02-12", "300", i.getId().toString(), "House", "11111110101110");
+//            addrInfo = Arrays.asList("1 Dorothea Dr", "Ottawa", "OM K1V 7C6", "Canada");
+//            i.postListing(houseInfo, addrInfo);
+//            //2
+//            houseInfo = Arrays.asList("50", "2019-12-05", "2019-12-20", "156", i.getId().toString(), "Room", "10110100101001");
+//            addrInfo = Arrays.asList("2 Dorothea Dr", "Ottawa", "ON K1V 7C7", "Canada");
+//            i.postListing(houseInfo, addrInfo);
+
+            //1
+//            renter.signIn(Arrays.asList("K", "pass"));
+//            System.out.println(renter.bookListing(Arrays.asList("28", "2019-05-01", "2019-05-10")));
+//            //2
+//            renter.signIn(Arrays.asList("L", "pass"));
+//            System.out.println(renter.bookListing(Arrays.asList("29", "2019-06-01", "2019-06-05")));
+//            //3
+//            renter.signIn(Arrays.asList("M", "pass"));
+//            System.out.println(renter.bookListing(Arrays.asList("30", "2019-07-01", "2019-07-10")));
+//            //4
+//            renter.signIn(Arrays.asList("B", "pass"));
+//            System.out.println(renter.bookListing(Arrays.asList("35", "2019-08-05", "2019-08-22")));
+//            //5
+//            renter.signIn(Arrays.asList("H", "pass"));
+//            System.out.println(renter.bookListing(Arrays.asList("37", "2019-12-05", "2019-12-07")));
+
+             //comment after staying
+            renter.signIn(Arrays.asList("M", "pass"));
+//            renter.commentOnListing(Arrays.asList("9", "5", "Excellent", "28"));
+//            System.out.println(renter.commentOnListing(Arrays.asList("9", "1", "bad", "29")));
+//
+            System.out.println(renter.commentOnListing(Arrays.asList("9", "3", "good", "30")));
+
+
+
+// vancouver load renters
+//            String dwellers = "OP";
+            Renter renter = new Renter();
+//            renter.signIn(Arrays.asList("M", "pass"));
+//            for (int i=0;i<2;i++){
+//                String info = dwellers.substring(i,i+1);
+//                List<String> userInfo = Arrays.asList(info, info, info, "graduate", "1996-03-05", info, "pass");
+//                List<String> addrInfo = Arrays.asList("5476 Angus Dr", "Vancouver", "BC V6M 3N4", "Canada");
+//                renter.register(userInfo, addrInfo);
+//            }
+            //host m
+//            Host m = new Host();
+//            m.signIn(Arrays.asList("M", "pass"));
+//            // creating listings
+//            // M:1, N:1, O:8
+//            List<String> houseInfo;
+//            List<String> addrInfo;
+//            houseInfo = Arrays.asList("30", "2019-06-26", "2019-07-01", "150", m.getId().toString(), "Room", "11010010111010");
+//            addrInfo = Arrays.asList("2701 W 36th Ave", "Vancouver", "BC V6N 2P7", "Canada");
+//            m.postListing(houseInfo, addrInfo);
+//
+//            //host n
+//            Host n = new Host();
+//            n.signIn(Arrays.asList("N", "pass"));
+//            // creating listings
+//            // M:1, N:1, O:8
+//            houseInfo = Arrays.asList("100", "2019-08-20", "2019-08-25", "200", n.getId().toString(), "House", "11010010111010");
+//            addrInfo = Arrays.asList("2702 W 35th Ave", "Vancouver", " BC V6N 2M1", "Canada");
+//            n.postListing(houseInfo, addrInfo);
+
+//            //host O
+//            Host o = new Host();
+//            List<String> houseInfo;
+//            List<String> addrInfo;
+//            int house = 5;
+//            o.signIn(Arrays.asList("O", "pass"));
+//            for (int i = 0; i < 3; i++) {
+//                houseInfo = Arrays.asList("30", "2019-06-26", "2019-07-01", "150", o.getId().toString(), "Room", "11010010111010");
+//                addrInfo = Arrays.asList("91" + house + "E 14th Ave", "Vancouver", "BC V5T 2N7", "Canada");
+//                o.postListing(houseInfo, addrInfo);
+//                house++;
+//            }
+//            house = 3;
+//            for (int i = 0; i < 5; i++) {
+//                houseInfo = Arrays.asList("30", "2019-09-01", "2019-10-01", "150", o.getId().toString(), "Room", "11010010111010");
+//                addrInfo = Arrays.asList("21" + house + "0 William St", "Vancouver", "BC V5L 2S3", "Canada");
+//                o.postListing(houseInfo, addrInfo);
+//                house++;
+//            }
+
+            // booking
+            Renter a = new Renter();
+            a.signIn(Arrays.asList("A", "pass"));
+//            System.out.println(a.bookListing(Arrays.asList("38", "2019-06-26", "2019-07-01")));
+             //comment after staying
+            a.commentOnListing(Arrays.asList("13", "3", "I had a good time living in this room but the price is little high considering the size of the room is small", "38"));
+
+            Renter b = new Renter();
+            b.signIn(Arrays.asList("B", "pass"));
+//            System.out.println(b.bookListing(Arrays.asList("40", "2019-01-10", "2019-01-15")));
+            b.commentOnListing(Arrays.asList("15", "4", "The wifi is fast and stable. I had a good experience", "40"));
+
+            Renter c = new Renter();
+            c.signIn(Arrays.asList("C", "pass"));
+//            System.out.println(c.bookListing(Arrays.asList("42", "2019-02-10", "2019-02-15")));
+            c.commentOnListing(Arrays.asList("15", "2", "It does not have AC. It feels very cold to live in ", "42"));
+
+            Renter d = new Renter();
+            d.signIn(Arrays.asList("D", "pass"));
+//            System.out.println(d.bookListing(Arrays.asList("43", "2019-07-13", "2019-07-19")));
+            d.commentOnListing(Arrays.asList("15", "2", "The price is not reasonable when it does not have AC. It feels hot inside the room", "43"));
+
+            Renter e = new Renter();
+            e.signIn(Arrays.asList("E", "pass"));
+//            System.out.println(e.bookListing(Arrays.asList("45", "2019-04-01", "2019-04-06")));
+            e.commentOnListing(Arrays.asList("15", "5", "I love the house! It offers me so many amenities and I feel like I am home!", "45"));
+
+
+
+
+            // toronto
+//            Renter e = new Renter();
+//            e.signIn(Arrays.asList("E", "pass"));
+//            System.out.println(e.commentOnUser(Arrays.asList("2", "3", "The host is okay but he should renovate his house")));
+//
+//            Renter a = new Renter();
+//            a.signIn(Arrays.asList("A", "pass"));
+//            System.out.println(a.commentOnUser(Arrays.asList("3", "5", "The host was a wonderful host, super helpful and super easy to communicate with. He kindly let us check in early so we didn’t have to carry our bags around Toronto. The place itself was beautiful, and really relaxed setting.")));
+//
+//            Renter f = new Renter();
+//            f.signIn(Arrays.asList("F", "pass"));
+//            System.out.println(f.commentOnUser(Arrays.asList("3", "4", "Breathtaking view of the city, very modern yet homey feel. Will stay again!! Had an amazing time")));
+//
+//            Renter g = new Renter();
+//            g.signIn(Arrays.asList("G", "pass"));
+//            System.out.println(g.commentOnUser(Arrays.asList("3", "4", "It is good overall")));
+//
+//            Renter d = new Renter();
+//            d.signIn(Arrays.asList("D", "pass"));
+//            System.out.println(d.commentOnUser(Arrays.asList("1", "5", "As always, 5 star ... will book again for sure!")));
+
+            // ottawa
+//            Renter k = new Renter();
+//            k.signIn(Arrays.asList("K", "pass"));
+//            System.out.println(k.commentOnUser(Arrays.asList("9", "5", "The place is great. The place is clean, stylish and has a parking spot included which was quite convenient for us. Would definitely go back!")));
+//
+//            Renter l = new Renter();
+//            l.signIn(Arrays.asList("L", "pass"));
+//            System.out.println(l.commentOnUser(Arrays.asList("9", "2", "The host is friendly but the house is not good")));
+//
+//            Renter m = new Renter();
+//            m.signIn(Arrays.asList("M", "pass"));
+//            System.out.println(m.commentOnUser(Arrays.asList("9", "3", "Mediocre")));
+//
+//            Renter b = new Renter();
+//            b.signIn(Arrays.asList("B", "pass"));
+//            System.out.println(b.commentOnUser(Arrays.asList("15", "4", "The room is so clean and super organized. The location is GREAT as it’s close to everything we needed during our stay. I would come back sometime soon.")));
+
+            //vancouver
+//            Renter a = new Renter();
+//            a.signIn(Arrays.asList("A", "pass"));
+//            System.out.println(a.commentOnUser(Arrays.asList("13", "4", "Super clean modern space in a great quiet location.")));
+
+//            Renter c = new Renter();
+//            c.signIn(Arrays.asList("C", "pass"));
+//            System.out.println(c.commentOnUser(Arrays.asList("15", "3", "I will not recommend this to others unless AC is installed")));
+
+//            Renter d = new Renter();
+//            d.signIn(Arrays.asList("D", "pass"));
+//            System.out.println(d.commentOnUser(Arrays.asList("15", "3", "I hope the host can install an AC sooner")));
+
+
+
+
+
+
+            // new york
+//            String renters = "RST";
+//            Renter renter = new Renter();
+//            for (int i=0; i< renters.length(); i++) {
+//                String info = renters.substring(i, i + 1);
+//                List<String> userInfo = Arrays.asList(info, info, info, "graduate", "1996-03-05", info, "pass");
+//                List<String> addrInfo = Arrays.asList("300 E 55th St", "New York", "NY 10022", "USA");
+//                renter.register(userInfo, addrInfo);
+//            }
+
+            // load host
+//            String hosts = "RS";
+//            Host host = new Host();
+//            for (int i=0; i<2; i++) {
+//                Renter renter = new Renter();
+//                String email = hosts.substring(i, i + 1);
+//                List<String> userInfo = Arrays.asList(email, "pass");
+//                renter.signIn(userInfo);
+//                renter.becomeHost();
+//            }
+
+            // load listing R:2, S:2, P:8
+            //R
+//            Host a = new Host();
+//            List<String> cred = Arrays.asList("A", "pass");
+//            a.signIn(cred);
+//            List<String> houseInfo;
+//            List<String> addrInfo;
+//            //1
+//            houseInfo = Arrays.asList("30", "2019-07-20", "2019-07-22", "175", a.getId().toString(), "Apt", "11010010111011");
+//            addrInfo = Arrays.asList("223 E 60th St", "New York", "NY 10022", "USA");
+//            a.postListing(houseInfo, addrInfo);
+//            //2
+//            houseInfo = Arrays.asList("50", "2019-08-20", "2019-08-22", "200", a.getId().toString(), "Apt", "11010010111011");
+//            addrInfo = Arrays.asList("224 E 60th St", "New York", "NY 10022", "USA");
+//            a.postListing(houseInfo, addrInfo);
+
+            //S
+//            Host s = new Host();
+//            List<String> cred = Arrays.asList("S", "pass");
+//            s.signIn(cred);
+//            List<String> houseInfo;
+//            List<String> addrInfo;
+//            //1
+//            houseInfo = Arrays.asList("40", "2019-07-20", "2019-07-23", "150", s.getId().toString(), "Apt", "11010010111011");
+//            addrInfo = Arrays.asList("800 5th Ave", "New York", "NY 10065", "USA");
+//            s.postListing(houseInfo, addrInfo);
+//            //2
+//            houseInfo = Arrays.asList("50", "2019-08-25", "2019-08-29", "200", s.getId().toString(), "Apt", "11010010111011");
+//            addrInfo = Arrays.asList("1 E 62nd St", "New York", "NY 10065", "USA");
+//            s.postListing(houseInfo, addrInfo);
+
+            //I
+//            Host p = new Host();
+//            List<String> cred = Arrays.asList("I", "pass");
+//            p.signIn(cred);
+//            List<String> houseInfo;
+//            List<String> addrInfo;
+//            int house = 2;
+//            for (int i=0;i<8;i++){
+//                houseInfo = Arrays.asList("40", "2019-07-20", "2019-07-23", "150", p.getId().toString(), "Apt", "11010010111011");
+//                addrInfo = Arrays.asList("47-0" + house + " 48th Ave", "New York", "NY 10065", "USA");
+//                p.postListing(houseInfo, addrInfo);
+//                house++;
+//            }
+
+            // book listing MNOPT
+            //M
+//            Renter m = new Renter();
+//            m.signIn(Arrays.asList("M", "pass"));
+////            System.out.println(m.bookListing(Arrays.asList("64", "2019-07-20", "2019-07-22")));
+//            //comment after staying
+//            m.commentOnListing(Arrays.asList("18", "4", "We had a wonderful experience. Great location, clean place, quiet and safe building! ", "64"));
+//            System.out.println(m.commentOnUser(Arrays.asList("18", "5", "She is an excellent host and even let us check in a bit early.")));
+
+//            Renter n = new Renter();
+//            n.signIn(Arrays.asList("N", "pass"));
+////            System.out.println(n.bookListing(Arrays.asList("66", "2019-07-20", "2019-07-23")));
+//            n.commentOnListing(Arrays.asList("19", "4", " Everything was very clean and the bed was comfortable. The location was great. Definitely a 10/10 and we would stay here again", "66"));
+//            System.out.println(n.commentOnUser(Arrays.asList("19", "5", "Her place was a wonderful place conveniently located in Manhattan with easy access to train stations.")));
+//
+//            Renter o = new Renter();
+//            o.signIn(Arrays.asList("O", "pass"));
+////            System.out.println(o.bookListing(Arrays.asList("68", "2019-07-20", "2019-07-23")));
+//            o.commentOnListing(Arrays.asList("9", "5", "We stayed 3 nights in this apartment and had a great time. It is nicely decorated and had everything we needed in it. A very comfortable bed!", "68"));
+//            System.out.println(o.commentOnUser(Arrays.asList("9", "5", "Would recommend this to anyone. She is one of the best hosts I have met.")));
+//
+//            Renter p = new Renter();
+//            p.signIn(Arrays.asList("P", "pass"));
+////            System.out.println(p.bookListing(Arrays.asList("69", "2019-07-20", "2019-07-23")));
+//            p.commentOnListing(Arrays.asList("9", "5", "Would recommend this to anyone. Lots of great restaurants and sights nearby and a short walk away.", "69"));
+//            System.out.println(p.commentOnUser(Arrays.asList("9", "5", "This was my 3rd stay at this host place and it was even better than the last. The location is perfect and the apartment is as described. I cannot recommend it enough.")));
+//
+//            Renter t = new Renter();
+//            t.signIn(Arrays.asList("T", "pass"));
+////            System.out.println(t.bookListing(Arrays.asList("70", "2019-07-20", "2019-07-23")));
+//            t.commentOnListing(Arrays.asList("9", "4", "The apartment was small and compact but very clean!", "70"));
+//            System.out.println(t.commentOnUser(Arrays.asList("9", "5", "I recommend his place.")));
+
+            //cde book future listings
+//            Renter c = new Renter();
+//            c.signIn(Arrays.asList("C", "pass"));
+//            System.out.println(c.bookListing(Arrays.asList("67", "2019-08-25", "2019-08-29")));
+//
+//            Renter d = new Renter();
+//            d.signIn(Arrays.asList("D", "pass"));
+//            System.out.println(d.bookListing(Arrays.asList("71", "2019-09-20", "2019-09-23")));
+//
+//            Renter e = new Renter();
+//            e.signIn(Arrays.asList("E", "pass"));
+//            System.out.println(e.bookListing(Arrays.asList("73", "2019-09-25", "2019-09-28")));
+
+
+
+
+//            // LA
+//            String renters = "QUV";
+//            Renter renter = new Renter();
+//            for (int i=0; i< renters.length(); i++) {
+//                String info = renters.substring(i, i + 1);
+//                List<String> userInfo = Arrays.asList(info, info, info, "graduate", "1996-03-05", info, "pass");
+//                List<String> addrInfo = Arrays.asList("135 N Grand Ave", "Los Angeles", "CA 90012", "USA");
+//                renter.register(userInfo, addrInfo);
+//            }
+
+//             //load host
+//            String hosts = "QU";
+//            for (int i=0; i<2; i++) {
+//                Renter renter = new Renter();
+//                String email = hosts.substring(i, i + 1);
+//                List<String> userInfo = Arrays.asList(email, "pass");
+//                renter.signIn(userInfo);
+//                renter.becomeHost();
+//            }
+
+            // load listing Q:1, U:1, J:8
+//            //Q
+//            Host a = new Host();
+//            List<String> cred = Arrays.asList("Q", "pass");
+//            a.signIn(cred);
+//            List<String> houseInfo;
+//            List<String> addrInfo;
+//            //1
+//            houseInfo = Arrays.asList("30", "2019-04-02", "2019-04-05", "300", a.getId().toString(), "Room", "11010010111011");
+//            addrInfo = Arrays.asList("251 S Olive St", "Los Angeles", "CA 90012", "USA");
+//            a.postListing(houseInfo, addrInfo);
+//
+//
+//            //U
+//            Host s = new Host();
+//            cred = Arrays.asList("U", "pass");
+//            s.signIn(cred);
+////            List<String> houseInfo;
+////            List<String> addrInfo;
+//            //1
+//            houseInfo = Arrays.asList("40", "2019-07-05", "2019-07-09", "130", s.getId().toString(), "Room", "11010010111011");
+//            addrInfo = Arrays.asList("416 W 8th St", "Los Angeles", "CA 90014", "USA");
+//            s.postListing(houseInfo, addrInfo);
+//
+//
+//            //J
+//            Host p = new Host();
+//            cred = Arrays.asList("J", "pass");
+//            p.signIn(cred);
+////            List<String> houseInfo;
+////            List<String> addrInfo;
+//            int house = 0;
+//            for (int i=0;i<8;i++) {
+//                houseInfo = Arrays.asList("100", "2019-07-20", "2019-07-23", "150", p.getId().toString(), "House", "11010010111011");
+//                addrInfo = Arrays.asList("52" + house + " N Orchard Dr", "Los Angeles", "CA 91506", "USA");
+//                p.postListing(houseInfo, addrInfo);
+//                house++;
+//            }
+
+//             book listing EFGHI
+            //M
+//            Renter m = new Renter();
+//            m.signIn(Arrays.asList("E", "pass"));
+////            System.out.println(m.bookListing(Arrays.asList("76", "2019-04-02", "2019-04-05")));
+//            //comment after staying
+//            m.commentOnListing(Arrays.asList("21", "5", "Enjoyed a wonderful stay at this gem of a house. Quiet neighborhood, wonderful space, convenient to the freeway and lots of stores and restaurants.", "76"));
+//            System.out.println(m.commentOnUser(Arrays.asList("21", "5", "This place is truly a gem! We had an absolutely great time and Vince was the perfect host. He made us feel very welcome and catered to all our needs.")));
+//
+//            Renter n = new Renter();
+//            n.signIn(Arrays.asList("F", "pass"));
+////            System.out.println(n.bookListing(Arrays.asList("77", "2019-07-05", "2019-07-09")));
+//            n.commentOnListing(Arrays.asList("22", "4", " The house was modern, comfortable, clean, and fully stocked with anything that you could possibly need for a comfortable stay.", "77"));
+//            System.out.println(n.commentOnUser(Arrays.asList("22", "5", "The host even put out some snacks and had a good supply of bottled water for us. He is very considerate.")));
+//
+//            Renter o = new Renter();
+//            o.signIn(Arrays.asList("G", "pass"));
+////            System.out.println(o.bookListing(Arrays.asList("78", "2019-07-20", "2019-07-23")));
+//            o.commentOnListing(Arrays.asList("10", "2", "If you like privacy, find somewhere else. The bed was comfy until I found a long hair in it. The hosts were needlessly confrontational about me bringing food and drink into the room.", "78"));
+//            System.out.println(o.commentOnUser(Arrays.asList("10", "5", "Not recommend this")));
+//
+//            Renter p = new Renter();
+//            p.signIn(Arrays.asList("H", "pass"));
+////            System.out.println(p.bookListing(Arrays.asList("79", "2019-07-20", "2019-07-23")));
+//            p.commentOnListing(Arrays.asList("10", "5", "Was a good experience, got to interact with both of them. Breakfast was very good and homely. Would definitely recommend staying here.", "79"));
+//            System.out.println(p.commentOnUser(Arrays.asList("10", "5", "This host was great")));
+//
+//            Renter t = new Renter();
+//            t.signIn(Arrays.asList("I", "pass"));
+////            System.out.println(t.bookListing(Arrays.asList("80", "2019-07-20", "2019-07-23")));
+//            t.commentOnListing(Arrays.asList("10", "4", "A lovely room, comfortable bed, friendly hosts and a great collection of books and LA tourism information.", "80"));
+//            System.out.println(t.commentOnUser(Arrays.asList("10", "5", "Great please. Very recommended. Near to everything in LA and nice neighborhood.")));
+
+            //HJK book future listings
+//            Renter c = new Renter();
+//            c.signIn(Arrays.asList("H", "pass"));
+//            System.out.println(c.bookListing(Arrays.asList("81", "2019-10-20", "2019-10-21")));
+
+//            Renter d = new Renter();
+//            d.signIn(Arrays.asList("J", "pass"));
+//            System.out.println(d.bookListing(Arrays.asList("82", "2019-10-02", "2019-10-03")));
+
+//            Renter e = new Renter();
+//            e.signIn(Arrays.asList("K", "pass"));
+//            System.out.println(e.bookListing(Arrays.asList("83", "2019-11-22", "2019-11-23")));
+
+
+
+//            // Boston WXY
+//            String renters = "WXY";
+//            Renter renter = new Renter();
+//            for (int i=0; i< renters.length(); i++) {
+//                String info = renters.substring(i, i + 1);
+//                List<String> userInfo = Arrays.asList(info, info, info, "graduate", "1996-03-05", info, "pass");
+//                List<String> addrInfo = Arrays.asList("564 Tremont St", "Boston", "MA 02118", "USA");
+//                renter.register(userInfo, addrInfo);
+//            }
+
+//            String hosts = "Y";
+//            for (int i=0; i<1; i++) {
+//                Renter renter = new Renter();
+//                String email = hosts.substring(i, i + 1);
+//                List<String> userInfo = Arrays.asList(email, "pass");
+//                renter.signIn(userInfo);
+//                renter.becomeHost();
+//            }
+
+            // load listings
+            // W:2, X;2, Y:5, H;1
+            //W
+//            Host a = new Host();
+////            List<String> cred = Arrays.asList("W", "pass");
+////            a.signIn(cred);
+////            List<String> houseInfo;
+////            List<String> addrInfo;
+////            //1
+////            houseInfo = Arrays.asList("70", "2019-04-02", "2019-04-05", "350", a.getId().toString(), "Room", "11010010111011");
+////            addrInfo = Arrays.asList("100 Stuart St", "Boston", "MA 02116", "USA");
+////            a.postListing(houseInfo, addrInfo);
+////            //2
+////            houseInfo = Arrays.asList("70", "2020-06-02", "2020-06-05", "350", a.getId().toString(), "Room", "11010010111011");
+////            addrInfo = Arrays.asList("19 Stuart St", "Boston", "MA 02116", "USA");
+////            a.postListing(houseInfo, addrInfo);
+////
+////            //X
+////            Host x = new Host();
+////            cred = Arrays.asList("X", "pass");
+////            x.signIn(cred);
+////            //1
+////            houseInfo = Arrays.asList("70", "2019-05-02", "2019-05-05", "200", x.getId().toString(), "Room", "11010010111011");
+////            addrInfo = Arrays.asList("161 Devonshire St", "Boston", "MA 02110", "USA");
+////            x.postListing(houseInfo, addrInfo);
+////            //2
+////            houseInfo = Arrays.asList("70", "2020-12-02", "2020-12-05", "225", x.getId().toString(), "Room", "11010010111011");
+////            addrInfo = Arrays.asList("185 State St", "Boston", "MA 02109", "USA");
+////            x.postListing(houseInfo, addrInfo);
+////
+////
+////            //H
+////            Host h = new Host();
+////            cred = Arrays.asList("H", "pass");
+////            h.signIn(cred);
+////            //1
+////            houseInfo = Arrays.asList("70", "2019-05-02", "2019-05-05", "200", h.getId().toString(), "Room", "11010010111011");
+////            addrInfo = Arrays.asList("161 Devonshire St", "Boston", "MA 02110", "USA");
+////            h.postListing(houseInfo, addrInfo);
+
+//            Host p = new Host();
+//            List<String> cred = Arrays.asList("Y", "pass");
+//            p.signIn(cred);
+//            List<String> houseInfo;
+//            List<String> addrInfo;
+//            int house = 0;
+//            for (int i=0;i<5;i++) {
+//                houseInfo = Arrays.asList("100", "2019-07-20", "2019-07-23", "150", p.getId().toString(), "House", "11010010111011");
+//                addrInfo = Arrays.asList("52" + house + " E 6th St", "Los Angeles", "MA 02127", "USA");
+//                p.postListing(houseInfo, addrInfo);
+//                house++;
+//            }
+
+//           book listing ABHIJ
+//            M
+            Renter m = new Renter();
+            m.signIn(Arrays.asList("A", "pass"));
+//            System.out.println(m.bookListing(Arrays.asList("86", "2019-04-02", "2019-04-05")));
+            //comment after staying
+//            m.commentOnListing(Arrays.asList("24", "5", "Good accommodation, location is ok close to metro station close to airport.", "86"));
+//            System.out.println(m.commentOnUser(Arrays.asList("24", "5", "We had an awesome time staying at it! Their place was clean, homey and they had so many thoughtful touches that improved our stay even more. Definitely recommend to anyone visiting Boston!")));
+
+            Renter n = new Renter();
+            n.signIn(Arrays.asList("B", "pass"));
+//            System.out.println(n.bookListing(Arrays.asList("92", "2019-07-20", "2019-07-23")));
+            n.commentOnListing(Arrays.asList("26", "4", "All in all, it was a very comfortable stay, the only down side is the walls being very thin (we could hear our neighbour snore), but they do provide ear plugs! It''s also very close to the airport", "92"));
+            System.out.println(n.commentOnUser(Arrays.asList("26", "5", "Great place to stay! Super clean and cosy.")));
+
+            Renter o = new Renter();
+            o.signIn(Arrays.asList("H", "pass"));
+//            System.out.println(o.bookListing(Arrays.asList("88", "2019-05-02", "2019-05-05")));
+            o.commentOnListing(Arrays.asList("25", "4", "The apartment was clean, convenient and very well managed by the host!", "88"));
+            System.out.println(o.commentOnUser(Arrays.asList("25", "5", "I Highly recommend it")));
+
+            Renter p = new Renter();
+            p.signIn(Arrays.asList("I", "pass"));
+//            System.out.println(p.bookListing(Arrays.asList("90", "2019-05-02", "2019-05-05")));
+            p.commentOnListing(Arrays.asList("8", "5", "Not a single thing that I would want to change about this place. A nice quiet location just outside of Boston. The interior of the home is phenomenal. Made us feel extremely at home!", "90"));
+            System.out.println(p.commentOnUser(Arrays.asList("8", "5", " This is a great place! It'' s clear that the host really care about their guests'' experience. Highly recommend!")));
+
+            Renter t = new Renter();
+            t.signIn(Arrays.asList("J", "pass"));
+//            System.out.println(t.bookListing(Arrays.asList("91", "2019-07-25", "2019-07-28")));
+            t.commentOnListing(Arrays.asList("26", "4", "Incredible place in an perfect location. Great value! No need to look anywhere else in Boston!", "91"));
+            System.out.println(t.commentOnUser(Arrays.asList("26", "5", "This place could not be in a better location. The home was clean and as advertised. All responses to questions we had were given quickly. I would recommend this place to any visitors in Boston.")));
