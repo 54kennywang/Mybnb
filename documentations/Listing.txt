@@ -1,10 +1,10 @@
 /**
-     * Get the ownerID of a listing
+     * Gets a listing's owner ID, return -1 if listing does not exist.
      *
      * @param l_id the id of a listing
-     * @return ownerID of that listing
+     * @return the owner id of the listing, or -1 if listing does not exist
      */
-    public static Integer getOwnerID
+    public static Integer getOwnerId(int l_id)
 
 /**
      * Get the address row of a listing

@@ -52,7 +52,14 @@
     public Boolean replyListingComment(List<String> info)
 
 
-
+/**
+     * Get renter's bookings on a host's listings (from host's perspective, who booked my listing) based on type
+     *
+     * @param type 1 for history booking; 0 for future booking; 2 for all (history + future bookings)
+     * @return renter's bookings on a host's listings (history + future bookings)
+     * [u_id, l_id, fromDate, toDate, status, date, dayPrice, owner]
+     */
+    public List<Row> getMyRenterBookingsOfMyListings(int type)
 
 
 

@@ -135,12 +135,13 @@ public class Renter extends User {
      *
      * @param type 1 for history booking; 0 for future booking; 2 for all (history + future bookings)
      * @return renter's bookings (history + future bookings)
+     * [u_id, l_id, fromDate, toDate, status, date, dayPrice]
      */
     public CachedRowSet getBookings(int type) throws SQLException {
         String query = "";
         if (type == 1) query = "SELECT * FROM rented where u_id = " + this.id + " and status = 1;";
         else if (type == 0) query = "SELECT * FROM rented where u_id = " + this.id + " and status = 0;";
-        else if (type == 2) query = "SELECT * FROM rented where u_id = " + this.id + ";";
+        else if (type == 2) query = "SELECT * FROM rented where u_id = " + this.id + " and (status = 0 or status = 1);";
         ResultSet rs = Database.queryRead(query);
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(rs);
@@ -202,11 +203,13 @@ public class Renter extends User {
         while (rowset.next()) {
             Integer l_id = rowset.getInt("l_id");
             if (Listing.getOwnerId(l_id) == Integer.parseInt(info.get(0))) {
+                System.out.println(l_id + "this proble listing");
                 legal = true;
                 break;
             }
         }
         if (!legal) return false;
+        System.out.println("========= is " + legal);
 
         Boolean success = false;
         if (this.active) {

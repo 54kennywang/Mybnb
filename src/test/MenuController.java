@@ -52,6 +52,11 @@ public class MenuController {
                 else if (subOption.equals("2")) this.updatePosting();
                 else if (subOption.equals("3")) ;
             } else if (option.equals("7")) {
+                System.out.println("  Please specify options (1 for comment; 2 for reply)");
+                System.out.print("> ");
+                String subOption = input.nextLine();
+                if (subOption.equals("1")) this.comment();
+                else if (subOption.equals("2")) this.reply();
             } else if (option.equals("8")) {
                 System.out.println("  Please specify options (1 for viewing my postings; 2 for ; 3 for )");
                 System.out.print("> ");
@@ -86,6 +91,98 @@ public class MenuController {
         if (date.matches("^\\d{4}-\\d{2}-\\d{2}$")) return true;
         else return false;
     }
+
+
+    // replyListingComment(List<String> info) - Host's reply to a comment on a listing
+    // [receiver, parent_comment, content, l_id]
+
+    // replyUserComment(List<String> info) - User's Reply to a comment on a user
+    // [receiver, parent_comment, content]
+    public void reply() {
+
+    }
+
+
+    public void comment() throws SQLException {
+        if (!loggedIn()) {
+            System.out.println("***Please login first***");
+            return;
+        }
+        Scanner input = new Scanner(System.in);
+        List<String> info = new ArrayList<String>();
+        int option = 0;
+        System.out.println("  Please specify options (1 for commenting on user, 2 for commenting on listing) :");
+        System.out.print("> ");
+        option = Integer.parseInt(input.nextLine());
+
+        String receiver = "";
+        String l_id = "";
+        if (option == 1) {
+            System.out.println("User ID:");
+            System.out.print("> ");
+            receiver = input.nextLine();
+            if (!User.viewUserInfo(Integer.parseInt(receiver))) {
+                return;
+            }
+        } else if (option == 2) {
+            System.out.println("Listing ID:");
+            System.out.print("> ");
+            l_id = input.nextLine();
+            if (Listing.viewListing(Integer.parseInt(l_id)) == 0) {
+                return;
+            }
+        }
+        String rating = "";
+        System.out.println("Rating (1 - 5):");
+        System.out.print("> ");
+        rating = input.nextLine();
+        if (!rating.matches("^[1-5]$")) {
+            System.out.println("***Rating has to be an integer of scale 1 to 5***");
+            return;
+        }
+        String content = "";
+        System.out.println("Leave you comment:");
+        System.out.print("> ");
+        content = input.nextLine();
+
+        if (option == 1) {
+            info.add(receiver);
+            info.add(rating);
+            info.add(content);
+            if (this.type == 2) {
+                System.out.println("Is this comment for your renter who lived in your place (1) or for your host whom you rented a listing from (2):");
+                System.out.print("> ");
+                String subOption = input.nextLine();
+                if (subOption.equals("1")) {
+                    if (((Host) client).commentOnUser(info)) {
+                        System.out.println("***Comment on user successfully***");
+                        return;
+                    }
+                } else if (subOption.equals("1")) {
+                    if (((Renter) client).commentOnUser(info)) {
+                        System.out.println("***Comment on user successfully***");
+                        return;
+                    }
+                }
+                System.out.println("***Comment on user failed***");
+            } else {
+                if (((Renter) client).commentOnUser(info)) {
+                    System.out.println("***Comment on user successfully***");
+                    return;
+                }
+                System.out.println("***Comment on user failed***");
+            }
+        } else if (option == 2) {
+            info.add(Listing.getOwnerId(Integer.parseInt(l_id)).toString());
+            info.add(rating);
+            info.add(content);
+            info.add(l_id);
+            if (client.commentOnListing(info)) System.out.println("***Comment on listing successfully***");
+            else System.out.println("***Comment on listing failed***");
+        }
+
+    }
+
 
     public void logIn() throws Exception {
         if (loggedIn()) {
@@ -441,7 +538,7 @@ public class MenuController {
 
     public void updatePosting() throws SQLException {
         System.out.println("***Here are your postings***");
-        if(viewMyListing() == 0) return;
+        if (viewMyListing() == 0) return;
 
         Scanner input = new Scanner(System.in);
         System.out.println();
@@ -449,21 +546,20 @@ public class MenuController {
         System.out.print("> ");
         int option = Integer.parseInt(input.nextLine());
 
-        if(option != 1 && option != 2) return;
+        if (option != 1 && option != 2) return;
 
         System.out.println("Listing ID:");
         System.out.print("> ");
         Integer l_id = Integer.parseInt(input.nextLine());
 
-        if(Listing.getOwnerId(l_id) == client.getId()){
+        if (Listing.getOwnerId(l_id) == client.getId()) {
             Listing.viewListing(l_id);
-        }
-        else {
+        } else {
             System.out.println("***You don't own that listing***");
             return;
         }
 
-        if(option == 1){
+        if (option == 1) {
             System.out.println();
             System.out.println("New price ($):");
             System.out.print("> ");
@@ -471,18 +567,16 @@ public class MenuController {
             List<String> info = new ArrayList<String>();
             info.add(l_id.toString().trim());
             info.add(price);
-            if(client.updatePrice(info)){
+            if (client.updatePrice(info)) {
                 System.out.println("***Updated price successfully***");
-            }
-            else System.out.println("***Updated price failed***");
-        }
-        else if (option == 2){
+            } else System.out.println("***Updated price failed***");
+        } else if (option == 2) {
             System.out.println("***You can add multiple time slots***");
             List<String> info = new ArrayList<String>();
             info.add(l_id.toString());
             int k = 1;
             String more = "1";
-            do{
+            do {
                 System.out.println("***Slot " + k + "***");
                 System.out.println("From:");
                 System.out.print("> ");
@@ -505,9 +599,9 @@ public class MenuController {
                 System.out.println("Do you want to add more time slots (1 for yes, 0 for no):");
                 System.out.print("> ");
                 more = input.nextLine().trim();
-                k ++;
-            }while (more.equals("1"));
-            if(client.updateAvailability(info)) System.out.println("***Updated availabilities successfully***");
+                k++;
+            } while (more.equals("1"));
+            if (client.updateAvailability(info)) System.out.println("***Updated availabilities successfully***");
             else System.out.println("***Updated availabilities failed***");
         }
     }
@@ -538,7 +632,7 @@ public class MenuController {
             System.out.println("***You are not a host, you have not posted anything***");
             return 0;
         }
-        if(client.viewAllMyListing() == 1) return 1;
+        if (client.viewAllMyListing() == 1) return 1;
         else return 0;
     }
 

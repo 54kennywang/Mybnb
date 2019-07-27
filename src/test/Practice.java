@@ -76,18 +76,9 @@ public class Practice {
 ////            System.out.println("u_id: " + rowset.getInt("u_id") + " l_id: " + rowset.getInt("l_id"));
 //        }
 //        Database.disconnect();
-        List<LocalDate> dates1 = new ArrayList<LocalDate>();
-        dates1.add(LocalDate.now());
-        dates1.add(LocalDate.now().plusDays(-1));
 
-        List<LocalDate> dates2 = new ArrayList<LocalDate>();
-        dates2.add(LocalDate.now().plusDays(-1));
-        dates2.add(LocalDate.now().plusDays(-2));
-
-        List<LocalDate> dates3 = new ArrayList<LocalDate>(dates1);
-        dates3.retainAll(dates2);
-        System.out.println(dates1);
-        System.out.println(dates2);
-        System.out.println(dates3);
+        String x = "x";
+        if (x.matches("^[1-5]$")) System.out.println("yes");
+        else System.out.println("shit");
     }
 }

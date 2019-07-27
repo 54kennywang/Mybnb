@@ -23,8 +23,10 @@
 
 /**
      * Get renter's bookings based on type
+     *
      * @param type 1 for history booking; 0 for future booking; 2 for all (history + future bookings)
      * @return renter's bookings (history + future bookings)
+     * [u_id, l_id, fromDate, toDate, status, date, dayPrice]
      */
     public CachedRowSet getBookings(int type)
 

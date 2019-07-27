@@ -9,6 +9,7 @@ import java.util.List;
 import javax.sql.rowset.CachedRowSet;
 
 import com.sun.rowset.CachedRowSetImpl;
+import com.sun.rowset.internal.Row;
 
 import static test.Database.queryRead;
 
@@ -222,6 +223,25 @@ public class Host extends Renter {
         return 1;
     }
 
+    /**
+     * Get renter's bookings on a host's listings (from host's perspective, who booked my listing) based on type
+     *
+     * @param type 1 for history booking; 0 for future booking; 2 for all (history + future bookings)
+     * @return renter's bookings on a host's listings (history + future bookings)
+     * [u_id, l_id, fromDate, toDate, status, date, dayPrice, owner]
+     */
+    public List<Row> getMyRenterBookingsOfMyListings(int type) throws SQLException{
+        String query1 = "select * from (SELECT r.*, l.owner FROM rented r join listing l on r.l_id = l.id) s ";
+        String query2 = "";
+        if (type == 1) query2 = "where s.owner = " + this.id + " and s.status = 1;";
+        else if (type == 0) query2 = "where s.owner = " + this.id + " and s.status = 0;";
+        else if (type == 2) query2 = "where s.owner = " + this.id + " and (s.status = 0 or s.status = 1);";
+        String query = query1 + query2;
+        ResultSet rs = Database.queryRead(query);
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(rs);
+        return Listing.CachedRowSet_to_ListRow(rowset);
+    }
 
     /**
      * Host's initial comment on a Renter
@@ -232,9 +252,9 @@ public class Host extends Renter {
     @Override
     public Boolean commentOnUser(List<String> info) throws SQLException {
         Boolean legal = false; // legal to comment on that user?
-        CachedRowSet rowset = this.getBookings(1);
-        while (rowset.next()) {
-            Integer u_id = rowset.getInt("u_id");
+        List<Row> whoBookedMine = getMyRenterBookingsOfMyListings(1);
+        for(int i = 0; i < whoBookedMine.size(); i ++){
+            Integer u_id = Integer.parseInt(whoBookedMine.get(i).getColumnObject(1).toString());
             if (u_id == Integer.parseInt(info.get(0))) {
                 legal = true;
                 break;

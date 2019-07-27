@@ -20,7 +20,6 @@ public abstract class User {
     protected Boolean active = false;
 
 
-
     /**
      * Register a new user
      *
@@ -225,11 +224,16 @@ public abstract class User {
      *
      * @param id   user/listing's id
      * @param type 1 - user; 0 - listing
+     * @return true if comments exost; false otherwise
      */
-    public static void viewComments(int id, int type) throws SQLException {
-        System.out.println("***Comments***");
+    public static boolean viewComments(int id, int type) throws SQLException {
+        if (type == 1) System.out.println("***Comments on this user***");
+        else if (type == 0) System.out.println("***Comments on this listing***");
         List<List<Row>> comments = getComments(id, type);
-        if(comments.size() == 0) System.out.println("***No comments found***");
+        if (comments.size() == 0) {
+            System.out.println("***No comments found***");
+            return false;
+        }
         int k = 0;
         for (int i = 0; i < comments.size(); i++) {
             for (int j = 0; j < comments.get(i).size(); j++) {
@@ -246,14 +250,14 @@ public abstract class User {
                             " -- " +
                             comments.get(i).get(j).getColumnObject(4) + "(" + comments.get(i).get(j).getColumnObject(9) + ")"
                     );
-                }
-                else System.out.println("    @" + comments.get(i).get(j).getColumnObject(6) + " "
+                } else System.out.println("    @" + comments.get(i).get(j).getColumnObject(6) + " "
                         + "\"" + comments.get(i).get(j).getColumnObject(8) + "\""
                         + " (commentID: " + comments.get(i).get(j).getColumnObject(1) + ")"
                         + " -- " + comments.get(i).get(j).getColumnObject(4)
                         + "(" + comments.get(i).get(j).getColumnObject(9) + ")");
             }
         }
+        return true;
     }
 
     /**
@@ -281,8 +285,7 @@ public abstract class User {
                 break;
             }
             if (!legal) return false;
-        }
-        else if (type == 2){ // host
+        } else if (type == 2) { // host
             Boolean legal = false; // legal to cancel this booking?
             if (Listing.getOwnerId(Integer.parseInt(info.get(0))) != this.id) return false;
 
@@ -322,6 +325,38 @@ public abstract class User {
         return success;
     }
 
+
+    /**
+     * Get user's info
+     *
+     * @param id user id
+     * @return a row of table containing user's info [u_id, name]
+     */
+    public static List<Row> getUserInfo(int id) throws SQLException {
+        String query = "select r.id as u_id, r.name from mydb.user r where r.id = " + id + ";";
+        ResultSet rs = Database.queryRead(query);
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(rs);
+        return Listing.CachedRowSet_to_ListRow(rowset);
+    }
+
+    /**
+     * View info about a user
+     *
+     * @param id   user id
+     * @return true if user exists; false otherwise
+     */
+    public static boolean viewUserInfo(int id) throws SQLException {
+        List<Row> userInfo = getUserInfo(id); // [u_id, name]
+        if(userInfo.size() == 0){
+            System.out.println("***No user found***");
+            return false;
+        }
+        System.out.println("User id: " + userInfo.get(0).getColumnObject(1));
+        System.out.println("User name: " + userInfo.get(0).getColumnObject(2));
+        viewComments(id,1);
+        return true;
+    }
 
     public static void main(String args[]) throws Exception {
         if (Database.connect()) {
