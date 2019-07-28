@@ -268,5 +268,31 @@
     public static List<Row> amenityFilter(List<Row> input, String amenRequest)
 
 
+/**
+     * Find the root comment of a thread comment block
+     *
+     * @param id   any comment id in a thread comment block
+     * @param type 1 - user; 0 - listing
+     * @return the root comment table row of that thread comment block; null if input comment id doesn't exist
+     * 0 listing [id, l_id, sender, receiver, parent_comment, rating, content, date]
+     * 1 user [id, sender, receiver, parent_comment, rating, content, date]
+     */
+    public static List<Row> findRootComment(int id, int type)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

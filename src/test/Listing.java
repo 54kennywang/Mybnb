@@ -92,8 +92,7 @@ public class Listing {
 
             User.viewComments(id, 0);
             return 1;
-        }
-        else {
+        } else {
             System.out.println("***Sorry, no result found***");
             return 0;
         }
@@ -108,7 +107,7 @@ public class Listing {
      *                      input schema: [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
      */
     public static void viewAllListing(List<Row> input, int printDistance) throws SQLException {
-        if(input.size() == 0) {
+        if (input.size() == 0) {
             System.out.println("***Sorry, no result found***");
             return;
         }
@@ -602,13 +601,51 @@ public class Listing {
         return is;
     }
 
+    /**
+     * Find the root comment of a thread comment block
+     *
+     * @param id   any comment id in a thread comment block
+     * @param type 1 - user; 0 - listing
+     * @return the root comment table row of that thread comment block; null if input comment id doesn't exist
+     * 0 listing [id, l_id, sender, receiver, parent_comment, rating, content, date]
+     * 1 user [id, sender, receiver, parent_comment, rating, content, date]
+     */
+    public static List<Row> findRootComment(int id, int type) throws SQLException {
+        String query = "";
+        List<Row> comment = null;
+            while (true) {
+                if (type == 1) query = "select * from user_comment where id = " + id + ";";
+                else if (type == 0) query = "select * from listing_comment where id = " + id + ";";
+                ResultSet resultSet = Database.queryRead(query);
+                CachedRowSet rowset = new CachedRowSetImpl();
+                rowset.populate(resultSet);
+                comment = Listing.CachedRowSet_to_ListRow(rowset);
+                if (comment.size() == 0) return null;
+                if (type == 1) {
+                    if (comment.get(0).getColumnObject(4) != null) {
+                        id = Integer.parseInt(comment.get(0).getColumnObject(4).toString());
+                    } else break;
+                }
+                else if (type == 0){
+                    if (comment.get(0).getColumnObject(5) != null) {
+                        id = Integer.parseInt(comment.get(0).getColumnObject(5).toString());
+                    } else break;
+                }
+            }
+        return comment;
+    }
+
 
     public static void main(String args[]) throws Exception {
         if (Database.connect()) {
-            Host me = new Host();
-            List<String> info = Arrays.asList("qibowang7@outlook.com", "password");
-            System.out.println(me.signIn(info));
-            System.out.println(getOwnerId(19));
+//            Host me = new Host();
+//            List<String> info = Arrays.asList("qibowang7@outlook.com", "password");
+//            System.out.println(me.signIn(info));
+//            System.out.println(getOwnerId(19));
+
+//            List<Row> x = findRootComment(44, 0);
+//            System.out.println(x.get(0).getColumnObject(1));
+//            System.out.println(x == null);
 
 //            printAllUnAvailabilities(12);
 

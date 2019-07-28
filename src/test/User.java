@@ -122,7 +122,20 @@ public abstract class User {
      * @param info [receiver, parent_comment, content]
      * @return true if comment successfully; false otherwise
      */
-    public Boolean replyUserComment(List<String> info) {
+    public Boolean replyUserComment(List<String> info) throws SQLException {
+        // legal: reply on a user that has been my renter or host
+        List<Row> rootComment = Listing.findRootComment(Integer.parseInt(info.get(1)), 1);
+        // renter comment on host
+        String query = "select * from (SELECT r.*, l.owner FROM rented r join listing l on r.l_id = l.id) s " +
+                "where s.owner = " + info.get(0) + " and s.u_id = " + this.id + " and s.status = 1; ";
+        ResultSet resultSet = Database.queryRead(query);
+        if (!resultSet.next()) {
+            // host comment on renter
+            query = "select * from (SELECT r.*, l.owner FROM rented r join listing l on r.l_id = l.id) s " +
+                    "where s.owner = " + this.id + " and s.u_id = " + info.get(0) + " and s.status = 1; ";
+            resultSet = Database.queryRead(query);
+            if(!resultSet.next()) return false;
+        }
         Boolean success = false;
         if (this.active) {
             // add to "user_comment" table
@@ -343,18 +356,18 @@ public abstract class User {
     /**
      * View info about a user
      *
-     * @param id   user id
+     * @param id user id
      * @return true if user exists; false otherwise
      */
     public static boolean viewUserInfo(int id) throws SQLException {
         List<Row> userInfo = getUserInfo(id); // [u_id, name]
-        if(userInfo.size() == 0){
+        if (userInfo.size() == 0) {
             System.out.println("***No user found***");
             return false;
         }
         System.out.println("User id: " + userInfo.get(0).getColumnObject(1));
         System.out.println("User name: " + userInfo.get(0).getColumnObject(2));
-        viewComments(id,1);
+        viewComments(id, 1);
         return true;
     }
 

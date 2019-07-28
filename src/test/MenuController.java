@@ -93,12 +93,64 @@ public class MenuController {
     }
 
 
-    // replyListingComment(List<String> info) - Host's reply to a comment on a listing
-    // [receiver, parent_comment, content, l_id]
+    public void reply() throws SQLException {
+        if (!loggedIn()) {
+            System.out.println("***Please login first***");
+            return;
+        }
+        Scanner input = new Scanner(System.in);
+        List<String> info = new ArrayList<String>();
+        int option = 0;
+        System.out.println("  Please specify options (1 for replying comment on user, 2 for replying comment on listing) :");
+        System.out.print("> ");
+        option = Integer.parseInt(input.nextLine());
 
-    // replyUserComment(List<String> info) - User's Reply to a comment on a user
+        String receiver = "";
+        String l_id = "";
+        if (option == 1) {
+            System.out.println("User ID you are replying to:");
+            System.out.print("> ");
+            receiver = input.nextLine();
+            if (!User.viewUserInfo(Integer.parseInt(receiver)) || !User.viewComments(Integer.parseInt(receiver), 1)) {
+                return;
+            }
+        } else if (option == 2) {
+            System.out.println("Listing ID:");
+            System.out.print("> ");
+            l_id = input.nextLine();
+            if (Listing.viewListing(Integer.parseInt(l_id)) == 0 || !User.viewComments(Integer.parseInt(l_id), 0)) {
+                return;
+            }
+        }
+        String parent_id = "";
+        System.out.println("Comment ID you are replying to:");
+        System.out.print("> ");
+        parent_id = input.nextLine();
+
+        String content = "";
+        System.out.println("Leave you comment:");
+        System.out.print("> ");
+        content = input.nextLine();
+
+    // 1- replyUserComment(List<String> info) - User's Reply to a comment on a user
     // [receiver, parent_comment, content]
-    public void reply() {
+        // renter on host or host on renter
+        if(option == 1){
+            info.add(receiver);
+            info.add(parent_id);
+            info.add(content);
+            if(client.replyUserComment(info)) System.out.println("***Reply to comment on user successfully***");
+            else System.out.println("***Reply to comment on user failed***");
+        }
+        else if(option == 2){
+            // 2- replyListingComment(List<String> info) - Host's reply to a comment on a listing
+            // [receiver, parent_comment, content, l_id]
+            info.add(Listing.getOwnerId(Integer.parseInt(l_id)).toString());
+            info.add(parent_id);
+            info.add(content);
+            info.add(l_id);
+            client.replyListingComment(info);
+        }
 
     }
 
