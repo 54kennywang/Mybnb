@@ -105,6 +105,8 @@ public class MenuController {
         System.out.print("> ");
         option = Integer.parseInt(input.nextLine());
 
+        // 1- replyUserComment(List<String> info) - User's Reply to a comment on a user
+        // [receiver, parent_comment, content]
         String receiver = "";
         String l_id = "";
         if (option == 1) {
@@ -121,6 +123,9 @@ public class MenuController {
             if (Listing.viewListing(Integer.parseInt(l_id)) == 0 || !User.viewComments(Integer.parseInt(l_id), 0)) {
                 return;
             }
+            System.out.println("Receiver ID you are replying to:");
+            System.out.print("> ");
+            receiver = input.nextLine();
         }
         String parent_id = "";
         System.out.println("Comment ID you are replying to:");
@@ -132,8 +137,6 @@ public class MenuController {
         System.out.print("> ");
         content = input.nextLine();
 
-    // 1- replyUserComment(List<String> info) - User's Reply to a comment on a user
-    // [receiver, parent_comment, content]
         // renter on host or host on renter
         if(option == 1){
             info.add(receiver);
@@ -145,11 +148,12 @@ public class MenuController {
         else if(option == 2){
             // 2- replyListingComment(List<String> info) - Host's reply to a comment on a listing
             // [receiver, parent_comment, content, l_id]
-            info.add(Listing.getOwnerId(Integer.parseInt(l_id)).toString());
+            info.add(receiver);
             info.add(parent_id);
             info.add(content);
             info.add(l_id);
-            client.replyListingComment(info);
+            if(client.replyListingComment(info)) System.out.println("***Reply to comment on user successfully***");
+            else System.out.println("***Reply to comment on user failed***");
         }
 
     }

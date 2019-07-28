@@ -104,7 +104,13 @@
     public static boolean viewUserInfo(int id)
 
 
-
+/**
+     * Reply to a comment on a listing
+     *
+     * @param info [receiver, parent_comment, content, l_id]
+     * @return true if successfully; false otherwise
+     */
+    public Boolean replyListingComment(List<String> info)
 
 
 

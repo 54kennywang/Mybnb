@@ -124,15 +124,22 @@ public abstract class User {
      */
     public Boolean replyUserComment(List<String> info) throws SQLException {
         // legal: reply on a user that has been my renter or host
-        List<Row> rootComment = Listing.findRootComment(Integer.parseInt(info.get(1)), 1);
-        // renter comment on host
-        String query = "select * from (SELECT r.*, l.owner FROM rented r join listing l on r.l_id = l.id) s " +
-                "where s.owner = " + info.get(0) + " and s.u_id = " + this.id + " and s.status = 1; ";
+        // make sure this reply is valid
+        String query = "select * from user_comment where id = "+info.get(1)
+                +" and sender = "+info.get(0)+";";
         ResultSet resultSet = Database.queryRead(query);
+        if(!resultSet.next()) return false;
+
+        List<Row> rootComment = Listing.findRootComment(Integer.parseInt(info.get(1)), 1);
+        String userProfileID = rootComment.get(0).getColumnObject(3).toString();
+        // renter comment on host
+        query = "select * from (SELECT r.*, l.owner FROM rented r join listing l on r.l_id = l.id) s " +
+                "where s.owner = " + userProfileID + " and s.u_id = " + this.id + " and s.status = 1; ";
+        resultSet = Database.queryRead(query);
         if (!resultSet.next()) {
             // host comment on renter
             query = "select * from (SELECT r.*, l.owner FROM rented r join listing l on r.l_id = l.id) s " +
-                    "where s.owner = " + this.id + " and s.u_id = " + info.get(0) + " and s.status = 1; ";
+                    "where s.owner = " + this.id + " and s.u_id = " + userProfileID + " and s.status = 1; ";
             resultSet = Database.queryRead(query);
             if(!resultSet.next()) return false;
         }
@@ -272,6 +279,50 @@ public abstract class User {
         }
         return true;
     }
+
+    /**
+     * Reply to a comment on a listing
+     *
+     * @param info [receiver, parent_comment, content, l_id]
+     * @return true if successfully; false otherwise
+     */
+    public Boolean replyListingComment(List<String> info) throws SQLException {
+        // legal?
+        // make sure this reply is valid
+        String query = "select * from listing_comment where l_id = "+
+                info.get(3)+" and sender = "+info.get(0)+" and id = "+info.get(1)+";";
+        ResultSet resultSet = Database.queryRead(query);
+        if(!resultSet.next()) return false;
+        if(this.type == 1){
+            // renter reply to a host's reply on a listing, make sure renter lived here before
+            query = "select * from rented r where r.u_id = " + this.id + " and r.l_id = " + info.get(3) + " and r.status = 1;";
+            resultSet = Database.queryRead(query);
+            if(!resultSet.next()) return false;
+        }
+        else if (this.type == 2){
+            // listing where i lived
+            String query1 = "select * from rented r where r.u_id = " + this.id + " and r.l_id = " + info.get(3) + " and r.status = 1;";
+
+            // my own listing
+            String query2 = "select * from (SELECT r.*, l.owner FROM mydb.rented r join mydb.listing l on r.l_id = l.id) s " +
+                    "where s.l_id = " + info.get(3) + " and s.owner = " + this.id + " and s.status = 1; ";
+            ResultSet rs1 = Database.queryRead(query1);
+            ResultSet rs2 = Database.queryRead(query2);
+            if(!rs1.next() && !rs2.next()) return false;
+        }
+
+        Boolean success = false;
+        if (this.active) {
+            // add to "listing_comment" table
+            String table = "listing_comment";
+            String cols = "l_id, sender, receiver, parent_comment, rating, content, date";
+            String vals = info.get(3) + ", " + this.id + ", " + info.get(0) + ", " + info.get(1) + ", null, '"
+                    + info.get(2) + "', " + "NOW()";
+            if (Database.insert(table, cols, vals)) success = true;
+        }
+        return success;
+    }
+
 
     /**
      * User cancels a booking

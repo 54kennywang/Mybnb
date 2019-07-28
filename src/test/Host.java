@@ -274,36 +274,7 @@ public class Host extends Renter {
         return success;
     }
 
-    /**
-     * Reply to a comment on a listing
-     *
-     * @param info [receiver, parent_comment, content, l_id]
-     * @return true if successfully; false otherwise
-     */
-    public Boolean replyListingComment(List<String> info) throws SQLException {
-        // legal?
-        // renter reply to a host's reply on a listing, make sure renter lived here before
-        String query = "";
-        if(this.type == 1){
-            query = "select * from (SELECT r.*, l.owner FROM rented r join listing l on r.l_id = l.id) s " +
-                    "where s.owner = " + info.get(0) +" and s.u_id = " + this.id + " and s.status = 1; ";
-            ResultSet resultSet = Database.queryRead(query);
-            if(!resultSet.next()) return false;
-        }
-        else if (this.type == 2){
 
-        }
-        Boolean success = false;
-        if (this.active) {
-            // add to "listing_comment" table
-            String table = "listing_comment";
-            String cols = "l_id, sender, receiver, parent_comment, rating, content, date";
-            String vals = info.get(3) + ", " + this.id + ", " + info.get(0) + ", " + info.get(1) + ", null, '"
-                    + info.get(2) + "', " + "NOW()";
-            if (Database.insert(table, cols, vals)) success = true;
-        }
-        return success;
-    }
 
     public static void main(String args[]) throws Exception {
         if (Database.connect()) {
