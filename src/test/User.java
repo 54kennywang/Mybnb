@@ -244,7 +244,7 @@ public abstract class User {
      *
      * @param id   user/listing's id
      * @param type 1 - user; 0 - listing
-     * @return true if comments exost; false otherwise
+     * @return true if comments exist; false otherwise
      */
     public static boolean viewComments(int id, int type) throws SQLException {
         if (type == 1) System.out.println("***Comments on this user***");
@@ -424,9 +424,10 @@ public abstract class User {
      * View info about a user
      *
      * @param id user id
+     * @param printComment 1 - print comments on this user as well, 0 not print comments on this user
      * @return true if user exists; false otherwise
      */
-    public static boolean viewUserInfo(int id) throws SQLException {
+    public static boolean viewUserInfo(int id, int printComment) throws SQLException {
         List<Row> userInfo = getUserInfo(id); // [u_id, name]
         if (userInfo.size() == 0) {
             System.out.println("***No user found***");
@@ -434,7 +435,7 @@ public abstract class User {
         }
         System.out.println("User id: " + userInfo.get(0).getColumnObject(1));
         System.out.println("User name: " + userInfo.get(0).getColumnObject(2));
-        viewComments(id, 1);
+        if(printComment == 1) viewComments(id, 1);
         return true;
     }
 

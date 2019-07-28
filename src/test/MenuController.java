@@ -48,7 +48,7 @@ public class MenuController {
                 System.out.println("  Please specify searching options (1 for posting; 2 for updating; 3 for deleting)");
                 System.out.print("> ");
                 String subOption = input.nextLine();
-                if (subOption.equals("1")) this.postLIsting();
+                if (subOption.equals("1")) this.postListing();
                 else if (subOption.equals("2")) this.updatePosting();
                 else if (subOption.equals("3")) ;
             } else if (option.equals("7")) {
@@ -112,7 +112,7 @@ public class MenuController {
             System.out.println("User ID you are replying to:");
             System.out.print("> ");
             receiver = input.nextLine();
-            if (!User.viewUserInfo(Integer.parseInt(receiver)) || !User.viewComments(Integer.parseInt(receiver), 1)) {
+            if (!User.viewUserInfo(Integer.parseInt(receiver), 0) || !User.viewComments(Integer.parseInt(receiver), 1)) {
                 return;
             }
         } else if (option == 2) {
@@ -176,7 +176,7 @@ public class MenuController {
             System.out.println("User ID:");
             System.out.print("> ");
             receiver = input.nextLine();
-            if (!User.viewUserInfo(Integer.parseInt(receiver))) {
+            if (!User.viewUserInfo(Integer.parseInt(receiver), 1)) {
                 return;
             }
         } else if (option == 2) {
@@ -569,7 +569,7 @@ public class MenuController {
         }
     }
 
-    public void postLIsting() throws Exception {
+    public void postListing() throws Exception {
         if (!loggedIn()) {
             System.out.println("***Please login first***");
             return;
@@ -581,10 +581,11 @@ public class MenuController {
 
 
         Scanner input = new Scanner(System.in);
-        List<String> houseInfo = new ArrayList<String>();
+        List<String> houseInfo = new ArrayList<>();
         System.out.println("Area (m^2):");
         System.out.print("> ");
-        houseInfo.add(input.nextLine());
+        String sArea = input.nextLine();
+        double area = Double.parseDouble(sArea);
 
         System.out.println("Starting date (yyyy-mm-dd):");
         System.out.print("> ");
@@ -593,7 +594,6 @@ public class MenuController {
             System.out.println("***Format error***");
             return;
         }
-        houseInfo.add(fromDate);
 
         System.out.println("Ending date (yyyy-mm-dd):");
         System.out.print("> ");
@@ -602,17 +602,10 @@ public class MenuController {
             System.out.println("***Format error***");
             return;
         }
-        houseInfo.add(toDate);
-
-        System.out.println("Price per day ($):");
-        System.out.print("> ");
-        houseInfo.add(input.nextLine());
-
-        houseInfo.add(client.getId().toString());
 
         System.out.println("Type (House, Room, etc.):");
         System.out.print("> ");
-        houseInfo.add(input.nextLine());
+        String type = input.nextLine();
 
         System.out.println("Amenities (1 means yes, 0 means no):");
         String amen = "";
@@ -621,12 +614,27 @@ public class MenuController {
             System.out.print("> ");
             amen = amen + input.nextLine().trim();
         }
-        // here to add recommendation
+
+        double price = Listing.suggestPrice(area, amen);
+
+        System.out.println("Price per day ($):" + " Suggested price is " + price);
+        System.out.println();
+        //amenities suggestion
+        Listing.suggestAmenities();
+        System.out.print("> ");
+
+        //add houseInfo
+        houseInfo.add(Double.toString(area));
+        houseInfo.add(fromDate);
+        houseInfo.add(toDate);
+        houseInfo.add(Double.toString(price));
+        houseInfo.add(client.getId().toString());
+        houseInfo.add(type);
         houseInfo.add(amen);
 
         System.out.println("***Now address info for the new listing***");
 
-        List<String> addrInfo = new ArrayList<String>();
+        List<String> addrInfo = new ArrayList<>();
         System.out.println("Street:");
         System.out.print("> ");
         addrInfo.add(input.nextLine());
@@ -740,7 +748,7 @@ public class MenuController {
         System.out.println("Please provide User ID you want to view:");
         System.out.print("> ");
         int id = Integer.parseInt(input.nextLine());
-        User.viewUserInfo(id);
+        User.viewUserInfo(id, 1);
     }
 
     // 1 for having listing; 0 for no result
