@@ -311,8 +311,20 @@ public abstract class User {
             String query2 = "select * from (SELECT r.*, l.owner FROM rented r join listing l on r.l_id = l.id) s " +
                     "where s.l_id = " + info.get(3) + " and s.owner = " + this.id + " and s.status = 1; ";
             ResultSet rs1 = Database.queryRead(query1);
-            ResultSet rs2 = Database.queryRead(query2);
-            if(!rs1.next() && !rs2.next()) return false;
+
+            CachedRowSet rowset1 = new CachedRowSetImpl();
+            rowset1.populate(rs1);
+            List<Row> table1 = Listing.CachedRowSet_to_ListRow(rowset1);
+            if (table1.size() == 0){
+                ResultSet rs2 = Database.queryRead(query2);
+                CachedRowSet rowset2 = new CachedRowSetImpl();
+                rowset2.populate(rs2);
+                List<Row> table2 = Listing.CachedRowSet_to_ListRow(rowset2);
+                if (table2.size() == 0) return false;
+            }
+
+//            if(!rs1.next() && !rs2.next()) return false;
+//            if(table1.size() == 0 && table2.size() == 0) return false;
         }
 
         Boolean success = false;
