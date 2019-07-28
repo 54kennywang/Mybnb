@@ -93,27 +93,31 @@
 /**
      * Searches by geo-point and gets an ordered list of table rows ranked by distance with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
-     * @param lng the beginning date
-     * @param lat the ending date
+     *
+     * @param lng    longitude
+     * @param lat    latitude
      * @param radius search radius from geo-point (Lng, Lat)
-     * @param unit 'K'/'M'
-     * @param order 1 - from nearest to farthest; 0 - from farthest to nearest
+     * @param unit   'K'/'M'
+     * @param order  1 - from nearest to farthest; 0 - from farthest to nearest
+     * @param filterInfo all the filter info [fromDate, toDate, lowest, highest, amenRequest]
      * @return a list of table rows within the given radius from the geo-point in KM/MILE in specified distance order ranked by distance
      */
-    public static List<Row> searchByCoordinates_rankByDistance(Double lng, Double lat, Double radius, char unit, int order)
+    public static List<Row> searchByCoordinates_rankByDistance(Double lng, Double lat, Double radius, char unit, int order, List<String> filterInfo)
 
 
 /**
      * Searches by geo-point and gets an ordered list of table rows ranked by price with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
-     * @param lng longitude
-     * @param lat latitude
+     *
+     * @param lng    longitude
+     * @param lat    latitude
      * @param radius search radius from geo-point (Lng, Lat)
-     * @param unit 'K'/'M'
-     * @param order 1 - from nearest to farthest; 0 - from farthest to nearest
+     * @param unit   'K'/'M'
+     * @param order  1 - from cheapest to most expensive; 0 - opposite
+     * @param filterInfo all the filter info [fromDate, toDate, lowest, highest, amenRequest]
      * @return a list of table rows within the given radius from the geo-point in KM/MILE in specified price order ranked by price
      */
-    public static List<Row> searchByCoordinates_rankByPrice(Double lng, Double lat, Double radius, char unit, int order)
+    public static List<Row> searchByCoordinates_rankByPrice(Double lng, Double lat, Double radius, char unit, int order, List<String> filterInfo)
 
 /**
      * Searches by geo-point and gets an unordered list of table rows with the schema
@@ -145,10 +149,11 @@
      *
      * @param addrInfo [street, city, pcode, country]
      * @param order    1 - from nearest to farthest; 0 - from farthest to nearest
-     * @param radius searching radius
+     * @param radius   searching radius
+     * @param filterInfo all the filter info [fromDate, toDate, lowest, highest, amenRequest]
      * @return a list of table rows within the searching radius of the given addr ranked by distance
      */
-    public static List<Row> searchByAddress_rankByDistance(List<String> addrInfo, Double radius, int order)
+    public static List<Row> searchByAddress_rankByDistance(List<String> addrInfo, Double radius, int order, List<String> filterInfo)
 
 /**
      * Searches by address and gets an ordered list of table rows within the searching radius of the specified addr, ranked by price with the schema
@@ -156,10 +161,11 @@
      *
      * @param addrInfo [street, city, pcode, country]
      * @param order    1 - from cheapest to most expensive; 0 - from most expensive to cheapest
-     * @param radius searching radius
+     * @param radius   searching radius
+     * @param filterInfo all the filter info [fromDate, toDate, lowest, highest, amenRequest]
      * @return a list of table rows within the searching radius of the given addr ranked by price
      */
-    public static List<Row> searchByAddress_rankByPrice(List<String> addrInfo, Double radius, int order)
+    public static List<Row> searchByAddress_rankByPrice(List<String> addrInfo, Double radius, int order, List<String> filterInfo)
 
 /**
      * Searches by address and gets an unordered list of table rows within the searching radius of the specified addr with the schema
@@ -174,11 +180,13 @@
 /**
      * Searches by postal code and gets an ordered list of table rows with the exact same input pcode, ranked by price with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
      * @param pcode 6-digit postal code with no space
      * @param order 1 - from cheapest to most expensive; 0 - from most expensive to cheapest
+     * @param filterInfo all the filter info [fromDate, toDate, lowest, highest, amenRequest]
      * @return a list of table rows with the exact same input pcode
      */
-    public static List<Row> searchByPcode_rankByPrice_exact(String pcode, int order)
+    public static List<Row> searchByPcode_rankByPrice_exact(String pcode, int order, List<String> filterInfo)
 
 /**
      * Searches by postal code and gets an unordered list of table rows with the exact same input pcode with the schema
@@ -191,11 +199,13 @@
 /**
      * Searches by postal code and gets an ordered list of table rows with the similar but not same input pcode, ranked by price with the schema
      * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
      * @param pcode 6-digit postal code with no space
      * @param order 1 - from cheapest to most expensive; 0 - from most expensive to cheapest
+     * @param filterInfo all the filter info [fromDate, toDate, lowest, highest, amenRequest]
      * @return a list of table rows with the similar but not same input pcode
      */
-    public static List<Row> searchByPcode_rankByPrice_wildcard(String pcode, int order)
+    public static List<Row> searchByPcode_rankByPrice_wildcard(String pcode, int order, List<String> filterInfo)
 
 /**
      * Searches by postal code and gets an unordered list of table rows with the similar but not same input pcode, ranked by price with the schema
@@ -280,7 +290,15 @@
     public static List<Row> findRootComment(int id, int type)
 
 
-
+/**
+     * Filter table rows by filter info, input table is of following schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
+     * @param input    a 'table' to be filtered
+     * @param filterInfo contains all filter info [fromDate, toDate, lowest, highest, amenRequest]
+     * @return an after-filtered table where all rows satisfy all the filterInfo requirements
+     */
+    public static List<Row> allFilter(List<Row> input, List<String> filterInfo)
 
 
 

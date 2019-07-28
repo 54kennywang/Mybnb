@@ -32,5 +32,8 @@ public class Practice {
         }
         Database.disconnect();
 
+        String amer = "11010111010100";
+        if (amer.matches("11............")) System.out.println("yes");
+        else System.out.println("no");;
     }
 }

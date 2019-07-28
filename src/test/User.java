@@ -167,7 +167,7 @@ public abstract class User {
         if (type == 1)
             query = "select avg(rating) as 'rating_avg' from user_comment where receiver = " + id + " and parent_comment is null;";
         else
-            query = "select avg(rating) as 'rating_avg' from mydb.listing_comment where l_id = " + id + " and parent_comment is null;";
+            query = "select avg(rating) as 'rating_avg' from listing_comment where l_id = " + id + " and parent_comment is null;";
         ResultSet rs = Database.queryRead(query);
 //		CachedRowSet rowset = new CachedRowSetImpl();
 //		rowset.populate(rs);
@@ -194,7 +194,7 @@ public abstract class User {
         String head_query;
         if (type == 1)
             head_query = "select id from user_comment where receiver = " + id + " and parent_comment is null;";
-        else head_query = "select id from mydb.listing_comment where l_id = " + id + " and parent_comment is null;";
+        else head_query = "select id from listing_comment where l_id = " + id + " and parent_comment is null;";
         ResultSet head_commentIDs = Database.queryRead(head_query);
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(head_commentIDs);
@@ -215,12 +215,12 @@ public abstract class User {
             commentBlock1 = "select  id, parent_comment, sender, (select name from user where user.id = sender) as sender_name, " +
                     "receiver, (select name from user where user.id = receiver) as receiver_name, " +
                     " rating, content, date " +
-                    "from mydb.listing_comment where id = ";
+                    "from listing_comment where id = ";
             commentBlock2 = " union " +
                     "select  id, parent_comment, sender, (select name from user where user.id = sender) as sender_name, " +
                     " receiver, (select name from user where user.id = receiver) as receiver_name, " +
                     " rating, content, date " +
-                    "from    (select * from mydb.listing_comment order by parent_comment, id) comment_sorted, " +
+                    "from    (select * from listing_comment order by parent_comment, id) comment_sorted, " +
                     "        (select @pv := '";
         }
         commentBlock3 = "') initialisation " +
@@ -260,7 +260,7 @@ public abstract class User {
                 if (k == 0) {
                     if (type == 1)
                         System.out.println("Comments on " + comments.get(i).get(j).getColumnObject(6) + "(rating: " + getRating(id, type) + ")");
-                    else System.out.println("Comments on listing ID = " + id + "(rating: " + getRating(id, type) + ")");
+                    else System.out.println("Comments on listing ID = " + id + " (rating: " + getRating(id, type) + ")");
                     k++;
                 }
                 // [id, parent_comment, sender, sender_name, receiver, receiver_name, rating, content, date]
@@ -268,13 +268,17 @@ public abstract class User {
                     System.out.println("\"" + comments.get(i).get(j).getColumnObject(8) + "\"" +
                             " (commentID: " + comments.get(i).get(j).getColumnObject(1) + ")" +
                             " -- " +
-                            comments.get(i).get(j).getColumnObject(4) + "(" + comments.get(i).get(j).getColumnObject(9) + ")"
+                            comments.get(i).get(j).getColumnObject(4) +
+                            " (User ID: " + comments.get(i).get(j).getColumnObject(3)
+                            + " " + comments.get(i).get(j).getColumnObject(9) + ")"
                     );
-                } else System.out.println("    @" + comments.get(i).get(j).getColumnObject(6) + " "
+                } else System.out.println("    @" + comments.get(i).get(j).getColumnObject(6) +
+                        " (User ID: " + comments.get(i).get(j).getColumnObject(5) + ") "
                         + "\"" + comments.get(i).get(j).getColumnObject(8) + "\""
                         + " (commentID: " + comments.get(i).get(j).getColumnObject(1) + ")"
                         + " -- " + comments.get(i).get(j).getColumnObject(4)
-                        + "(" + comments.get(i).get(j).getColumnObject(9) + ")");
+                        + "(User ID: " + comments.get(i).get(j).getColumnObject(3) + " "
+                        + comments.get(i).get(j).getColumnObject(9) + ")");
             }
         }
         return true;
@@ -304,7 +308,7 @@ public abstract class User {
             String query1 = "select * from rented r where r.u_id = " + this.id + " and r.l_id = " + info.get(3) + " and r.status = 1;";
 
             // my own listing
-            String query2 = "select * from (SELECT r.*, l.owner FROM mydb.rented r join mydb.listing l on r.l_id = l.id) s " +
+            String query2 = "select * from (SELECT r.*, l.owner FROM rented r join listing l on r.l_id = l.id) s " +
                     "where s.l_id = " + info.get(3) + " and s.owner = " + this.id + " and s.status = 1; ";
             ResultSet rs1 = Database.queryRead(query1);
             ResultSet rs2 = Database.queryRead(query2);
@@ -337,7 +341,7 @@ public abstract class User {
         if (type == 1) { // renter
             Boolean legal = false; // legal to cancel this booking?
 
-            String query = "SELECT * FROM mydb.rented where status = 0 and u_id = " + this.id + " and l_id = " + info.get(0) +
+            String query = "SELECT * FROM rented where status = 0 and u_id = " + this.id + " and l_id = " + info.get(0) +
                     " and fromDate = '" + info.get(1) +
                     "' and toDate = '" + info.get(2) + "'; ";
             ResultSet rowset = Database.queryRead(query);
@@ -353,7 +357,7 @@ public abstract class User {
             Boolean legal = false; // legal to cancel this booking?
             if (Listing.getOwnerId(Integer.parseInt(info.get(0))) != this.id) return false;
 
-            String query = "SELECT * FROM mydb.rented where status = 0 and l_id = " + info.get(0) +
+            String query = "SELECT * FROM rented where status = 0 and l_id = " + info.get(0) +
                     " and fromDate = '" + info.get(1) +
                     "' and toDate = '" + info.get(2) + "'; ";
             ResultSet rowset = Database.queryRead(query);
@@ -397,7 +401,7 @@ public abstract class User {
      * @return a row of table containing user's info [u_id, name]
      */
     public static List<Row> getUserInfo(int id) throws SQLException {
-        String query = "select r.id as u_id, r.name from mydb.user r where r.id = " + id + ";";
+        String query = "select r.id as u_id, r.name from user r where r.id = " + id + ";";
         ResultSet rs = Database.queryRead(query);
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(rs);

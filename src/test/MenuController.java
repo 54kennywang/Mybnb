@@ -58,12 +58,11 @@ public class MenuController {
                 if (subOption.equals("1")) this.comment();
                 else if (subOption.equals("2")) this.reply();
             } else if (option.equals("8")) {
-                System.out.println("  Please specify options (1 for viewing my postings; 2 for ; 3 for )");
+                System.out.println("  Please specify options (1 for viewing my postings; 2 for view a specified user)");
                 System.out.print("> ");
                 String subOption = input.nextLine();
                 if (subOption.equals("1")) this.viewMyListing();
-                else if (subOption.equals("2")) ;
-                else if (subOption.equals("3")) ;
+                else if (subOption.equals("2")) this.viewSpecifiedUser();
             } else if (option.equals("9")) {
                 this.becomeHost();
             }
@@ -292,7 +291,10 @@ public class MenuController {
         System.out.println("DOB:");
         System.out.print("> ");
         String DOB = input.nextLine();
-        if (!dateFormat(DOB)) return;
+        if (!dateFormat(DOB)) {
+            System.out.println("***Format error***");
+            return;
+        }
         if (ChronoUnit.YEARS.between(LocalDate.parse(DOB), LocalDate.now()) < 18) {
             System.out.println("You are under 18, register failed.");
             return;
@@ -354,6 +356,9 @@ public class MenuController {
         System.out.print("> ");
         lat = Double.parseDouble(input.nextLine());
 
+        List<String> filterInfo = filterInfo();
+        if(filterInfo == null) return;
+
         System.out.println("Rank by price (1) or rank by distance (2):");
         System.out.print("> ");
         option = Integer.parseInt(input.nextLine());
@@ -367,9 +372,9 @@ public class MenuController {
         order = Integer.parseInt(input.nextLine());
 
         if (option == 1) {
-            Listing.viewAllListing(Listing.searchByCoordinates_rankByPrice(lng, lat, radius, 'K', order), 1);
+            Listing.viewAllListing(Listing.searchByCoordinates_rankByPrice(lng, lat, radius, 'K', order, filterInfo), 1);
         } else if (option == 2) {
-            Listing.viewAllListing(Listing.searchByCoordinates_rankByDistance(lng, lat, radius, 'K', order), 1);
+            Listing.viewAllListing(Listing.searchByCoordinates_rankByDistance(lng, lat, radius, 'K', order, filterInfo), 1);
         }
     }
 
@@ -383,12 +388,16 @@ public class MenuController {
         System.out.print("> ");
         pcode = input.nextLine();
 
+        List<String> filterInfo = filterInfo();
+        if(filterInfo == null) return;
+
+
         System.out.println("(Ranking by price) order (1 for ascending, 0 for descending)");
         System.out.print("> ");
         order = Integer.parseInt(input.nextLine());
 
-        List<Row> exactResult = Listing.searchByPcode_rankByPrice_exact(pcode, order);
-        List<Row> wildcardResult = Listing.searchByPcode_rankByPrice_wildcard(pcode, order);
+        List<Row> exactResult = Listing.searchByPcode_rankByPrice_exact(pcode, order, filterInfo);
+        List<Row> wildcardResult = Listing.searchByPcode_rankByPrice_wildcard(pcode, order, filterInfo);
         if (exactResult.size() == 0) {
             System.out.println("***Sorry, not result found with the exactly same postal code, nearby area are shown below***");
             Listing.viewAllListing(wildcardResult, 0);
@@ -423,6 +432,10 @@ public class MenuController {
         System.out.print("> ");
         addrInfo.add(input.nextLine());
 
+        List<String> filterInfo = filterInfo();
+        if(filterInfo == null) return;
+
+
         System.out.println("Searching radius (km):");
         System.out.print("> ");
         radius = Double.parseDouble(input.nextLine());
@@ -436,10 +449,53 @@ public class MenuController {
         order = Integer.parseInt(input.nextLine());
 
         if (option == 1) {
-            Listing.viewAllListing(Listing.searchByAddress_rankByPrice(addrInfo, radius, order), 1);
+            Listing.viewAllListing(Listing.searchByAddress_rankByPrice(addrInfo, radius, order, filterInfo), 1);
         } else if (option == 2) {
-            Listing.viewAllListing(Listing.searchByAddress_rankByDistance(addrInfo, radius, order), 1);
+            Listing.viewAllListing(Listing.searchByAddress_rankByDistance(addrInfo, radius, order, filterInfo), 1);
         }
+    }
+
+    // return [fromDate, toDate, lowest, highest, amenRequest]
+    public List<String> filterInfo(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Date range from (yyyy-mm-dd):");
+        System.out.print("> ");
+        String fromDate = input.nextLine();
+        if (!dateFormat(fromDate)) {
+            System.out.println("***Format error***");
+            return null;
+        }
+        System.out.println("Date range to (yyyy-mm-dd):");
+        System.out.print("> ");
+        String toDate = input.nextLine();
+        if (!dateFormat(toDate)) {
+            System.out.println("***Format error***");
+            return null;
+        }
+
+        System.out.println("Price range lowest ($):");
+        System.out.print("> ");
+        Double lowest = Double.parseDouble(input.nextLine());
+        System.out.println("Price range highest ($):");
+        System.out.print("> ");
+        Double highest = Double.parseDouble(input.nextLine());
+
+        System.out.println("Amenities filter (1 means yes, 0 means not matter):");
+        String amenRequest = "";
+        for (int i = 0; i < Listing.amenities.size(); i++) {
+            System.out.println(Listing.amenities.get(i));
+            System.out.print("> ");
+            String need = input.nextLine();
+            if (need.equals("0")) need = ".";
+            amenRequest = amenRequest + need;
+        }
+        List<String> filterInfo = new ArrayList<String>();
+        filterInfo.add(fromDate);
+        filterInfo.add(toDate);
+        filterInfo.add(lowest.toString());
+        filterInfo.add(highest.toString());
+        filterInfo.add(amenRequest);
+        return filterInfo;
     }
 
     public void viewListing() throws SQLException {
@@ -678,6 +734,15 @@ public class MenuController {
         }
     }
 
+    public void viewSpecifiedUser() throws SQLException {
+        Scanner input = new Scanner(System.in);
+        System.out.println();
+        System.out.println("Please provide User ID you want to view:");
+        System.out.print("> ");
+        int id = Integer.parseInt(input.nextLine());
+        User.viewUserInfo(id);
+    }
+
     // 1 for having listing; 0 for no result
     public int viewMyListing() throws SQLException {
         if (!loggedIn()) {
@@ -690,10 +755,6 @@ public class MenuController {
         }
         if (client.viewAllMyListing() == 1) return 1;
         else return 0;
-    }
-
-    public void viewComments() {
-
     }
 
 

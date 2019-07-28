@@ -44,12 +44,7 @@
     @Override
     public Boolean commentOnUser(List<String> info)
 
-/**
-     * Host's reply to a comment on a listing
-     * @param info [receiver, parent_comment, content, l_id]
-     * @return true if successfully; false otherwise
-     */
-    public Boolean replyListingComment(List<String> info)
+
 
 
 /**

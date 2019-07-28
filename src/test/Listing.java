@@ -30,7 +30,7 @@ public class Listing {
      * @return ownerID of that listing
      */
     public static Integer getOwnerID(int l_id) throws SQLException {
-        String query = "SELECT owner FROM mydb.listing where id = " + l_id + ";";
+        String query = "SELECT owner FROM listing where id = " + l_id + ";";
         ResultSet rowset = Database.queryRead(query);
         Integer ownerID = null;
         if (rowset.next()) {
@@ -72,6 +72,7 @@ public class Listing {
             System.out.println("Area: " + rs.getString("area") + " m^2");
             System.out.print("Amenities: ");
             Listing.printAmenity(parseAmenity(rs.getString("amenity")));
+            System.out.println("Owner ID: " + Listing.getOwnerId(id));
 
 
             System.out.print("Available: ");
@@ -262,10 +263,12 @@ public class Listing {
      * @param radius search radius from geo-point (Lng, Lat)
      * @param unit   'K'/'M'
      * @param order  1 - from nearest to farthest; 0 - from farthest to nearest
+     * @param filterInfo all the filter info [fromDate, toDate, lowest, highest, amenRequest]
      * @return a list of table rows within the given radius from the geo-point in KM/MILE in specified distance order ranked by distance
      */
-    public static List<Row> searchByCoordinates_rankByDistance(Double lng, Double lat, Double radius, char unit, int order) throws SQLException {
+    public static List<Row> searchByCoordinates_rankByDistance(Double lng, Double lat, Double radius, char unit, int order, List<String> filterInfo) throws SQLException {
         List<Row> tempResult = searchByCoordinates(lng, lat, radius, unit);
+        tempResult = allFilter(tempResult, filterInfo);
         if (order == 1) return increaseSort(tempResult, 13);
         else return orderReverse(increaseSort(tempResult, 13));
     }
@@ -279,10 +282,12 @@ public class Listing {
      * @param radius search radius from geo-point (Lng, Lat)
      * @param unit   'K'/'M'
      * @param order  1 - from cheapest to most expensive; 0 - opposite
+     * @param filterInfo all the filter info [fromDate, toDate, lowest, highest, amenRequest]
      * @return a list of table rows within the given radius from the geo-point in KM/MILE in specified price order ranked by price
      */
-    public static List<Row> searchByCoordinates_rankByPrice(Double lng, Double lat, Double radius, char unit, int order) throws SQLException {
+    public static List<Row> searchByCoordinates_rankByPrice(Double lng, Double lat, Double radius, char unit, int order, List<String> filterInfo) throws SQLException {
         List<Row> tempResult = searchByCoordinates(lng, lat, radius, unit);
+        tempResult = allFilter(tempResult, filterInfo);
         if (order == 1) return increaseSort(tempResult, 10);
         else return orderReverse(increaseSort(tempResult, 10));
     }
@@ -360,10 +365,12 @@ public class Listing {
      * @param addrInfo [street, city, pcode, country]
      * @param order    1 - from nearest to farthest; 0 - from farthest to nearest
      * @param radius   searching radius
+     * @param filterInfo all the filter info [fromDate, toDate, lowest, highest, amenRequest]
      * @return a list of table rows within the searching radius of the given addr ranked by distance
      */
-    public static List<Row> searchByAddress_rankByDistance(List<String> addrInfo, Double radius, int order) throws SQLException, Exception {
+    public static List<Row> searchByAddress_rankByDistance(List<String> addrInfo, Double radius, int order, List<String> filterInfo) throws SQLException, Exception {
         List<Row> tempResult = searchByAddress(addrInfo, radius);
+        tempResult = allFilter(tempResult, filterInfo);
         if (order == 1) return increaseSort(tempResult, 13);
         else return orderReverse(increaseSort(tempResult, 13));
     }
@@ -375,10 +382,12 @@ public class Listing {
      * @param addrInfo [street, city, pcode, country]
      * @param order    1 - from cheapest to most expensive; 0 - from most expensive to cheapest
      * @param radius   searching radius
+     * @param filterInfo all the filter info [fromDate, toDate, lowest, highest, amenRequest]
      * @return a list of table rows within the searching radius of the given addr ranked by price
      */
-    public static List<Row> searchByAddress_rankByPrice(List<String> addrInfo, Double radius, int order) throws SQLException, Exception {
+    public static List<Row> searchByAddress_rankByPrice(List<String> addrInfo, Double radius, int order, List<String> filterInfo) throws SQLException, Exception {
         List<Row> tempResult = searchByAddress(addrInfo, radius);
+        tempResult = allFilter(tempResult, filterInfo);
         if (order == 1) return increaseSort(tempResult, 10);
         else return orderReverse(increaseSort(tempResult, 10));
     }
@@ -404,10 +413,12 @@ public class Listing {
      *
      * @param pcode 6-digit postal code with no space
      * @param order 1 - from cheapest to most expensive; 0 - from most expensive to cheapest
+     * @param filterInfo all the filter info [fromDate, toDate, lowest, highest, amenRequest]
      * @return a list of table rows with the exact same input pcode
      */
-    public static List<Row> searchByPcode_rankByPrice_exact(String pcode, int order) throws SQLException, Exception {
+    public static List<Row> searchByPcode_rankByPrice_exact(String pcode, int order, List<String> filterInfo) throws SQLException, Exception {
         List<Row> tempResult = searchByPcode_exact(pcode);
+        tempResult = allFilter(tempResult, filterInfo);
         if (order == 1) return increaseSort(tempResult, 10);
         else return orderReverse(increaseSort(tempResult, 10));
     }
@@ -439,10 +450,12 @@ public class Listing {
      *
      * @param pcode 6-digit postal code with no space
      * @param order 1 - from cheapest to most expensive; 0 - from most expensive to cheapest
+     * @param filterInfo all the filter info [fromDate, toDate, lowest, highest, amenRequest]
      * @return a list of table rows with the similar but not same input pcode
      */
-    public static List<Row> searchByPcode_rankByPrice_wildcard(String pcode, int order) throws SQLException, Exception {
+    public static List<Row> searchByPcode_rankByPrice_wildcard(String pcode, int order, List<String> filterInfo) throws SQLException, Exception {
         List<Row> tempResult = searchByPcode_wildcard(pcode);
+        tempResult = allFilter(tempResult, filterInfo);
         if (order == 1) return increaseSort(tempResult, 10);
         else return orderReverse(increaseSort(tempResult, 10));
     }
@@ -514,6 +527,22 @@ public class Listing {
      */
     public static List<Row> orderReverse(List<Row> input) {
         return Lists.reverse(input);
+    }
+
+
+    /**
+     * Filter table rows by filter info, input table is of following schema
+     * [id, country, city, streeet, pcode, lng, lat, type, area, dayPrice, owner, amenity, distance]
+     *
+     * @param input    a 'table' to be filtered
+     * @param filterInfo contains all filter info [fromDate, toDate, lowest, highest, amenRequest]
+     * @return an after-filtered table where all rows satisfy all the filterInfo requirements
+     */
+    public static List<Row> allFilter(List<Row> input, List<String> filterInfo) throws SQLException {
+        input = dateFilter(input, filterInfo.get(0), filterInfo.get(1));
+        input = priceFilter(input, Double.parseDouble(filterInfo.get(2)), Double.parseDouble(filterInfo.get(3)));
+        input = amenityFilter(input, filterInfo.get(4));
+        return input;
     }
 
     /**
