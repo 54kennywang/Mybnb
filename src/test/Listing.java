@@ -73,7 +73,7 @@ public class Listing {
      * [id, country, city, street, pcode, lng, lat, type]
      */
     public static List<Row> getListingAddr(int l_id) throws SQLException {
-        List<String> addr = new ArrayList<String>();
+        List<String> addr = new ArrayList<>();
         String query = "SELECT * FROM address where id = " + l_id + " and type = 0;";
         ResultSet rs = Database.queryRead(query);
         CachedRowSet rowset = new CachedRowSetImpl();

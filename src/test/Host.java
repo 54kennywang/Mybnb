@@ -121,6 +121,22 @@ public class Host extends Renter {
     */
 
     /**
+     * Update an amenity after posting a listing
+     * @return true if update successfully, false otherwise
+     */
+    public boolean updateAmenities(List<String> info) throws SQLException{
+        if (Listing.getOwnerId(Integer.parseInt(info.get(0))) != this.id) return false;
+        Boolean success = false;
+        if (this.active && this.type.equals(2)) {
+            String table = "listing";
+            String newInfo = "amenity = " + info.get(1);
+            String conditions = "id = " + info.get(0);
+            if (Database.update(table, newInfo, conditions)) success = true;
+        }
+        return success;
+    }
+
+    /**
      * Update price of a listing
      *
      * @param info [l_id, newPrice]
@@ -219,6 +235,7 @@ public class Host extends Renter {
         for (int i = 0; i < allMyListings.size(); i++) {
 //            System.out.println("==== Listing ID: " + allMyListings.get(i) + " ====");
             Listing.viewListing(allMyListings.get(i));
+            System.out.println("\n");
         }
         return 1;
     }

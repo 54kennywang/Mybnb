@@ -662,11 +662,11 @@ public class MenuController {
 
         Scanner input = new Scanner(System.in);
         System.out.println();
-        System.out.println("Update option (1 for price, 2 for availabilities):");
+        System.out.println("Update option (1 for price, 2 for availabilities, 3 for amenities):");
         System.out.print("> ");
         int option = Integer.parseInt(input.nextLine());
 
-        if (option != 1 && option != 2) return;
+        if (option != 1 && option != 2 && option != 3) return;
 
         System.out.println("Listing ID:");
         System.out.print("> ");
@@ -692,7 +692,7 @@ public class MenuController {
             } else System.out.println("***Updated price failed***");
         } else if (option == 2) {
             System.out.println("***You can add multiple time slots***");
-            List<String> info = new ArrayList<String>();
+            List<String> info = new ArrayList<>();
             info.add(l_id.toString());
             int k = 1;
             String more = "1";
@@ -723,6 +723,18 @@ public class MenuController {
             } while (more.equals("1"));
             if (client.updateAvailability(info)) System.out.println("***Updated availabilities successfully***");
             else System.out.println("***Updated availabilities failed***");
+        } else if (option == 3) {
+            System.out.println("Amenities (1 means yes, 0 means no):");
+            String amen = "";
+            for (int i = 0; i < Listing.amenities.size(); i++) {
+                System.out.println(Listing.amenities.get(i));
+                System.out.print("> ");
+                amen = amen + input.nextLine().trim();
+            }
+            List<String> info = new ArrayList<>();
+            info.add(l_id.toString());
+            info.add(amen);
+            client.updateAmenities(info);
         }
     }
 
