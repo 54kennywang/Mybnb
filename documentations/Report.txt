@@ -6,7 +6,7 @@
      * @param city a city name
      * @return the number of bookings in a city in a specified time window
      */
-    public static int numOfBookingsByCity(LocalDate fromDate, LocalDate toDate, String city)
+    public static int numOfBookingsByCity(String fromDate, String toDate, String city)
 
 /**
      * Get the number of bookings in a zipCode area in a specified time window
@@ -16,7 +16,7 @@
      * @param zipCode a zipCode
      * @return the number of bookings in a zipCode area in a specified time window
      */
-    public static int numOfBookingsByZipCode(LocalDate fromDate, LocalDate toDate, String zipCode)
+    public static int numOfBookingsByZipCode(String fromDate, String toDate, String zipCode)
 
 /**
      * Get the number of listing for different countries
@@ -27,20 +27,20 @@
     public static List<Row> numOfListingsPerCountry()
 
 /**
-     * Get the number of listing for different (country, city) pair
+     * Get the number of listing for different cities in specified country
      *
-     * @return a table of the number of listing for different (country, city) pair
-     *  [city, country, count(listing.id)]
+     * @return a table of the number of listing for different cities in specified country
+     * [city, country, count(listing.id)]
      */
-    public static List<Row> numOfListingsPerCountryPerCity()
+    public static List<Row> numOfListingsPerCountryPerCity(String country)
 
 /**
      * Get the number of listing for different (country, city, pcode) pair
      *
      * @return a table of the number of listing for different (country, city, pcode) pair
-     *  [city, pcode, country, count(listing.id)]
+     * [city, pcode, country, count(listing.id)]
      */
-    public static List<Row> numOfListingsPerCountryPerCityPerPCode()
+    public static List<Row> numOfListingsPerCountryPerCityPerPCode(String country, String city) 
 
 
 /**
@@ -70,10 +70,10 @@
      * @return a table of renter booking (lived) times in a time window
      * [u_id, country, city, count]
      */
-    public static List<Row> rankRentersByNumOfBookings(LocalDate startDate, LocalDate toDate)
+    public static List<Row> rankRentersByNumOfBookings(String startDate, String toDate)
 
 
-/**
+    /**
      * Get the table of renter booking (lived) times in a time window in a particular city
      *
      * @param startDate time window begin time
@@ -83,7 +83,7 @@
      * @return a table of renter booking (lived) times in a time window in a particular city
      * [u_id, country, city, count]
      */
-    public static List<Row> rankRentersByNumOfBookingsPerCity(LocalDate startDate, LocalDate toDate, String country, String city)
+    public static List<Row> rankRentersByNumOfBookingsPerCity(String startDate,String toDate, String country, String city) 
 
 /**
      * Get the table of overposting users, if fromDate and toDate are not empty, a time window is specified
@@ -106,3 +106,79 @@
      * [u_id, count]
      */
     public static List<Row> largestCancellation(int type, String fromDate, String toDate)
+
+
+/**
+     * Print the number of bookings by pcode in all cities in a specified time window
+     *
+     * @param fromDate time window start
+     * @param toDate   time window end
+     */
+    public static void report_numOfBookingsByZipCode(String fromDate, String toDate)
+
+
+/**
+     * Print the number of bookings in a city in a specified time window
+     *
+     * @param fromDate time window start
+     * @param toDate   time window end
+     */
+    public static void report_numOfBookingsByCity(String fromDate, String toDate) 
+
+
+/**
+     * Print the number of bookings by countries
+     *
+     */
+    public static void report_numOfListingsPerCountry()
+
+
+/**
+     * Print the number of bookings by cities
+     */
+    public static void report_numOfListingsPerCountryPerCity()
+
+/**
+     * Print the number of bookings by postal code
+     */
+    public static void report_numOfListingsPerCountryPerCityPerPCode()
+
+/**
+     * Print the number of listings for hosts by country
+     */
+    public static void report_rankHostsByListingsPerCountry()
+
+/**
+     * Print the number of listings for hosts by city
+     */
+    public static void report_rankHostsByListingsPerCity()
+
+
+/**
+     * Print the overposting users
+     */
+    public static void report_spamPosting(String fromDate, String toDate)
+
+    /**
+     * Print the number of bookings (lived) in a time window
+     * @param startDate time window begin time
+     * @param toDate    time window ending time
+     */
+    public static void report_rankRentersByNumOfBookings(String startDate, String toDate)
+
+    /**
+     * Print the number of bookings (lived) in a time window by cities
+     * @param startDate time window begin time
+     * @param toDate    time window ending time
+     */
+    public static void report_rankRentersByNumOfBookingsPerCity(String startDate, String toDate)
+
+/**
+     * Print a table of largest cancellation times in a specified time window for host/renter (at least one row, maybe severa users have same largest num)
+     *
+     * @param type     1 - renter; 2 - host
+     * @param fromDate time window begin time
+     * @param toDate   time window ending time
+     * [u_id, count]
+     */
+    public static void report_largestCancellation(int type, String fromDate, String toDate)

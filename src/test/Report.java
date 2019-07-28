@@ -12,6 +12,20 @@ import java.sql.SQLException;
 public class Report {
 
     /**
+     * Get all x
+     *
+     * @return a table of rows where each row is a x
+     * [x]
+     */
+    public static List<Row> getAll_x(String x) throws SQLException {
+        String query = "select distinct " + x + " from address;";
+        ResultSet resultSet = Database.queryRead(query);
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(resultSet);
+        return Listing.CachedRowSet_to_ListRow(rowset);
+    }
+
+    /**
      * Get the number of bookings in a city in a specified time window
      *
      * @param fromDate time window start
@@ -19,16 +33,27 @@ public class Report {
      * @param city     a city name
      * @return the number of bookings in a city in a specified time window
      */
-    public static int numOfBookingsByCity(LocalDate fromDate, LocalDate toDate, String city) throws SQLException {
-        //remove "-" from date
-        String fDate = dateRefactor(fromDate);
-        String tDate = dateRefactor(toDate);
+    public static int numOfBookingsByCity(String fromDate, String toDate, String city) throws SQLException {
         // natural join address, and rented
         String query = "select count(status) from address join rented on address.id = rented.l_id " +
-                "where city = '" + city + "' and status = " + 0 + " and fromDate >= " + fDate + " and toDate <= " + tDate + ";";
+                "where city = '" + city + "' and (status = 0 or status = 1) and fromDate >= '" + fromDate + "' and toDate <= '" + toDate + "';";
         ResultSet resultSet = Database.queryRead(query);
         resultSet.next();
         return resultSet.getInt("count(status)");
+    }
+
+    /**
+     * Print the number of bookings in a city in a specified time window
+     *
+     * @param fromDate time window start
+     * @param toDate   time window end
+     */
+    public static void report_numOfBookingsByCity(String fromDate, String toDate) throws SQLException {
+        List<Row> cities = getAll_x("city");
+        System.out.println("===Report on cities during " + fromDate + " - " + toDate + "===");
+        for (int i = 0; i < cities.size(); i++) {
+            System.out.println(cities.get(i).getColumnObject(1) + ": " + numOfBookingsByCity(fromDate, toDate, cities.get(i).getColumnObject(1).toString()));
+        }
     }
 
 
@@ -40,16 +65,38 @@ public class Report {
      * @param zipCode  a zipCode
      * @return the number of bookings in a zipCode area in a specified time window
      */
-    public static int numOfBookingsByZipCode(LocalDate fromDate, LocalDate toDate, String zipCode) throws SQLException {
+    public static int numOfBookingsByZipCode(String fromDate, String toDate, String zipCode) throws SQLException {
         //remove "-" from date
-        String fDate = dateRefactor(fromDate);
-        String tDate = dateRefactor(toDate);
+//        String fDate = dateRefactor(fromDate);
+//        String tDate = dateRefactor(toDate);
         // natural join address, and rented
         String query = "select count(status) from address join rented on address.id = rented.l_id " +
-                "where pcode = '" + zipCode + "' and status = " + 0 + " and fromDate >= " + fDate + " and toDate <= " + tDate + ";";
+                "where pcode = '" + zipCode + "' and (status = 0 or status = 1) and fromDate >= '" + fromDate + "' and toDate <= '" + toDate + "';";
         ResultSet resultSet = Database.queryRead(query);
         resultSet.next();
         return resultSet.getInt("count(status)");
+    }
+
+    /**
+     * Print the number of bookings by pcode in all cities in a specified time window
+     *
+     * @param fromDate time window start
+     * @param toDate   time window end
+     */
+    public static void report_numOfBookingsByZipCode(String fromDate, String toDate) throws SQLException {
+        List<Row> cities = getAll_x("city");
+        System.out.println("===Report on zip code during " + fromDate + " - " + toDate + " in cities===");
+        for (int i = 0; i < cities.size(); i++) {
+            System.out.println(cities.get(i).getColumnObject(1));
+            String query = "SELECT * FROM address where city = '" + cities.get(i).getColumnObject(1).toString() + "';";
+            ResultSet resultSet = Database.queryRead(query);
+            CachedRowSet rowset = new CachedRowSetImpl();
+            rowset.populate(resultSet);
+            List<Row> temp = Listing.CachedRowSet_to_ListRow(rowset);
+            for (int j = 0; j < temp.size(); j++) {
+                System.out.println("  " + temp.get(j).getColumnObject(5).toString() + ": " + numOfBookingsByZipCode(fromDate, toDate, temp.get(j).getColumnObject(5).toString()));
+            }
+        }
     }
 
     /**
@@ -59,47 +106,53 @@ public class Report {
      * [country, count(listing.id)]
      */
     public static List<Row> numOfListingsPerCountry() throws SQLException {
-//    public static HashMap<String, Integer> numOfListingsPerCountry() throws SQLException{
         String query = "select country, count(listing.id) from address, listing" +
                 " where address.id = listing.id group by country;";
         ResultSet resultSet = Database.queryRead(query);
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(resultSet);
         return Listing.CachedRowSet_to_ListRow(rowset);
-
-//        HashMap<String, Integer> hashMap = new HashMap<>();
-//        while(resultSet.next()){
-//            String country = resultSet.getString("country");
-//            int num = resultSet.getInt("count(listing.id)");
-//            hashMap.put(country, num);
-//        }
-//        return hashMap;
     }
 
     /**
-     * Get the number of listing for different (country, city) pair
+     * Print the number of bookings by countries
+     */
+    public static void report_numOfListingsPerCountry() throws SQLException {
+        List<Row> temp = numOfListingsPerCountry();
+        System.out.println("===Report on number of listings by countries===");
+        for (int i = 0; i < temp.size(); i++) {
+            System.out.println("  " + temp.get(i).getColumnObject(1) + ": " + temp.get(i).getColumnObject(2));
+        }
+    }
+
+    /**
+     * Get the number of listing for different cities in specified country
      *
-     * @return a table of the number of listing for different (country, city) pair
+     * @return a table of the number of listing for different cities in specified country
      * [city, country, count(listing.id)]
      */
-    public static List<Row> numOfListingsPerCountryPerCity() throws SQLException {
-//        public static HashMap<String, Integer> numOfListingsPerCountryPerCity() throws SQLException {
+    public static List<Row> numOfListingsPerCountryPerCity(String country) throws SQLException {
         String query = "select city, country, count(listing.id) from address, listing" +
-                " where address.id = listing.id group by city, country;";
+                " where address.id = listing.id and country = '" + country + "' group by city, country;";
         ResultSet resultSet = Database.queryRead(query);
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(resultSet);
         return Listing.CachedRowSet_to_ListRow(rowset);
+    }
 
-//        HashMap<String, Integer> hashMap = new HashMap<>();
-//        while (resultSet.next()) {
-//            String country = resultSet.getString("country");
-//            String city = resultSet.getString("city");
-//            String place = "(" + city + "," + country + ")";
-//            int num = resultSet.getInt("count(listing.id)");
-//            hashMap.put(place, num);
-//        }
-//        return hashMap;
+    /**
+     * Print the number of bookings by cities
+     */
+    public static void report_numOfListingsPerCountryPerCity() throws SQLException {
+        List<Row> countries = getAll_x("country");
+        System.out.println("===Report on number of listings by cities===");
+        for (int i = 0; i < countries.size(); i++) {
+            System.out.println(countries.get(i).getColumnObject(1));
+            List<Row> temp = numOfListingsPerCountryPerCity(countries.get(i).getColumnObject(1).toString());
+            for (int j = 0; j < temp.size(); j++) {
+                System.out.println("  " + temp.get(j).getColumnObject(1) + ": " + temp.get(j).getColumnObject(3));
+            }
+        }
     }
 
     /**
@@ -108,24 +161,39 @@ public class Report {
      * @return a table of the number of listing for different (country, city, pcode) pair
      * [city, pcode, country, count(listing.id)]
      */
-    public static List<Row> numOfListingsPerCountryPerCityPerPCode() throws SQLException {
-//        public static HashMap<String, Integer> numOfListingsPerCountryPerCityPerPCode() throws SQLException {
-        String query = "select city, pcode, country, count(listing.id) from address, listing" +
-                " where address.id = listing.id group by city, pcode, country;";
+    public static List<Row> numOfListingsPerCountryPerCityPerPCode(String country, String city) throws SQLException {
+        String query = "select city, pcode, country, count(listing.id) from address, listing " +
+                "where address.id = listing.id and country = '" + country + "' and city = '" + city + "' group by city, pcode, country;";
         ResultSet resultSet = Database.queryRead(query);
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(resultSet);
         return Listing.CachedRowSet_to_ListRow(rowset);
-//        HashMap<String, Integer> hashMap = new HashMap<>();
-//        while (resultSet.next()) {
-//            String country = resultSet.getString("country");
-//            String city = resultSet.getString("city");
-//            String pcode = resultSet.getString("pcode");
-//            String place = "(" + city + "," + "," + pcode + "," + country + ")";
-//            int num = resultSet.getInt("count(listing.id)");
-//            hashMap.put(place, num);
-//        }
-//        return hashMap;
+    }
+
+
+    /**
+     * Print the number of bookings by postal code
+     */
+    public static void report_numOfListingsPerCountryPerCityPerPCode() throws SQLException {
+        List<Row> countries = getAll_x("country");
+        System.out.println("===Report on number of listings by postal code===");
+        for (int i = 0; i < countries.size(); i++) {
+            System.out.println(countries.get(i).getColumnObject(1));
+
+            String query = "select distinct city from address where country = '" + countries.get(i).getColumnObject(1).toString() + "';";
+            ResultSet resultSet = Database.queryRead(query);
+            CachedRowSet rowset = new CachedRowSetImpl();
+            rowset.populate(resultSet);
+            List<Row> cities = Listing.CachedRowSet_to_ListRow(rowset);
+
+            for (int k = 0; k < cities.size(); k++) {
+                System.out.println("  " + cities.get(k).getColumnObject(1));
+                List<Row> temp = numOfListingsPerCountryPerCityPerPCode(countries.get(i).getColumnObject(1).toString(), cities.get(k).getColumnObject(1).toString());
+                for (int j = 0; j < temp.size(); j++) {
+                    System.out.println("    " + temp.get(j).getColumnObject(2) + ": " + temp.get(j).getColumnObject(4));
+                }
+            }
+        }
     }
 
     /**
@@ -136,7 +204,6 @@ public class Report {
      * [ownerID, country, count(listing.id)]
      */
     public static List<Row> rankHostsByListingsPerCountry(String country) throws SQLException {
-//        public static ResultSet rankHostsByListingsPerCountry() throws SQLException {
         String query = "select owner, country, count(listing.id) " +
                 "from listing, address " +
                 "where listing.id = address.id and address.type = 0 and address.country = '" + country +
@@ -146,7 +213,21 @@ public class Report {
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(resultSet);
         return Listing.CachedRowSet_to_ListRow(rowset);
-//        return resultSet;
+    }
+
+    /**
+     * Print the number of listings for hosts by country
+     */
+    public static void report_rankHostsByListingsPerCountry() throws SQLException {
+        List<Row> countries = getAll_x("country");
+        System.out.println("===Report on the ranking of the number of listings for host by country===");
+        for (int i = 0; i < countries.size(); i++) {
+            System.out.println(countries.get(i).getColumnObject(1));
+            List<Row> temp = rankHostsByListingsPerCountry(countries.get(i).getColumnObject(1).toString());
+            for (int j = 0; j < temp.size(); j++) {
+                System.out.println("  Host ID " + temp.get(j).getColumnObject(1) + " has " + temp.get(j).getColumnObject(3) + " listings.");
+            }
+        }
     }
 
     /**
@@ -168,9 +249,35 @@ public class Report {
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(resultSet);
         return Listing.CachedRowSet_to_ListRow(rowset);
-//        return resultSet;
     }
 
+    /**
+     * Print the number of listings for hosts by city
+     */
+    public static void report_rankHostsByListingsPerCity() throws SQLException {
+        List<Row> countries = getAll_x("country");
+        System.out.println("===Report on the ranking of the number of listings for host by city===");
+        for (int i = 0; i < countries.size(); i++) {
+            System.out.println(countries.get(i).getColumnObject(1));
+
+            String query = "select distinct city from address where country = '" + countries.get(i).getColumnObject(1).toString() + "';";
+            ResultSet resultSet = Database.queryRead(query);
+            CachedRowSet rowset = new CachedRowSetImpl();
+            rowset.populate(resultSet);
+            List<Row> cities = Listing.CachedRowSet_to_ListRow(rowset);
+
+            for (int k = 0; k < cities.size(); k++) {
+                System.out.println("  " + cities.get(k).getColumnObject(1));
+                List<Row> temp = rankHostsByListingsPerCity(countries.get(i).getColumnObject(1).toString(), cities.get(k).getColumnObject(1).toString());
+                if (temp.size() == 0) {
+                    System.out.println("    ***no record");
+                }
+                for (int j = 0; j < temp.size(); j++) {
+                    System.out.println("    Host ID " + temp.get(j).getColumnObject(1) + " has " + temp.get(j).getColumnObject(3) + " listings.");
+                }
+            }
+        }
+    }
 
     /**
      * Get the table of overposting users, if fromDate and toDate are not empty, a time window is specified
@@ -206,6 +313,17 @@ public class Report {
     }
 
     /**
+     * Print the overposting users
+     */
+    public static void report_spamPosting(String fromDate, String toDate) throws SQLException {
+        System.out.println("===Report on the hosts with listings more than 10% of the total listing===");
+        List<Row> flagged = spamPosting(fromDate, toDate);
+        for (int i = 0; i < flagged.size(); i++) {
+            System.out.println("Host ID " + flagged.get(i).getColumnObject(1) + " has " + flagged.get(i).getColumnObject(2) + " listings (percentage: " + flagged.get(i).getColumnObject(3) + ")");
+        }
+    }
+
+    /**
      * Get the table of renter booking (lived) times in a time window
      *
      * @param startDate time window begin time
@@ -213,18 +331,34 @@ public class Report {
      * @return a table of renter booking (lived) times in a time window
      * [u_id, country, city, count]
      */
-    public static List<Row> rankRentersByNumOfBookings(LocalDate startDate, LocalDate toDate) throws SQLException {
+    public static List<Row> rankRentersByNumOfBookings(String startDate, String toDate) throws SQLException {
         String query =
                 "select r.u_id, a.country, a.city, count(*) as 'count' from rented r, address a " +
                         "where a.id = r.l_id and a.type = 0 and r.fromDate >= '" + startDate + "' and r.toDate <= '" + toDate + "' " +
                         "and r.status = 1 " +
-                        "group by r.u_id, a.country, a.city having count(*) > 1 " +
+                        "group by r.u_id, a.country, a.city having count(*) > 0 " +
                         "order by count(*) desc;";
         ResultSet resultSet = Database.queryRead(query);
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(resultSet);
         return Listing.CachedRowSet_to_ListRow(rowset);
     }
+
+    /**
+     * Print the number of bookings (lived) in a time window
+     * @param startDate time window begin time
+     * @param toDate    time window ending time
+     */
+    public static void report_rankRentersByNumOfBookings(String startDate, String toDate) throws SQLException {
+        System.out.println("===Report on number of bookings of renters during " + startDate + " to " + toDate + "===");
+        List<Row> temp = rankRentersByNumOfBookings(startDate, toDate);
+        for (int i = 0; i < temp.size(); i++) {
+            System.out.println("Renter ID " + temp.get(i).getColumnObject(1) + " lived " +
+                    temp.get(i).getColumnObject(4) + " times in " + temp.get(i).getColumnObject(3) + " " +
+                    temp.get(i).getColumnObject(2));
+        }
+    }
+
 
     /**
      * Get the table of renter booking (lived) times in a time window in a particular city
@@ -236,7 +370,7 @@ public class Report {
      * @return a table of renter booking (lived) times in a time window in a particular city
      * [u_id, country, city, count]
      */
-    public static List<Row> rankRentersByNumOfBookingsPerCity(LocalDate startDate, LocalDate toDate, String country, String city) throws SQLException {
+    public static List<Row> rankRentersByNumOfBookingsPerCity(String startDate, String toDate, String country, String city) throws SQLException {
         List<Row> result = Report.rankRentersByNumOfBookings(startDate, toDate);
         for (int i = 0; i < result.size(); i++) {
             if (!result.get(i).getColumnObject(2).toString().equals(country) || !result.get(i).getColumnObject(3).toString().equals(city)) {
@@ -245,6 +379,35 @@ public class Report {
             }
         }
         return result;
+    }
+
+    /**
+     * Print the number of bookings (lived) in a time window by cities
+     * @param startDate time window begin time
+     * @param toDate    time window ending time
+     */
+    public static void report_rankRentersByNumOfBookingsPerCity(String startDate, String toDate) throws SQLException {
+        List<Row> countries = getAll_x("country");
+        System.out.println("===Report on number of bookings of renters during " + startDate + " to " + toDate + " by cities===");
+        for (int i = 0; i < countries.size(); i++) {
+            System.out.println(countries.get(i).getColumnObject(1));
+
+            String query = "select distinct city from address where country = '" + countries.get(i).getColumnObject(1).toString() + "';";
+            ResultSet resultSet = Database.queryRead(query);
+            CachedRowSet rowset = new CachedRowSetImpl();
+            rowset.populate(resultSet);
+            List<Row> cities = Listing.CachedRowSet_to_ListRow(rowset);
+
+            for (int k = 0; k < cities.size(); k++) {
+                System.out.println("  " + cities.get(k).getColumnObject(1));
+                List<Row> temp = rankRentersByNumOfBookingsPerCity(startDate, toDate, countries.get(i).getColumnObject(1).toString(), cities.get(k).getColumnObject(1).toString());
+                if(temp.size() == 0) System.out.println("    ***no record");
+                for (int j = 0; j < temp.size(); j++) {
+                    System.out.println("    Renter ID " + temp.get(j).getColumnObject(1) + " lived " +
+                            temp.get(j).getColumnObject(4) + " times.");
+                }
+            }
+        }
     }
 
     /**
@@ -289,6 +452,31 @@ public class Report {
         return Listing.CachedRowSet_to_ListRow(rowset);
     }
 
+    /**
+     * Print a table of largest cancellation times in a specified time window for host/renter (at least one row, maybe severa users have same largest num)
+     *
+     * @param type     1 - renter; 2 - host
+     * @param fromDate time window begin time
+     * @param toDate   time window ending time
+     * [u_id, count]
+     */
+    public static void report_largestCancellation(int type, String fromDate, String toDate) throws SQLException {
+        if(type == 1){
+            System.out.println("===Report on renters with largest cancellations during " + fromDate + " to " + toDate + "===");
+        }
+        else if (type == 2){
+            System.out.println("===Report on hosts with largest cancellations during " + fromDate + " to " + toDate + "===");
+        }
+        List<Row> temp = largestCancellation(type, fromDate, toDate);
+        if(temp.size() == 0) {
+            System.out.println("  *** no record");
+            return;
+        }
+        for (int i = 0; i < temp.size(); i ++){
+            if(type == 1) System.out.println("Renter ID " + temp.get(i).getColumnObject(1) + " has " + temp.get(i).getColumnObject(2) + " cancellations.");
+            else if(type == 2) System.out.println("Host ID " + temp.get(i).getColumnObject(1) + " has " + temp.get(i).getColumnObject(2) + " cancellations.");
+        }
+    }
 
     private static String dateRefactor(LocalDate date) {
         return date.toString().replaceAll("-", "");

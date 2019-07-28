@@ -65,6 +65,8 @@ public class MenuController {
                 else if (subOption.equals("2")) this.viewSpecifiedUser();
             } else if (option.equals("9")) {
                 this.becomeHost();
+            } else if (option.equals("10")) {
+                this.report();
             }
             System.out.println("Tell me what's next, type MENU to see options.");
             System.out.print("> ");
@@ -84,11 +86,105 @@ public class MenuController {
         System.out.println("  7. Comment/reply");
         System.out.println("  8. View user info");
         System.out.println("  9. Become a host");
+        System.out.println("  10. Report");
     }
 
     public boolean dateFormat(String date) {
         if (date.matches("^\\d{4}-\\d{2}-\\d{2}$")) return true;
         else return false;
+    }
+
+    public void report() throws SQLException {
+        Scanner input = new Scanner(System.in);
+        String option = "";
+        System.out.println("  Please specify options:");
+        System.out.println("  1. Total number of bookings in date range by city.");
+        System.out.println("  2. Total number of bookings in date range by postal code in cities.");
+        System.out.println("  3. Total number of bookings by countries.");
+        System.out.println("  4. Total number of bookings by cities.");
+        System.out.println("  5. Total number of bookings by postal code.");
+        System.out.println("  6. Total number of listings of hosts by country.");
+        System.out.println("  7. Total number of listings of hosts by city.");
+        System.out.println("  8. Report on overposting users.");
+        System.out.println("  9. Number of bookings for renters during a time period.");
+        System.out.println("  10. Number of bookings for renters during a time period by cities.");
+        System.out.println("  11. Number of largest cancellations during a time period.");
+        System.out.print("> ");
+        option = input.nextLine();
+
+        if (option.equals("1")) {
+            List<String> timeWindow = getDateWindow();
+            if (timeWindow != null) Report.report_numOfBookingsByCity(timeWindow.get(0), timeWindow.get(1));
+        } else if (option.equals("2")) {
+            List<String> timeWindow = getDateWindow();
+            if (timeWindow != null) Report.report_numOfBookingsByZipCode(timeWindow.get(0), timeWindow.get(1));
+        } else if (option.equals("3")) {
+            Report.report_numOfListingsPerCountry();
+        } else if (option.equals("4")) {
+            Report.report_numOfListingsPerCountryPerCity();
+        } else if (option.equals("5")) {
+            Report.report_numOfListingsPerCountryPerCityPerPCode();
+        } else if (option.equals("6")) {
+            Report.report_rankHostsByListingsPerCountry();
+        } else if (option.equals("7")) {
+            Report.report_rankHostsByListingsPerCity();
+        } else if (option.equals("8")) {
+            System.out.println("Do you want to specify a time window for report (1 for yes, 0 for no):");
+            System.out.print("> ");
+            String subOp = input.nextLine();
+            if (subOp.equals("1")) {
+                List<String> timeWin = getDateWindow();
+                if (timeWin == null) return;
+                else Report.report_spamPosting(timeWin.get(0), timeWin.get(1));
+            } else if (subOp.equals("0")) Report.report_spamPosting("", "");
+        } else if (option.equals("9")) {
+            List<String> timeWin = getDateWindow();
+            if (timeWin == null) return;
+            else Report.report_rankRentersByNumOfBookings(timeWin.get(0), timeWin.get(1));
+        }
+        else if (option.equals("10")) {
+            List<String> timeWin = getDateWindow();
+            if (timeWin == null) return;
+            else Report.report_rankRentersByNumOfBookingsPerCity(timeWin.get(0), timeWin.get(1));
+        }
+        else if (option.equals("11")){
+            System.out.println("Do you want to renters or hosts with largest cancellations (1 for renters, 0 for hosts):");
+            System.out.print("> ");
+            String subOp = input.nextLine();
+            List<String> timeWin = getDateWindow();
+            if (timeWin == null) return;
+            if(subOp.equals("1")){
+                Report.report_largestCancellation(1, timeWin.get(0), timeWin.get(1));
+            }
+            else if (subOp.equals("0")){
+                Report.report_largestCancellation(2, timeWin.get(0), timeWin.get(1));
+            }
+        }
+        else {
+            System.out.println("***Invalide option***");
+        }
+    }
+
+    public List<String> getDateWindow() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Date range from (yyyy-mm-dd):");
+        System.out.print("> ");
+        String fromDate = input.nextLine();
+        if (!dateFormat(fromDate)) {
+            System.out.println("***Format error***");
+            return null;
+        }
+        System.out.println("Date range to (yyyy-mm-dd):");
+        System.out.print("> ");
+        String toDate = input.nextLine();
+        if (!dateFormat(toDate)) {
+            System.out.println("***Format error***");
+            return null;
+        }
+        List<String> window = new ArrayList<String>();
+        window.add(fromDate);
+        window.add(toDate);
+        return window;
     }
 
 
@@ -137,21 +233,20 @@ public class MenuController {
         content = input.nextLine();
 
         // renter on host or host on renter
-        if(option == 1){
+        if (option == 1) {
             info.add(receiver);
             info.add(parent_id);
             info.add(content);
-            if(client.replyUserComment(info)) System.out.println("***Reply to comment on user successfully***");
+            if (client.replyUserComment(info)) System.out.println("***Reply to comment on user successfully***");
             else System.out.println("***Reply to comment on user failed***");
-        }
-        else if(option == 2){
+        } else if (option == 2) {
             // 2- replyListingComment(List<String> info) - Host's reply to a comment on a listing
             // [receiver, parent_comment, content, l_id]
             info.add(receiver);
             info.add(parent_id);
             info.add(content);
             info.add(l_id);
-            if(client.replyListingComment(info)) System.out.println("***Reply to comment on user successfully***");
+            if (client.replyListingComment(info)) System.out.println("***Reply to comment on user successfully***");
             else System.out.println("***Reply to comment on user failed***");
         }
 
@@ -357,7 +452,7 @@ public class MenuController {
         lat = Double.parseDouble(input.nextLine());
 
         List<String> filterInfo = filterInfo();
-        if(filterInfo == null) return;
+        if (filterInfo == null) return;
 
         System.out.println("Rank by price (1) or rank by distance (2):");
         System.out.print("> ");
@@ -389,7 +484,7 @@ public class MenuController {
         pcode = input.nextLine();
 
         List<String> filterInfo = filterInfo();
-        if(filterInfo == null) return;
+        if (filterInfo == null) return;
 
 
         System.out.println("(Ranking by price) order (1 for ascending, 0 for descending)");
@@ -433,7 +528,7 @@ public class MenuController {
         addrInfo.add(input.nextLine());
 
         List<String> filterInfo = filterInfo();
-        if(filterInfo == null) return;
+        if (filterInfo == null) return;
 
 
         System.out.println("Searching radius (km):");
@@ -456,7 +551,7 @@ public class MenuController {
     }
 
     // return [fromDate, toDate, lowest, highest, amenRequest]
-    public List<String> filterInfo(){
+    public List<String> filterInfo() {
         Scanner input = new Scanner(System.in);
         System.out.println("Date range from (yyyy-mm-dd):");
         System.out.print("> ");
