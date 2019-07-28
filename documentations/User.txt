@@ -98,10 +98,11 @@
 /**
      * View info about a user
      *
-     * @param id   user id
+     * @param id user id
+     * @param printComment 1 - print comments on this user as well, 0 not print comments on this user
      * @return true if user exists; false otherwise
      */
-    public static boolean viewUserInfo(int id)
+    public static boolean viewUserInfo(int id, int printComment)
 
 
 /**

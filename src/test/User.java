@@ -244,7 +244,7 @@ public abstract class User {
      *
      * @param id   user/listing's id
      * @param type 1 - user; 0 - listing
-     * @return true if comments exost; false otherwise
+     * @return true if comments exist; false otherwise
      */
     public static boolean viewComments(int id, int type) throws SQLException {
         if (type == 1) System.out.println("***Comments on this user***");
@@ -311,8 +311,20 @@ public abstract class User {
             String query2 = "select * from (SELECT r.*, l.owner FROM rented r join listing l on r.l_id = l.id) s " +
                     "where s.l_id = " + info.get(3) + " and s.owner = " + this.id + " and s.status = 1; ";
             ResultSet rs1 = Database.queryRead(query1);
-            ResultSet rs2 = Database.queryRead(query2);
-            if(!rs1.next() && !rs2.next()) return false;
+
+            CachedRowSet rowset1 = new CachedRowSetImpl();
+            rowset1.populate(rs1);
+            List<Row> table1 = Listing.CachedRowSet_to_ListRow(rowset1);
+            if (table1.size() == 0){
+                ResultSet rs2 = Database.queryRead(query2);
+                CachedRowSet rowset2 = new CachedRowSetImpl();
+                rowset2.populate(rs2);
+                List<Row> table2 = Listing.CachedRowSet_to_ListRow(rowset2);
+                if (table2.size() == 0) return false;
+            }
+
+//            if(!rs1.next() && !rs2.next()) return false;
+//            if(table1.size() == 0 && table2.size() == 0) return false;
         }
 
         Boolean success = false;
@@ -412,9 +424,10 @@ public abstract class User {
      * View info about a user
      *
      * @param id user id
+     * @param printComment 1 - print comments on this user as well, 0 not print comments on this user
      * @return true if user exists; false otherwise
      */
-    public static boolean viewUserInfo(int id) throws SQLException {
+    public static boolean viewUserInfo(int id, int printComment) throws SQLException {
         List<Row> userInfo = getUserInfo(id); // [u_id, name]
         if (userInfo.size() == 0) {
             System.out.println("***No user found***");
@@ -422,7 +435,7 @@ public abstract class User {
         }
         System.out.println("User id: " + userInfo.get(0).getColumnObject(1));
         System.out.println("User name: " + userInfo.get(0).getColumnObject(2));
-        viewComments(id, 1);
+        if(printComment == 1) viewComments(id, 1);
         return true;
     }
 

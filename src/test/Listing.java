@@ -23,6 +23,32 @@ public class Listing {
             "WIFI", "TV", "AC", "Microwave", "Laundry", "Refrigerator", "Hair Dryer", "Iron",
             "Hangers", "Fire extinguisher", "Coffee Maker", "Dishwasher", "Oven", "BBQ Grill");
 
+    private static String priceForAmen = "42511211151121";
+    private static String amenitiesSuggestion = "";
+
+    private static final double PRICEPERAREA = 2;
+
+
+    static double suggestPrice(double area, String amen){
+        //price per area $2/m^2
+        double basePrice = PRICEPERAREA*area;
+        double bonusPrice = 0;
+        for (int i=0; i<amen.length(); i++){
+            if (amen.substring(i, i+1).equals("1")) {
+                bonusPrice = bonusPrice + Integer.parseInt(priceForAmen.substring(i,i+1));
+            } else {
+                amenitiesSuggestion = amenitiesSuggestion + "If you add " + amenities.get(i) +
+                        ". You can profit $" + priceForAmen.substring(i,i+1) + " more.\n";
+            }
+        }
+        amenitiesSuggestion = amenitiesSuggestion + "You can update your amenities in the menu later.\n";
+        return basePrice + bonusPrice;
+    }
+
+    static void suggestAmenities(){
+        System.out.println(amenitiesSuggestion);
+    }
+
     /**
      * Get the ownerID of a listing
      *
@@ -47,7 +73,7 @@ public class Listing {
      * [id, country, city, street, pcode, lng, lat, type]
      */
     public static List<Row> getListingAddr(int l_id) throws SQLException {
-        List<String> addr = new ArrayList<String>();
+        List<String> addr = new ArrayList<>();
         String query = "SELECT * FROM address where id = " + l_id + " and type = 0;";
         ResultSet rs = Database.queryRead(query);
         CachedRowSet rowset = new CachedRowSetImpl();
