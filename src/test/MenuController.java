@@ -823,6 +823,7 @@ public class MenuController {
         double price = Listing.suggestPrice(area, amen);
 
         System.out.println("Price per day ($):" + " Suggested price is " + price);
+        String inputPrice = input.nextLine();
         System.out.println();
         //amenities suggestion
         Listing.suggestAmenities();
@@ -832,7 +833,7 @@ public class MenuController {
         houseInfo.add(Double.toString(area));
         houseInfo.add(fromDate);
         houseInfo.add(toDate);
-        houseInfo.add(Double.toString(price));
+        houseInfo.add(inputPrice);
         houseInfo.add(client.getId().toString());
         houseInfo.add(type);
         houseInfo.add(amen);
