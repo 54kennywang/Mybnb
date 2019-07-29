@@ -5,7 +5,6 @@ import com.sun.rowset.internal.Row;
 
 import javax.sql.rowset.CachedRowSet;
 import java.sql.ResultSet;
-import java.time.LocalDate;
 import java.util.*;
 import java.sql.SQLException;
 
@@ -508,8 +507,14 @@ public class Report {
         }
     }
 
-    private static String dateRefactor(LocalDate date) {
-        return date.toString().replaceAll("-", "");
+    public static void popularPhrasesReport(String ID) throws SQLException {
+        HashMap<String, Integer> wordCloud = Listing.mostPopularPhrases(ID);
+        System.out.println("The number of occurrence of the comment on this listing: ");
+        Iterator it = wordCloud.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            System.out.println(pair.getKey() + " : " + pair.getValue());
+        }
     }
 
     public static void main(String args[]) throws SQLException {

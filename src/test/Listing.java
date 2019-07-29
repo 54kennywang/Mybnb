@@ -7,7 +7,6 @@ import com.sun.rowset.CachedRowSetImpl;
 import com.sun.rowset.internal.Row;
 
 import javax.sql.rowset.CachedRowSet;
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -115,7 +114,7 @@ public class Listing {
             addrInfo.add(addrRow.get(0).getColumnObject(3).toString());
             addrInfo.add(addrRow.get(0).getColumnObject(5).toString());
             addrInfo.add(addrRow.get(0).getColumnObject(2).toString());
-            System.out.println("Address: " + Map.infoToAddr(addrInfo));
+            System.out.println("Address: " + ProgramMap.infoToAddr(addrInfo));
 
             User.viewComments(id, 0);
             return 1;
@@ -344,7 +343,7 @@ public class Listing {
 //            tempLng = Double.parseDouble(result.get(i).getColumnObject(6).toString());
 //            tempLat = Double.parseDouble(result.get(i).getColumnObject(7).toString());
 //
-//            Double dis = Map.distance(tempLat, tempLng, lat, lng, unit);
+//            Double dis = ProgramMap.distance(tempLat, tempLng, lat, lng, unit);
 //            if (dis > radius) {
 //                result.remove(i);
 //                i--;
@@ -373,7 +372,7 @@ public class Listing {
             tempLng = Double.parseDouble(result.get(i).getColumnObject(6).toString());
             tempLat = Double.parseDouble(result.get(i).getColumnObject(7).toString());
 
-            Double dis = Map.distance(tempLat, tempLng, lat, lng, unit);
+            Double dis = ProgramMap.distance(tempLat, tempLng, lat, lng, unit);
             if (dis > radius) {
                 result.remove(i);
                 i--;
@@ -427,7 +426,7 @@ public class Listing {
      * @return a list of table rows within the searching radius
      */
     public static List<Row> searchByAddress(List<String> addrInfo, Double radius) throws SQLException, Exception {
-        List<Object> allInfo = Map.getAllByAddr(Map.infoToAddr(addrInfo)); // [street, city, pcode, country, lng, lat]
+        List<Object> allInfo = ProgramMap.getAllByAddr(ProgramMap.infoToAddr(addrInfo)); // [street, city, pcode, country, lng, lat]
 //        CachedRowSet rowset = searchByCoordinates((Double) allInfo.get(4), (Double) allInfo.get(5), 30.0, 'K');
         List<Row> rowset = searchByCoordinates((Double) allInfo.get(4), (Double) allInfo.get(5), radius, 'K');
         return rowset;
@@ -458,7 +457,7 @@ public class Listing {
      * @return a list of table rows with the exact same input pcode
      */
     public static List<Row> searchByPcode_exact(String pcode) throws SQLException {
-        String sanitizedPcode = Map.pcodeSanitizer(pcode);
+        String sanitizedPcode = ProgramMap.pcodeSanitizer(pcode);
         String exactQuery = "SELECT address.*, listing.area, listing.dayPrice, listing.owner, listing.amenity, 0.0 as distance " +
                 "FROM address join listing " +
                 "on listing.id = address.id and address.type = 0 where address.pcode = '" + sanitizedPcode + "';";
@@ -494,8 +493,8 @@ public class Listing {
      * @return a list of table rows with the similar but not same input pcode
      */
     public static List<Row> searchByPcode_wildcard(String pcode) throws SQLException {
-        String sanitizedPcode = Map.pcodeSanitizer(pcode);
-        String wildcard_pcode = Map.pcodeSanitizer(pcode).substring(0, 4) + "%"; // second num is how wild it is [0, 6], 0 is most wild
+        String sanitizedPcode = ProgramMap.pcodeSanitizer(pcode);
+        String wildcard_pcode = ProgramMap.pcodeSanitizer(pcode).substring(0, 4) + "%"; // second num is how wild it is [0, 6], 0 is most wild
         String query = "SELECT address.*, listing.area, listing.dayPrice, listing.owner, listing.amenity, 0.0 as distance " +
                 "FROM address join listing " +
                 "on listing.id = address.id and address.type = 0 and address.pcode != '" + sanitizedPcode + "'" +
@@ -655,6 +654,36 @@ public class Listing {
         }
         return is;
     }
+
+    public static HashMap<String, Integer> mostPopularPhrases(String listingID) throws SQLException{
+        //query
+        String query = "SELECT * FROM listing_comment where l_id = " + listingID;
+        ResultSet resultSet = Database.queryRead(query);
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(resultSet);
+        List<Row> commentTuple = Listing.CachedRowSet_to_ListRow(rowset);
+        HashMap<String, Integer> wordCloud = new HashMap<>();
+        for (int i =0; i < commentTuple.size(); i ++){
+            String comment = commentTuple.get(i).getColumnObject(7).toString();
+            String[] wordArray = comment.split(" ");
+            // filter the coma stuff
+            List<String> wordList = Arrays.asList(wordArray);
+            wordList.removeAll(Collections.singleton(","));
+            wordList.removeAll(Collections.singleton("."));
+            wordList.removeAll(Collections.singleton("'"));
+            for (String word: wordList) {
+                if (wordCloud.containsKey(word)) {
+                    int value = wordCloud.get(word);
+                    value++;
+                    wordCloud.put(word, value);
+                } else {
+                    wordCloud.put(word, 1);
+                }
+            }
+        }
+        return wordCloud;
+    }
+
 
     /**
      * Find the root comment of a thread comment block
