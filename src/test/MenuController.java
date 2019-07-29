@@ -139,6 +139,7 @@ public class MenuController {
         System.out.println("  9. Number of bookings for renters during a time period.");
         System.out.println("  10. Number of bookings for renters during a time period by cities.");
         System.out.println("  11. Number of largest cancellations during a time period.");
+        System.out.println("  12. The most popular noun phrases with the listing");
         System.out.print("> ");
         option = input.nextLine();
 
@@ -186,8 +187,13 @@ public class MenuController {
             } else if (subOp.equals("0")) {
                 Report.report_largestCancellation(2, timeWin.get(0), timeWin.get(1));
             }
-        } else {
-            System.out.println("***Invalide option***");
+        } else if (option.equals("12")){
+            System.out.println("Enter the listing's ID");
+            String ID = input.nextLine();
+            Report.popularPhrasesReport(ID);
+        }
+        else {
+            System.out.println("***Invalid option***");
         }
     }
 
