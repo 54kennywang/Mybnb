@@ -38,12 +38,13 @@ public class MenuController {
                 else if (subOption.equals("2")) this.searchByPCode();
                 else if (subOption.equals("3")) this.searchByAddress();
             } else if (option.equals("5")) {
-                System.out.println("  Please specify searching options (1 for viewing; 2 for booking; 3 for cancelling)");
+                System.out.println("  Please specify searching options (1 for viewing; 2 for booking; 3 for cancelling; 4 for confirming a living)");
                 System.out.print("> ");
                 String subOption = input.nextLine();
                 if (subOption.equals("1")) this.viewListing();
                 else if (subOption.equals("2")) this.bookOrCancel_Listing(1);
                 else if (subOption.equals("3")) this.bookOrCancel_Listing(0);
+                else if (subOption.equals("4")) this.confirmLiving();
             } else if (option.equals("6")) {
                 System.out.println("  Please specify searching options (1 for posting; 2 for updating; 3 for deleting; 4 for canceling)");
                 System.out.print("> ");
@@ -59,17 +60,15 @@ public class MenuController {
                 if (subOption.equals("1")) this.comment();
                 else if (subOption.equals("2")) this.reply();
             } else if (option.equals("8")) {
-                System.out.println("  Please specify options (1 for viewing my postings; 2 for view a specified user)");
+                System.out.println("  Please specify options (1 for viewing my user history; 2 for view a specified user)");
                 System.out.print("> ");
                 String subOption = input.nextLine();
-                if (subOption.equals("1")) this.viewMyListing();
+                if (subOption.equals("1")) this.viewUserHistory();
                 else if (subOption.equals("2")) this.viewSpecifiedUser();
             } else if (option.equals("9")) {
                 this.becomeHost();
             } else if (option.equals("10")) {
                 this.report();
-            } else if (option.equals("11")) {
-                this.viewUserHistory();
             }
             System.out.println("Tell me what's next, type MENU to see options.");
             System.out.print("> ");
@@ -83,13 +82,12 @@ public class MenuController {
         System.out.println("  2. Register");
         System.out.println("  3. Logout");
         System.out.println("  4. Search listings");
-        System.out.println("  5. View/book/cancel a listing");
-        System.out.println("  6. Post/update/delete/cancel a listing(Host)");
+        System.out.println("  5. View/book a listing/cancel a booking/confirm living (as Renter)");
+        System.out.println("  6. Post/update/delete/cancel a listing (as Host)");
         System.out.println("  7. Comment/reply");
         System.out.println("  8. View user info");
         System.out.println("  9. Become a host");
         System.out.println("  10. Report");
-        System.out.println("  11. View your user history");
     }
 
     private boolean dateFormat(String date) {
@@ -602,14 +600,56 @@ public class MenuController {
         Listing.viewListing(id);
     }
 
-    private void deleteListing() throws SQLException{
+    private void deleteListing() throws SQLException {
 
     }
 
     private void cancelBookingAsHost() throws SQLException {
-        //prints out all the bookings the host has now
-        //prompt user to enter booking id he wants to cancel
-        // after cancellation,...
+        if (!loggedIn()) {
+            System.out.println("***Please login first***");
+            return;
+        }
+        if (!isHost()) {
+            System.out.println("***You are not host***");
+            return;
+        }
+        System.out.println("Other users' future bookings of your listings:");
+        List<Row> table = client.getMyRenterBookingsOfMyListings(0);
+        client.viewRentalHistoryOfMyListings(table);
+
+        Scanner input = new Scanner(System.in);
+        List<String> info = new ArrayList<>();
+
+        System.out.println("Listing ID:");
+        System.out.print("> ");
+        String l_id = input.nextLine();
+        if (Listing.viewListing(Integer.parseInt(l_id)) == 1) {
+            info.add(l_id);
+        } else return;
+
+        System.out.println("Starting date (yyyy-mm-dd):");
+        System.out.print("> ");
+        String fromDate = input.nextLine();
+        if (!dateFormat(fromDate)) {
+            System.out.println("***Format error***");
+            return;
+        }
+        info.add(fromDate);
+
+        System.out.println("Ending date (yyyy-mm-dd):");
+        System.out.print("> ");
+        String toDate = input.nextLine();
+        if (!dateFormat(toDate)) {
+            System.out.println("***Format error***");
+            return;
+        }
+        info.add(toDate);
+
+        if (client.cancelBooking(info, 2)) {
+            System.out.println("***Cancelled booking successfully***");
+        } else {
+            System.out.println("***Cancelled booking failed***");
+        }
     }
 
     // 1 for book, 0 for cancel
@@ -761,6 +801,14 @@ public class MenuController {
     }
 
     private void updatePosting() throws SQLException {
+        if (!loggedIn()) {
+            System.out.println("***Please login first***");
+            return;
+        }
+        if (!isHost()) {
+            System.out.println("***Only Host type user can post a listing, you can choose to become a host from the main menu***");
+            return;
+        }
         System.out.println("***Here are your postings***");
         if (viewMyListing() == 0) return;
 
@@ -843,7 +891,7 @@ public class MenuController {
     }
 
     private void becomeHost() {
-        if (loggedIn()) {
+        if (!loggedIn()) {
             System.out.println("***Please login first***");
             return;
         }
@@ -882,15 +930,46 @@ public class MenuController {
     }
 
     private void viewUserHistory() throws SQLException {
+        if (!loggedIn()) {
+            System.out.println("***Please login first***");
+            return;
+        }
         if (isRenter()) {
             userHistoryHelper();
         } else if (isHost()) {
             userHistoryHelper();
             System.out.println("\n");
-            System.out.println("The rental history listing of your listings:");
+            System.out.println("Other users' history bookings of your listings:");
             List<Row> table = client.getMyRenterBookingsOfMyListings(1);
             client.viewRentalHistoryOfMyListings(table);
+
+            System.out.println("\n");
+            System.out.println("Other users' future bookings of your listings:");
+            table = client.getMyRenterBookingsOfMyListings(0);
+            client.viewRentalHistoryOfMyListings(table);
         }
+    }
+
+    public void confirmLiving() throws SQLException {
+        if (!loggedIn()) {
+            System.out.println("***Please login first***");
+            return;
+        }
+        System.out.println("Your current bookings:");
+        client.viewBooking((client.getBookings(0)));
+        System.out.println("Listing ID:");
+        System.out.print("> ");
+        Scanner input = new Scanner(System.in);
+        String l_id = input.nextLine();
+        List<String> timeWin = getDateWindow();
+        List<String> info = new ArrayList<String>();
+        info.add(l_id);
+        info.add(timeWin.get(0));
+        info.add(timeWin.get(1));
+        if(client.confirmation_AfterLiving(info)){
+            System.out.println("***Confirmed living successfully***");
+        }
+        else System.out.println("***Confirmed living failed***");
     }
 
     private void userHistoryHelper() throws SQLException {

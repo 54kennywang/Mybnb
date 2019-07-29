@@ -62,13 +62,13 @@
      */
     public static List<Row> rankHostsByListingsPerCity(String country, String city)
 
-/**
+  /**
      * Get the table of renter booking (lived) times in a time window
      *
      * @param startDate time window begin time
      * @param toDate    time window ending time
      * @return a table of renter booking (lived) times in a time window
-     * [u_id, country, city, count]
+     * [u_id, count]
      */
     public static List<Row> rankRentersByNumOfBookings(String startDate, String toDate)
 
@@ -90,10 +90,12 @@
      *
      * @param fromDate time window start
      * @param toDate   time window end
+     * @param country  a country name
+     * @param city     a city name
      * @return a table of overposting users
      * [owner, count, count_percentage]
      */
-    public static List<Row> spamPosting(String fromDate, String toDate)
+    public static List<Row> spamPosting(String fromDate, String toDate, String country, String city)
 
 
 /**

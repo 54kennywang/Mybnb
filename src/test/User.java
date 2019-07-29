@@ -125,10 +125,10 @@ public abstract class User {
     public Boolean replyUserComment(List<String> info) throws SQLException {
         // legal: reply on a user that has been my renter or host
         // make sure this reply is valid
-        String query = "select * from user_comment where id = "+info.get(1)
-                +" and sender = "+info.get(0)+";";
+        String query = "select * from user_comment where id = " + info.get(1)
+                + " and sender = " + info.get(0) + ";";
         ResultSet resultSet = Database.queryRead(query);
-        if(!resultSet.next()) return false;
+        if (!resultSet.next()) return false;
 
         List<Row> rootComment = Listing.findRootComment(Integer.parseInt(info.get(1)), 1);
         String userProfileID = rootComment.get(0).getColumnObject(3).toString();
@@ -139,9 +139,12 @@ public abstract class User {
         if (!resultSet.next()) {
             // host comment on renter
             query = "select * from (SELECT r.*, l.owner FROM rented r join listing l on r.l_id = l.id) s " +
-                    "where s.owner = " + this.id + " and s.u_id = " + userProfileID + " and s.status = 1; ";
-            resultSet = Database.queryRead(query);
-            if(!resultSet.next()) return false;
+                    "where s.owner = " + this.id + " and s.u_id = " + info.get(0) + " and s.status = 1; ";
+            ResultSet resultSet1 = Database.queryRead(query);
+            if (!resultSet1.next()) {
+                System.out.println(query);
+                return false;
+            }
         }
         Boolean success = false;
         if (this.active) {
@@ -260,7 +263,8 @@ public abstract class User {
                 if (k == 0) {
                     if (type == 1)
                         System.out.println("Comments on " + comments.get(i).get(j).getColumnObject(6) + "(rating: " + getRating(id, type) + ")");
-                    else System.out.println("Comments on listing ID = " + id + " (rating: " + getRating(id, type) + ")");
+                    else
+                        System.out.println("Comments on listing ID = " + id + " (rating: " + getRating(id, type) + ")");
                     k++;
                 }
                 // [id, parent_comment, sender, sender_name, receiver, receiver_name, rating, content, date]
@@ -293,17 +297,16 @@ public abstract class User {
     public Boolean replyListingComment(List<String> info) throws SQLException {
         // legal?
         // make sure this reply is valid
-        String query = "select * from listing_comment where l_id = "+
-                info.get(3)+" and sender = "+info.get(0)+" and id = "+info.get(1)+";";
+        String query = "select * from listing_comment where l_id = " +
+                info.get(3) + " and sender = " + info.get(0) + " and id = " + info.get(1) + ";";
         ResultSet resultSet = Database.queryRead(query);
-        if(!resultSet.next()) return false;
-        if(this.type == 1){
+        if (!resultSet.next()) return false;
+        if (this.type == 1) {
             // renter reply to a host's reply on a listing, make sure renter lived here before
             query = "select * from rented r where r.u_id = " + this.id + " and r.l_id = " + info.get(3) + " and r.status = 1;";
             resultSet = Database.queryRead(query);
-            if(!resultSet.next()) return false;
-        }
-        else if (this.type == 2){
+            if (!resultSet.next()) return false;
+        } else if (this.type == 2) {
             // listing where i lived
             String query1 = "select * from rented r where r.u_id = " + this.id + " and r.l_id = " + info.get(3) + " and r.status = 1;";
 
@@ -315,7 +318,7 @@ public abstract class User {
             CachedRowSet rowset1 = new CachedRowSetImpl();
             rowset1.populate(rs1);
             List<Row> table1 = Listing.CachedRowSet_to_ListRow(rowset1);
-            if (table1.size() == 0){
+            if (table1.size() == 0) {
                 ResultSet rs2 = Database.queryRead(query2);
                 CachedRowSet rowset2 = new CachedRowSetImpl();
                 rowset2.populate(rs2);
@@ -422,7 +425,7 @@ public abstract class User {
     /**
      * View info about a user
      *
-     * @param id user id
+     * @param id           user id
      * @param printComment 1 - print comments on this user as well, 0 not print comments on this user
      * @return true if user exists; false otherwise
      */
@@ -434,7 +437,7 @@ public abstract class User {
         }
         System.out.println("User id: " + userInfo.get(0).getColumnObject(1));
         System.out.println("User name: " + userInfo.get(0).getColumnObject(2));
-        if(printComment == 1) viewComments(id, 1);
+        if (printComment == 1) viewComments(id, 1);
         return true;
     }
 

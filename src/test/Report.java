@@ -84,17 +84,18 @@ public class Report {
      * @param toDate   time window end
      */
     public static void report_numOfBookingsByZipCode(String fromDate, String toDate) throws SQLException {
+
         List<Row> cities = getAll_x("city");
         System.out.println("===Report on zip code during " + fromDate + " - " + toDate + " in cities===");
         for (int i = 0; i < cities.size(); i++) {
             System.out.println(cities.get(i).getColumnObject(1));
-            String query = "SELECT * FROM address where city = '" + cities.get(i).getColumnObject(1).toString() + "';";
+            String query = "SELECT distinct pcode FROM address where city = '" + cities.get(i).getColumnObject(1).toString() + "';";
             ResultSet resultSet = Database.queryRead(query);
             CachedRowSet rowset = new CachedRowSetImpl();
             rowset.populate(resultSet);
             List<Row> temp = Listing.CachedRowSet_to_ListRow(rowset);
             for (int j = 0; j < temp.size(); j++) {
-                System.out.println("  " + temp.get(j).getColumnObject(5).toString() + ": " + numOfBookingsByZipCode(fromDate, toDate, temp.get(j).getColumnObject(5).toString()));
+                System.out.println("  " + temp.get(j).getColumnObject(1).toString() + ": " + numOfBookingsByZipCode(fromDate, toDate, temp.get(j).getColumnObject(1).toString()));
             }
         }
     }
@@ -284,27 +285,38 @@ public class Report {
      *
      * @param fromDate time window start
      * @param toDate   time window end
+     * @param country  a country name
+     * @param city     a city name
      * @return a table of overposting users
      * [owner, count, count_percentage]
      */
-    public static List<Row> spamPosting(String fromDate, String toDate) throws SQLException {
+    public static List<Row> spamPosting(String fromDate, String toDate, String country, String city) throws SQLException {
         String query = "";
         if (fromDate.equals("")) {
             query =
                     "select * from " +
-                            "(select owner, count(*) as 'count', " +
-                            "count(*) / (SELECT count(*) as 'count' FROM listing) as 'count_percentage' " +
-                            "FROM listing group by owner order by count Desc) x " +
-                            "where x.count_percentage > 0.1;";
+                            " (select owner, count(*) as 'count', count(*) / " +
+                            "(" +
+                            " SELECT count(*) as 'count' " +
+                            " FROM listing l , address a where l.id = a.id and a.type = 0 " +
+                            " and country = '" + country + "' and city = '" + city + "' " +
+                            " ) as 'count_percentage' " +
+                            " FROM listing l , address a where l.id = a.id and a.type = 0 " +
+                            " and country = '" + country + "' and city = '" + city + "' " +
+                            " group by owner order by count Desc) x " +
+                            " where x.count_percentage > 0.1;";
         } else {
-            query =
-                    "select * from " +
-                            "(select owner, count(*) as 'count', " +
-                            "count(*) / (SELECT count(*) as 'count' FROM listing where date >= '" + fromDate + "' and date <= '" + toDate + "') " +
-                            "as 'count_percentage' " +
-                            "FROM listing where date >= '" + fromDate + "' and date <= '" + toDate + "' " +
-                            "group by owner order by count Desc) x " +
-                            "where x.count_percentage > 0.1;";
+            query = "select * from " +
+                    " (select owner, count(*) as 'count', count(*) / " +
+                    "(" +
+                    " SELECT count(*) as 'count' " +
+                    " FROM listing l , address a where l.id = a.id and a.type = 0 " +
+                    " and country = 'Canada' and city = 'Toronto' and date => '" + fromDate + "' and date <= '" + toDate + "' " +
+                    " ) as 'count_percentage' " +
+                    " FROM listing l , address a where l.id = a.id and a.type = 0 " +
+                    " and country = '" + country + "' and city = '" + city + "' and date => '" + fromDate + "' and date <= '" + toDate + "' " +
+                    " group by owner order by count Desc) x " +
+                    " where x.count_percentage > 0.1;";
         }
         ResultSet resultSet = Database.queryRead(query);
         CachedRowSet rowset = new CachedRowSetImpl();
@@ -317,11 +329,27 @@ public class Report {
      */
     public static void report_spamPosting(String fromDate, String toDate) throws SQLException {
         System.out.println("===Report on the hosts with listings more than 10% of the total listing===");
-        List<Row> flagged = spamPosting(fromDate, toDate);
-        for (int i = 0; i < flagged.size(); i++) {
-            System.out.println("Host ID " + flagged.get(i).getColumnObject(1) + " has " + flagged.get(i).getColumnObject(2) + " listings (percentage: " +
-                    Double.parseDouble(flagged.get(i).getColumnObject(3).toString()) * 100 + "%)");
+        List<Row> countries = getAll_x("country");
+        for (int i = 0; i < countries.size(); i++) {
+            System.out.println(countries.get(i).getColumnObject(1));
+
+            String query = "select distinct city from address where country = '" + countries.get(i).getColumnObject(1).toString() + "';";
+            ResultSet resultSet = Database.queryRead(query);
+            CachedRowSet rowset = new CachedRowSetImpl();
+            rowset.populate(resultSet);
+            List<Row> cities = Listing.CachedRowSet_to_ListRow(rowset);
+
+            for (int k = 0; k < cities.size(); k++) {
+                System.out.println("  " + cities.get(k).getColumnObject(1));
+                List<Row> flagged = spamPosting(fromDate, toDate, countries.get(i).getColumnObject(1).toString(), cities.get(k).getColumnObject(1).toString());
+                for (int j = 0; j < flagged.size(); j++) {
+                    System.out.println("    Host ID " + flagged.get(j).getColumnObject(1) + " has " + flagged.get(j).getColumnObject(2) + " listings (percentage: " +
+                            Double.parseDouble(flagged.get(j).getColumnObject(3).toString()) * 100 + "%)");
+                }
+            }
         }
+
+
     }
 
     /**
@@ -330,15 +358,14 @@ public class Report {
      * @param startDate time window begin time
      * @param toDate    time window ending time
      * @return a table of renter booking (lived) times in a time window
-     * [u_id, country, city, count]
+     * [u_id, count]
      */
     public static List<Row> rankRentersByNumOfBookings(String startDate, String toDate) throws SQLException {
-        String query =
-                "select r.u_id, a.country, a.city, count(*) as 'count' from rented r, address a " +
-                        "where a.id = r.l_id and a.type = 0 and r.fromDate >= '" + startDate + "' and r.toDate <= '" + toDate + "' " +
-                        "and r.status = 1 " +
-                        "group by r.u_id, a.country, a.city having count(*) > 0 " +
-                        "order by count(*) desc;";
+        String query = "select r.u_id, count(*) as 'count' from rented r, address a " +
+                "where a.id = r.l_id and a.type = 0 and r.fromDate >= '" + startDate + "' and r.toDate <= '" + toDate + "' " +
+                "and r.status = 1 " +
+                "group by r.u_id having count(*) > 1 " +
+                "order by count(*) desc;";
         ResultSet resultSet = Database.queryRead(query);
         CachedRowSet rowset = new CachedRowSetImpl();
         rowset.populate(resultSet);
@@ -347,6 +374,7 @@ public class Report {
 
     /**
      * Print the number of bookings (lived) in a time window
+     *
      * @param startDate time window begin time
      * @param toDate    time window ending time
      */
@@ -355,8 +383,7 @@ public class Report {
         List<Row> temp = rankRentersByNumOfBookings(startDate, toDate);
         for (int i = 0; i < temp.size(); i++) {
             System.out.println("Renter ID " + temp.get(i).getColumnObject(1) + " lived " +
-                    temp.get(i).getColumnObject(4) + " times in " + temp.get(i).getColumnObject(3) + " " +
-                    temp.get(i).getColumnObject(2));
+                    temp.get(i).getColumnObject(2) + " times on Mybnb." );
         }
     }
 
@@ -384,6 +411,7 @@ public class Report {
 
     /**
      * Print the number of bookings (lived) in a time window by cities
+     *
      * @param startDate time window begin time
      * @param toDate    time window ending time
      */
@@ -402,7 +430,7 @@ public class Report {
             for (int k = 0; k < cities.size(); k++) {
                 System.out.println("  " + cities.get(k).getColumnObject(1));
                 List<Row> temp = rankRentersByNumOfBookingsPerCity(startDate, toDate, countries.get(i).getColumnObject(1).toString(), cities.get(k).getColumnObject(1).toString());
-                if(temp.size() == 0) System.out.println("    ***no record");
+                if (temp.size() == 0) System.out.println("    ***no record");
                 for (int j = 0; j < temp.size(); j++) {
                     System.out.println("    Renter ID " + temp.get(j).getColumnObject(1) + " lived " +
                             temp.get(j).getColumnObject(4) + " times.");
@@ -459,23 +487,24 @@ public class Report {
      * @param type     1 - renter; 2 - host
      * @param fromDate time window begin time
      * @param toDate   time window ending time
-     * [u_id, count]
+     *                 [u_id, count]
      */
     public static void report_largestCancellation(int type, String fromDate, String toDate) throws SQLException {
-        if(type == 1){
+        if (type == 1) {
             System.out.println("===Report on renters with largest cancellations during " + fromDate + " to " + toDate + "===");
-        }
-        else if (type == 2){
+        } else if (type == 2) {
             System.out.println("===Report on hosts with largest cancellations during " + fromDate + " to " + toDate + "===");
         }
         List<Row> temp = largestCancellation(type, fromDate, toDate);
-        if(temp.size() == 0) {
+        if (temp.size() == 0) {
             System.out.println("  *** no record");
             return;
         }
-        for (int i = 0; i < temp.size(); i ++){
-            if(type == 1) System.out.println("Renter ID " + temp.get(i).getColumnObject(1) + " has " + temp.get(i).getColumnObject(2) + " cancellations.");
-            else if(type == 2) System.out.println("Host ID " + temp.get(i).getColumnObject(1) + " has " + temp.get(i).getColumnObject(2) + " cancellations.");
+        for (int i = 0; i < temp.size(); i++) {
+            if (type == 1)
+                System.out.println("Renter ID " + temp.get(i).getColumnObject(1) + " has " + temp.get(i).getColumnObject(2) + " cancellations.");
+            else if (type == 2)
+                System.out.println("Host ID " + temp.get(i).getColumnObject(1) + " has " + temp.get(i).getColumnObject(2) + " cancellations.");
         }
     }
 
