@@ -823,6 +823,7 @@ public class MenuController {
         double price = Listing.suggestPrice(area, amen);
 
         System.out.println("Price per day ($):" + " Suggested price is " + price);
+        System.out.print("> ");
         String inputPrice = input.nextLine();
         System.out.println();
         //amenities suggestion
