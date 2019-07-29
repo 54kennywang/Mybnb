@@ -35,7 +35,7 @@ public class MenuController {
                 System.out.print("> ");
                 String subOption = input.nextLine();
                 if (subOption.equals("1")) this.searchByCoordinates();
-                else if (subOption.equals("2")) this.searchByPcode();
+                else if (subOption.equals("2")) this.searchByPCode();
                 else if (subOption.equals("3")) this.searchByAddress();
             } else if (option.equals("5")) {
                 System.out.println("  Please specify searching options (1 for viewing; 2 for booking; 3 for cancelling)");
@@ -45,12 +45,13 @@ public class MenuController {
                 else if (subOption.equals("2")) this.bookOrCancel_Listing(1);
                 else if (subOption.equals("3")) this.bookOrCancel_Listing(0);
             } else if (option.equals("6")) {
-                System.out.println("  Please specify searching options (1 for posting; 2 for updating; 3 for deleting)");
+                System.out.println("  Please specify searching options (1 for posting; 2 for updating; 3 for deleting; 4 for canceling)");
                 System.out.print("> ");
                 String subOption = input.nextLine();
                 if (subOption.equals("1")) this.postListing();
                 else if (subOption.equals("2")) this.updatePosting();
-                else if (subOption.equals("3")) ;
+                else if (subOption.equals("3")) this.deleteListing();
+                else if (subOption.equals("4")) this.cancelBookingAsHost();
             } else if (option.equals("7")) {
                 System.out.println("  Please specify options (1 for comment; 2 for reply)");
                 System.out.print("> ");
@@ -77,14 +78,13 @@ public class MenuController {
         System.out.println("Bye!");
     }
 
-    public void printMenu() {
+    private void printMenu() {
         System.out.println("  1. Login");
         System.out.println("  2. Register");
         System.out.println("  3. Logout");
         System.out.println("  4. Search listings");
-
         System.out.println("  5. View/book/cancel a listing");
-        System.out.println("  6. Post/update/delete a listing");
+        System.out.println("  6. Post/update/delete/cancel a listing(Host)");
         System.out.println("  7. Comment/reply");
         System.out.println("  8. View user info");
         System.out.println("  9. Become a host");
@@ -92,12 +92,12 @@ public class MenuController {
         System.out.println("  11. View your user history");
     }
 
-    public boolean dateFormat(String date) {
+    private boolean dateFormat(String date) {
         if (date.matches("^\\d{4}-\\d{2}-\\d{2}$")) return true;
         else return false;
     }
 
-    public void report() throws SQLException {
+    private void report() throws SQLException {
         Scanner input = new Scanner(System.in);
         String option = "";
         System.out.println("  Please specify options:");
@@ -144,31 +144,27 @@ public class MenuController {
             List<String> timeWin = getDateWindow();
             if (timeWin == null) return;
             else Report.report_rankRentersByNumOfBookings(timeWin.get(0), timeWin.get(1));
-        }
-        else if (option.equals("10")) {
+        } else if (option.equals("10")) {
             List<String> timeWin = getDateWindow();
             if (timeWin == null) return;
             else Report.report_rankRentersByNumOfBookingsPerCity(timeWin.get(0), timeWin.get(1));
-        }
-        else if (option.equals("11")){
+        } else if (option.equals("11")) {
             System.out.println("Do you want to renters or hosts with largest cancellations (1 for renters, 0 for hosts):");
             System.out.print("> ");
             String subOp = input.nextLine();
             List<String> timeWin = getDateWindow();
             if (timeWin == null) return;
-            if(subOp.equals("1")){
+            if (subOp.equals("1")) {
                 Report.report_largestCancellation(1, timeWin.get(0), timeWin.get(1));
-            }
-            else if (subOp.equals("0")){
+            } else if (subOp.equals("0")) {
                 Report.report_largestCancellation(2, timeWin.get(0), timeWin.get(1));
             }
-        }
-        else {
+        } else {
             System.out.println("***Invalide option***");
         }
     }
 
-    public List<String> getDateWindow() {
+    private List<String> getDateWindow() {
         Scanner input = new Scanner(System.in);
         System.out.println("Date range from (yyyy-mm-dd):");
         System.out.print("> ");
@@ -191,7 +187,7 @@ public class MenuController {
     }
 
 
-    public void reply() throws SQLException {
+    private void reply() throws SQLException {
         if (!loggedIn()) {
             System.out.println("***Please login first***");
             return;
@@ -311,8 +307,7 @@ public class MenuController {
                         System.out.println("***Comment on user successfully***");
                         return;
                     }
-                }
-                else if (subOption.equals("2")) {
+                } else if (subOption.equals("2")) {
                     if (((Renter) client).commentOnHost(info)) {
                         System.out.println("***Comment on user successfully***");
                         return;
@@ -338,7 +333,7 @@ public class MenuController {
     }
 
 
-    public void logIn() throws Exception {
+    private void logIn() throws Exception {
         if (loggedIn()) {
             System.out.println("***You already logged in***");
             return;
@@ -364,7 +359,7 @@ public class MenuController {
         } else System.out.println("Username/password wrong.");
     }
 
-    public void signUp() throws Exception {
+    private void signUp() throws Exception {
         if (loggedIn()) {
             System.out.println("***You already logged in***");
             return;
@@ -431,7 +426,7 @@ public class MenuController {
         else System.out.println("Register failed.");
     }
 
-    public void logOut() {
+    private void logOut() {
         if (!loggedIn()) {
             System.out.println("***You are not logged in***");
             return;
@@ -441,7 +436,7 @@ public class MenuController {
         System.out.println("***Logged out successfully***");
     }
 
-    public void searchByCoordinates() throws Exception {
+    private void searchByCoordinates() throws Exception {
         Scanner input = new Scanner(System.in);
         Double lng = 0.0;
         Double lat = 0.0;
@@ -478,7 +473,7 @@ public class MenuController {
         }
     }
 
-    public void searchByPcode() throws Exception {
+    private void searchByPCode() throws Exception {
         Scanner input = new Scanner(System.in);
         String pcode = "";
         int order = 0;
@@ -510,7 +505,7 @@ public class MenuController {
         }
     }
 
-    public void searchByAddress() throws Exception {
+    private void searchByAddress() throws Exception {
         Scanner input = new Scanner(System.in);
         List<String> addrInfo = new ArrayList<String>();
         int order = 0;
@@ -556,7 +551,7 @@ public class MenuController {
     }
 
     // return [fromDate, toDate, lowest, highest, amenRequest]
-    public List<String> filterInfo() {
+    private List<String> filterInfo() {
         Scanner input = new Scanner(System.in);
         System.out.println("Date range from (yyyy-mm-dd):");
         System.out.print("> ");
@@ -598,7 +593,7 @@ public class MenuController {
         return filterInfo;
     }
 
-    public void viewListing() throws SQLException {
+    private void viewListing() throws SQLException {
         Scanner input = new Scanner(System.in);
         int id = 0;
         System.out.println("Listing ID:");
@@ -607,14 +602,24 @@ public class MenuController {
         Listing.viewListing(id);
     }
 
+    private void deleteListing() throws SQLException{
+
+    }
+
+    private void cancelBookingAsHost() throws SQLException {
+        //prints out all the bookings the host has now
+        //prompt user to enter booking id he wants to cancel
+        // after cancellation,...
+    }
+
     // 1 for book, 0 for cancel
-    public void bookOrCancel_Listing(int i) throws Exception {
+    private void bookOrCancel_Listing(int i) throws Exception {
         if (!loggedIn()) {
             System.out.println("***Please login first***");
             return;
         }
         Scanner input = new Scanner(System.in);
-        List<String> info = new ArrayList<String>();
+        List<String> info = new ArrayList<>();
         if (i == 0) {
             System.out.println("***Here are your bookings***");
             if (client.viewBooking(client.getBookings(0)) == 0) return;
@@ -668,7 +673,7 @@ public class MenuController {
         }
     }
 
-    public void postListing() throws Exception {
+    private void postListing() throws Exception {
         if (!loggedIn()) {
             System.out.println("***Please login first***");
             return;
@@ -755,7 +760,7 @@ public class MenuController {
         } else System.out.println("***Posted listing failed***");
     }
 
-    public void updatePosting() throws SQLException {
+    private void updatePosting() throws SQLException {
         System.out.println("***Here are your postings***");
         if (viewMyListing() == 0) return;
 
@@ -837,7 +842,7 @@ public class MenuController {
         }
     }
 
-    public void becomeHost() {
+    private void becomeHost() {
         if (loggedIn()) {
             System.out.println("***Please login first***");
             return;
@@ -853,7 +858,7 @@ public class MenuController {
         }
     }
 
-    public void viewSpecifiedUser() throws SQLException {
+    private void viewSpecifiedUser() throws SQLException {
         Scanner input = new Scanner(System.in);
         System.out.println();
         System.out.println("Please provide User ID you want to view:");
@@ -863,7 +868,7 @@ public class MenuController {
     }
 
     // 1 for having listing; 0 for no result
-    public int viewMyListing() throws SQLException {
+    private int viewMyListing() throws SQLException {
         if (!loggedIn()) {
             System.out.println("***Please login first***");
             return 0;
@@ -876,11 +881,10 @@ public class MenuController {
         else return 0;
     }
 
-    public void viewUserHistory() throws SQLException{
+    private void viewUserHistory() throws SQLException {
         if (isRenter()) {
             userHistoryHelper();
-        }
-        else if (isHost()){
+        } else if (isHost()) {
             userHistoryHelper();
             System.out.println("\n");
             System.out.println("The rental history listing of your listings:");
@@ -889,7 +893,7 @@ public class MenuController {
         }
     }
 
-    private void userHistoryHelper() throws SQLException{
+    private void userHistoryHelper() throws SQLException {
         System.out.println("Your history of listings that you rented as a renter:");
         client.viewBooking((client.getBookings(1)));
         System.out.println("\n");
@@ -897,7 +901,7 @@ public class MenuController {
         client.viewBooking((client.getBookings(0)));
     }
 
-    public boolean loggedIn() {
+    private boolean loggedIn() {
         if (client == null) {
             return false;
         } else return true;
@@ -915,7 +919,7 @@ public class MenuController {
         } else return false;
     }
 
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
         if (Database.connect()) {
             MenuController controller = new MenuController();
             controller.start();
