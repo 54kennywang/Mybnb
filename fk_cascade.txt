@@ -1,0 +1,59 @@
+ALTER TABLE `newestDB`.`listing_comment` 
+ADD INDEX `fk_listing_comment_1_idx` (`l_id` ASC);
+ALTER TABLE `newestDB`.`listing_comment` 
+ADD CONSTRAINT `fk_listing_comment_1`
+  FOREIGN KEY (`l_id`)
+  REFERENCES `newestDB`.`listing` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+
+ALTER TABLE `newestDB`.`user` 
+CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT ;
+
+
+ALTER TABLE `newestDB`.`listing_comment` 
+DROP FOREIGN KEY `fk_listing_comment_1`;
+ALTER TABLE `newestDB`.`listing_comment` 
+ADD CONSTRAINT `fk_listing_comment_1`
+  FOREIGN KEY (`l_id`)
+  REFERENCES `newestDB`.`listing` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+
+ALTER TABLE `newestDB`.`availability` 
+ADD CONSTRAINT `fk_availability_1`
+  FOREIGN KEY (`id`)
+  REFERENCES `newestDB`.`listing` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE `newestDB`.`listing` 
+ADD INDEX `fk_listing_1_idx` (`owner` ASC);
+ALTER TABLE `newestDB`.`listing` 
+ADD CONSTRAINT `fk_listing_1`
+  FOREIGN KEY (`owner`)
+  REFERENCES `newestDB`.`user` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+ALTER TABLE `newestDB`.`listing` 
+DROP FOREIGN KEY `fk_listing_1`;
+ALTER TABLE `newestDB`.`listing` 
+ADD CONSTRAINT `fk_listing_1`
+  FOREIGN KEY (`owner`)
+  REFERENCES `newestDB`.`user` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+
+ALTER TABLE `newestDB`.`availability` 
+DROP FOREIGN KEY `fk_availability_1`;
+ALTER TABLE `newestDB`.`availability` 
+ADD CONSTRAINT `fk_availability_1`
+  FOREIGN KEY (`id`)
+  REFERENCES `newestDB`.`listing` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+

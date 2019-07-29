@@ -228,4 +228,22 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+CREATE TRIGGER delete_addr_after_delete_listing AFTER DELETE ON listing
+
+FOR EACH ROW
+
+                DELETE FROM address
+
+WHERE address.id = OLD.id and address.type = 0;
+
+ 
+
+CREATE TRIGGER delete_addr_after_delete_user AFTER DELETE ON user
+
+FOR EACH ROW
+
+            DELETE FROM address
+
+    WHERE address.id = OLD.id and address.type = 1;
+
 -- Dump completed on 2019-07-29  1:03:56
