@@ -125,6 +125,14 @@ public class MenuController {
     }
 
     private void report() throws SQLException {
+        if (!loggedIn()) {
+            System.out.println("***Please login first***");
+            return;
+        }
+        if(client.getId() != 27){
+            System.out.println("***You are not admin, no access***");
+            return;
+        }
         Scanner input = new Scanner(System.in);
         String option = "";
         System.out.println("  Please specify options:");
@@ -241,7 +249,7 @@ public class MenuController {
             System.out.println("User ID you are replying to:");
             System.out.print("> ");
             receiver = input.nextLine();
-            if (!User.viewUserInfo(Integer.parseInt(receiver), 0) || !User.viewComments(Integer.parseInt(receiver), 1)) {
+            if (!User.viewUserInfo(Integer.parseInt(receiver), 0)) {
                 return;
             }
         } else if (option == 2) {
