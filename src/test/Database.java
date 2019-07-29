@@ -149,7 +149,7 @@ public class Database {
 	public static Boolean insertAddr(List<String> addrInfo, int id, int type) throws Exception {
 		Boolean success = false;
 		List<Object> sanitizedAddr = new ArrayList<Object>();
-		sanitizedAddr = Map.getAllByAddr(Map.infoToAddr(addrInfo)); // [street, city, pcode, country, lng, lat]
+		sanitizedAddr = ProgramMap.getAllByAddr(ProgramMap.infoToAddr(addrInfo)); // [street, city, pcode, country, lng, lat]
 		String table = "address";
 		String cols = "id, street, city, pcode, country, lng, lat, type";
 		String vals = id + ", '" + sanitizedAddr.get(0) + "', '" + sanitizedAddr.get(1)

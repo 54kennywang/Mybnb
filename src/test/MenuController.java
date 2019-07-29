@@ -189,6 +189,7 @@ public class MenuController {
             }
         } else if (option.equals("12")){
             System.out.println("Enter the listing's ID");
+            System.out.println("> ");
             String ID = input.nextLine();
             Report.popularPhrasesReport(ID);
         }

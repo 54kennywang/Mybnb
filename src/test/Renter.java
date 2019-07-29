@@ -84,7 +84,6 @@ public class Renter extends User {
                         "where u_id = " + this.id + " and l_id = " + info.get(0) + " " +
                         "and fromDate = '" + info.get(1) + "' and toDate = '" + info.get(2) + "' " +
                         "and status = 0;";
-        System.out.println(query);
         ResultSet rs = Database.queryRead(query);
         if (rs.next()) legal = true;
         if (!legal) return false;
