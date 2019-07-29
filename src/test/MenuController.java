@@ -304,19 +304,20 @@ public class MenuController {
                 System.out.print("> ");
                 String subOption = input.nextLine();
                 if (subOption.equals("1")) {
-                    if (((Host) client).commentOnUser(info)) {
+                    if ((client).commentOnUser(info)) {
                         System.out.println("***Comment on user successfully***");
                         return;
                     }
-                } else if (subOption.equals("1")) {
-                    if (((Renter) client).commentOnUser(info)) {
+                }
+                else if (subOption.equals("2")) {
+                    if (((Renter) client).commentOnHost(info)) {
                         System.out.println("***Comment on user successfully***");
                         return;
                     }
                 }
                 System.out.println("***Comment on user failed***");
             } else {
-                if (((Renter) client).commentOnUser(info)) {
+                if (((Renter) client).commentOnHost(info)) {
                     System.out.println("***Comment on user successfully***");
                     return;
                 }
@@ -434,6 +435,7 @@ public class MenuController {
         }
         this.client = null;
         this.type = 0;
+        System.out.println("***Logged out successfully***");
     }
 
     public void searchByCoordinates() throws Exception {
@@ -610,7 +612,6 @@ public class MenuController {
         }
         Scanner input = new Scanner(System.in);
         List<String> info = new ArrayList<String>();
-        System.out.println();
         if (i == 0) {
             System.out.println("***Here are your bookings***");
             if (client.viewBooking(client.getBookings(0)) == 0) return;
@@ -656,7 +657,7 @@ public class MenuController {
                 System.out.println("***Booking listing failed***");
             }
         } else if (i == 0) {
-            if (client.cancelBooking(info, this.type)) {
+            if (client.cancelBooking(info, 1)) {
                 System.out.println("***Cancelled booking successfully***");
             } else {
                 System.out.println("***Cancelled booking failed***");

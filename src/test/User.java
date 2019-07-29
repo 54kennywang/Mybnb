@@ -114,7 +114,7 @@ public abstract class User {
     // initial comment on a user
     // given a list of commentInfo: [receiver, rating, content]
     // return true if successfully
-    public abstract Boolean commentOnUser(List<String> info) throws SQLException;
+//    public abstract Boolean commentOnUser(List<String> info) throws SQLException;
 
     /**
      * Reply to a comment on a user
@@ -352,7 +352,6 @@ public abstract class User {
         String conditions = "";
         if (type == 1) { // renter
             Boolean legal = false; // legal to cancel this booking?
-
             String query = "SELECT * FROM rented where status = 0 and u_id = " + this.id + " and l_id = " + info.get(0) +
                     " and fromDate = '" + info.get(1) +
                     "' and toDate = '" + info.get(2) + "'; ";

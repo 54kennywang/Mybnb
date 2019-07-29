@@ -28,7 +28,7 @@ public class Database {
 			// https://stackoverflow.com/questions/7048216/environment-variables-in-eclipse/12810433#12810433
 			cred[0] = "root";
 			cred[1] = System.getenv("dbPass");
-			cred[2] = "mydb";
+			cred[2] = "newestDB";
 			
 			String user = cred[0];
 			String pass = cred[1];

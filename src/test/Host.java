@@ -266,7 +266,7 @@ public class Host extends Renter {
      * @param info [receiver, rating, content]
      * @return true if successfully; false otherwise
      */
-    @Override
+//    @Override
     public Boolean commentOnUser(List<String> info) throws SQLException {
         Boolean legal = false; // legal to comment on that user?
         List<Row> whoBookedMine = getMyRenterBookingsOfMyListings(1);

@@ -319,7 +319,8 @@ public class Report {
         System.out.println("===Report on the hosts with listings more than 10% of the total listing===");
         List<Row> flagged = spamPosting(fromDate, toDate);
         for (int i = 0; i < flagged.size(); i++) {
-            System.out.println("Host ID " + flagged.get(i).getColumnObject(1) + " has " + flagged.get(i).getColumnObject(2) + " listings (percentage: " + flagged.get(i).getColumnObject(3) + ")");
+            System.out.println("Host ID " + flagged.get(i).getColumnObject(1) + " has " + flagged.get(i).getColumnObject(2) + " listings (percentage: " +
+                    Double.parseDouble(flagged.get(i).getColumnObject(3).toString()) * 100 + "%)");
         }
     }
 

@@ -30,13 +30,13 @@
      */
     public CachedRowSet getBookings(int type)
 
-/**
+    /**
      * Renter's initial comment on a host user
+     *
      * @param info [receiver, rating, content]
      * @return true if successfully; false otherwise
      */
-    @Override
-    public Boolean commentOnUser(List<String> info)
+    public Boolean commentOnHost(List<String> info) 
 
 /**
      * Renter's confirmation of living after finishing

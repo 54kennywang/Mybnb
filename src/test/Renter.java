@@ -196,20 +196,17 @@ public class Renter extends User {
      * @param info [receiver, rating, content]
      * @return true if successfully; false otherwise
      */
-    @Override
-    public Boolean commentOnUser(List<String> info) throws SQLException {
+    public Boolean commentOnHost(List<String> info) throws SQLException {
         Boolean legal = false; // legal to comment on that user?
         CachedRowSet rowset = this.getBookings(1);
         while (rowset.next()) {
             Integer l_id = rowset.getInt("l_id");
             if (Listing.getOwnerId(l_id) == Integer.parseInt(info.get(0))) {
-                System.out.println(l_id + "this proble listing");
                 legal = true;
                 break;
             }
         }
         if (!legal) return false;
-        System.out.println("========= is " + legal);
 
         Boolean success = false;
         if (this.active) {
