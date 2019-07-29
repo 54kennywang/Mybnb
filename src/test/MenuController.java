@@ -66,7 +66,13 @@ public class MenuController {
                 if (subOption.equals("1")) this.viewUserHistory();
                 else if (subOption.equals("2")) this.viewSpecifiedUser();
             } else if (option.equals("9")) {
-                this.becomeHost();
+                System.out.println("  Please specify options (1 for becoming host; 2 for deleting this account)");
+                System.out.print("> ");
+                String subOption = input.nextLine();
+                if (subOption.equals("1")) {
+                    this.becomeHost();
+                }
+                else if (subOption.equals("2")) this.deleteAccount();
             } else if (option.equals("10")) {
                 this.report();
             }
@@ -86,13 +92,36 @@ public class MenuController {
         System.out.println("  6. Post/update/delete/cancel a listing (as Host)");
         System.out.println("  7. Comment/reply");
         System.out.println("  8. View user info");
-        System.out.println("  9. Become a host");
+        System.out.println("  9. Become a host/delete account");
         System.out.println("  10. Report");
     }
 
     private boolean dateFormat(String date) {
         if (date.matches("^\\d{4}-\\d{2}-\\d{2}$")) return true;
         else return false;
+    }
+
+    public void deleteAccount() throws SQLException {
+        if (!loggedIn()) {
+            System.out.println("***Please login first***");
+            return;
+        }
+        if(client.type == 1) {
+            if(client.deleteMyselfAsRenter()) {
+                System.out.println("***Delete account successfully***");
+                this.client = null;
+                this.type = 0;
+            }
+            else System.out.println("***Delete account failed***");
+        }
+        else if(client.type == 2){
+            if(client.deleteMyselfAsHost()) {
+                System.out.println("***Delete account successfully***");
+                this.client = null;
+                this.type = 0;
+            }
+            else System.out.println("***Delete account failed***");
+        }
     }
 
     private void report() throws SQLException {
@@ -601,7 +630,24 @@ public class MenuController {
     }
 
     private void deleteListing() throws SQLException {
-
+        if (!loggedIn()) {
+            System.out.println("***Please login first***");
+            return;
+        }
+        if (!isHost()) {
+            System.out.println("***You are not host***");
+            return;
+        }
+        System.out.println("Listing ID:");
+        System.out.print("> ");
+        Scanner input = new Scanner(System.in);
+        String l_id = input.nextLine();
+        if (Listing.getOwnerId(Integer.parseInt(l_id)) != client.getId()) {
+            System.out.println("***not your listing, delete failed***");
+        } else {
+            if (client.deleteListing(Integer.parseInt(l_id))) System.out.println("***Delete listing successfully***");
+            else System.out.println("***Delete listing failed***");
+        }
     }
 
     private void cancelBookingAsHost() throws SQLException {
@@ -966,10 +1012,9 @@ public class MenuController {
         info.add(l_id);
         info.add(timeWin.get(0));
         info.add(timeWin.get(1));
-        if(client.confirmation_AfterLiving(info)){
+        if (client.confirmation_AfterLiving(info)) {
             System.out.println("***Confirmed living successfully***");
-        }
-        else System.out.println("***Confirmed living failed***");
+        } else System.out.println("***Confirmed living failed***");
     }
 
     private void userHistoryHelper() throws SQLException {

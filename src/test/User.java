@@ -441,6 +441,7 @@ public abstract class User {
         return true;
     }
 
+
     public static void main(String args[]) throws Exception {
         if (Database.connect()) {
             Renter me = new Renter();

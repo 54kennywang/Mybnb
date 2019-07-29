@@ -240,6 +240,16 @@ public class Host extends Renter {
         return 1;
     }
 
+    public boolean deleteMyselfAsHost() throws SQLException {
+        CachedRowSet crs = this.getBookings(0);
+        if(crs.next()) return false;
+        if(getMyRenterBookingsOfMyListings(0).size() != 0) return false;
+        String table = "user";
+        String conditions = "id = " + this.id;
+        if(Database.delete(table, conditions)) return true;
+        else return false;
+    }
+
     /**
      * Get renter's bookings on a host's listings (from host's perspective, who booked my listing) based on type
      *
@@ -274,6 +284,8 @@ public class Host extends Renter {
         }
     }
 
+
+
     /**
      * Host's initial comment on a Renter
      *
@@ -303,6 +315,28 @@ public class Host extends Renter {
             if (Database.insert(table, cols, vals)) success = true;
         }
         return success;
+    }
+
+    /**
+     * Host delete listing id
+     *
+     * @param l_id listing id
+     * @return true if successfully; false otherwise
+     */
+    public boolean deleteListing(int l_id) throws SQLException {
+        if(Listing.getOwnerId(l_id) != this.getId()){
+            return false;
+        }
+        String query = "select * from listing l, rented r where l.id = r.l_id and r.status = 0 and r.l_id = "+l_id+";";
+        ResultSet resultSet = Database.queryRead(query);
+        CachedRowSet rowset = new CachedRowSetImpl();
+        rowset.populate(resultSet);
+        List<Row> temp = Listing.CachedRowSet_to_ListRow(rowset);
+        if(temp.size() != 0) return false;
+        String table = "listing";
+        String conditions = "id = " + l_id;
+        if(Database.delete(table, conditions)) return true;
+        else return false;
     }
 
 

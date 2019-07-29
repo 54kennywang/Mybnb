@@ -148,6 +148,17 @@ public class Renter extends User {
         return rowset;
     }
 
+    public boolean deleteMyselfAsRenter() throws SQLException {
+        CachedRowSet crs = this.getBookings(0);
+        if(crs.next()) return false;
+//        if(this.type == 2){
+//            if((Host this).getMyRenterBookingsOfMyListings(0))
+//        }
+        String table = "user";
+        String conditions = "id = " + this.id;
+        if(Database.delete(table, conditions)) return true;
+        else return false;
+    }
 
     /**
      * Check if user has that type of booking

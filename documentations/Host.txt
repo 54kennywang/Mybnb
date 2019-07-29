@@ -56,6 +56,14 @@
      */
     public List<Row> getMyRenterBookingsOfMyListings(int type)
 
+/**
+     * Host delete listing id
+     *
+     * @param l_id listing id
+     * @return true if successfully; false otherwise
+     */
+    public boolean deleteListing(int l_id)
+
 
 
 
