@@ -260,6 +260,20 @@ public class Host extends Renter {
         return Listing.CachedRowSet_to_ListRow(rowset);
     }
 
+    public void viewRentalHistoryOfMyListings(List<Row> table) throws SQLException{
+        if(table.size() == 0) {
+            System.out.println("***Sorry, no result found***");
+        }
+        for (int i = 0; i < table.size(); i++) {
+            System.out.println("Renter ID:" + table.get(i).getColumnObject(1));
+            System.out.println("Listing ID: " + table.get(i).getColumnObject(2));
+            System.out.println("Renting period: " + LocalDate.parse(table.get(i).getColumnObject(3).toString()).plusDays(1)
+                    + " - " + LocalDate.parse(table.get(i).getColumnObject(4).toString()).plusDays(1));
+            System.out.println("Price: $" + table.get(i).getColumnObject(7) + " per day");
+            System.out.println("==========");
+        }
+    }
+
     /**
      * Host's initial comment on a Renter
      *

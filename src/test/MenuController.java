@@ -67,6 +67,8 @@ public class MenuController {
                 this.becomeHost();
             } else if (option.equals("10")) {
                 this.report();
+            } else if (option.equals("11")) {
+                this.viewUserHistory();
             }
             System.out.println("Tell me what's next, type MENU to see options.");
             System.out.print("> ");
@@ -87,6 +89,7 @@ public class MenuController {
         System.out.println("  8. View user info");
         System.out.println("  9. Become a host");
         System.out.println("  10. Report");
+        System.out.println("  11. View your user history");
     }
 
     public boolean dateFormat(String date) {
@@ -873,6 +876,26 @@ public class MenuController {
         else return 0;
     }
 
+    public void viewUserHistory() throws SQLException{
+        if (isRenter()) {
+            userHistoryHelper();
+        }
+        else if (isHost()){
+            userHistoryHelper();
+            System.out.println("\n");
+            System.out.println("The rental history listing of your listings:");
+            List<Row> table = client.getMyRenterBookingsOfMyListings(1);
+            client.viewRentalHistoryOfMyListings(table);
+        }
+    }
+
+    private void userHistoryHelper() throws SQLException{
+        System.out.println("Your history of listings that you rented as a renter:");
+        client.viewBooking((client.getBookings(1)));
+        System.out.println("\n");
+        System.out.println("Your future bookings:");
+        client.viewBooking((client.getBookings(0)));
+    }
 
     public boolean loggedIn() {
         if (client == null) {
